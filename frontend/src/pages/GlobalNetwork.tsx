@@ -8,22 +8,56 @@ import styled from 'styled-components'
 import { theme } from '@styles/theme'
 import { Container, Section, Grid, Flex } from '@components/Layout'
 import { Button } from '@components/Button'
+import { FaGlobe, FaHeart } from 'react-icons/fa6'
 
 const HeroSection = styled.div`
   background: linear-gradient(135deg, ${theme.colors.primary} 0%, #a01829 100%);
   color: ${theme.colors.text.inverse};
   text-align: center;
   padding: ${theme.spacing.xxxl} 0;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -10%;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(255, 215, 0, 0.15) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -30%;
+    left: -5%;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.08) 0%, transparent 70%);
+    border-radius: 50%;
+  }
 
   h1 {
     font-size: ${theme.typography.fontSize['4xl']};
     margin-bottom: ${theme.spacing.lg};
+    position: relative;
+    z-index: 1;
+    background: linear-gradient(135deg, #FFD700 0%, #FFA500 50%, #FFFFFF 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.3));
   }
 
   p {
     font-size: 18px;
     margin: 0;
     opacity: 0.95;
+    position: relative;
+    z-index: 1;
   }
 
   @media (max-width: ${theme.breakpoints.tablet}) {
@@ -48,6 +82,17 @@ const HeroSection = styled.div`
   }
 `
 
+const CountryFlag = styled.div`
+  font-size: 72px;
+  margin-bottom: ${theme.spacing.md};
+  display: block;
+  line-height: 1;
+  font-weight: bold;
+  letter-spacing: 8px;
+  text-indent: 8px;
+  color: ${theme.colors.primary};
+`
+
 const GroupCard = styled.div`
   background: ${theme.colors.surface};
   border-radius: ${theme.borderRadius.lg};
@@ -64,22 +109,37 @@ const GroupCard = styled.div`
     padding: ${theme.spacing.lg};
     background: ${theme.colors.surface};
     border-bottom: 1px solid ${theme.colors.border};
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: ${theme.spacing.lg};
 
     .flag {
-      font-size: 48px;
-      margin-bottom: ${theme.spacing.md};
+      width: 80px;
+      height: 80px;
+      min-width: 80px;
+      border-radius: ${theme.borderRadius.lg};
+      position: relative;
+      overflow: hidden;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
     }
 
-    h3 {
-      color: ${theme.colors.primary};
-      margin: 0 0 ${theme.spacing.xs} 0;
-      font-size: 18px;
-    }
+    .header-content {
+      flex: 1;
 
-    .region {
-      color: ${theme.colors.text.secondary};
-      font-size: 14px;
-      margin: 0;
+      h3 {
+        color: ${theme.colors.primary};
+        margin: 0 0 ${theme.spacing.xs} 0;
+        font-size: 18px;
+      }
+
+      .region {
+        color: ${theme.colors.text.secondary};
+        font-size: 14px;
+        margin: 0;
+      }
     }
   }
 
@@ -165,7 +225,8 @@ export const GlobalNetworkPage: React.FC = () => {
   const globalGroups = [
     {
       id: 1,
-      flag: '🇮🇳',
+      flag: 'https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/6.14.0/flags/4x3/in.svg',
+      countryCode: 'IN',
       name: 'Vijay Makkal Mandram',
       region: 'India – Tamil Nadu',
       description:
@@ -175,7 +236,8 @@ export const GlobalNetworkPage: React.FC = () => {
     },
     {
       id: 2,
-      flag: '🇱🇰',
+      flag: 'https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/6.14.0/flags/4x3/lk.svg',
+      countryCode: 'LK',
       name: 'Sri Lanka Vijay Fans',
       region: 'Sri Lanka',
       description:
@@ -185,7 +247,8 @@ export const GlobalNetworkPage: React.FC = () => {
     },
     {
       id: 3,
-      flag: '🇲🇾',
+      flag: 'https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/6.14.0/flags/4x3/my.svg',
+      countryCode: 'MY',
       name: 'Malaysia Vijay Fans',
       region: 'Malaysia',
       description: 'Huge fan following with stadium-level celebrations during major movie releases. Highly active in charity and cultural events.',
@@ -194,7 +257,8 @@ export const GlobalNetworkPage: React.FC = () => {
     },
     {
       id: 4,
-      flag: '🇸🇬',
+      flag: 'https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/6.14.0/flags/4x3/sg.svg',
+      countryCode: 'SG',
       name: 'Singapore Vijay FC',
       region: 'Singapore',
       description: 'Professional, disciplined, and well-respected. Organizes screenings, community meetups, and youth programs.',
@@ -203,7 +267,8 @@ export const GlobalNetworkPage: React.FC = () => {
     },
     {
       id: 5,
-      flag: '🇬🇧',
+      flag: 'https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/6.14.0/flags/4x3/gb.svg',
+      countryCode: 'GB',
       name: 'UK Vijay Fans Network',
       region: 'United Kingdom',
       description: 'A growing group active in London and other major cities, known for elegant celebrations and culturally rich events.',
@@ -212,7 +277,8 @@ export const GlobalNetworkPage: React.FC = () => {
     },
     {
       id: 6,
-      flag: '🇺🇸',
+      flag: 'https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/6.14.0/flags/4x3/us.svg',
+      countryCode: 'US',
       name: 'USA Vijay Fans Groups',
       region: 'USA (Dallas, New Jersey, California, Chicago)',
       description: 'Strong fan groups across major cities regularly hosting screenings and large family events.',
@@ -221,7 +287,8 @@ export const GlobalNetworkPage: React.FC = () => {
     },
     {
       id: 7,
-      flag: '🇦🇺',
+      flag: 'https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/6.14.0/flags/4x3/au.svg',
+      countryCode: 'AU',
       name: 'Australia Vijay Fans Association',
       region: 'Australia (Sydney, Melbourne, Brisbane)',
       description: 'Active in sports-themed events, cultural days, and big movie celebrations.',
@@ -230,7 +297,8 @@ export const GlobalNetworkPage: React.FC = () => {
     },
     {
       id: 8,
-      flag: '🇦🇪',
+      flag: 'https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/6.14.0/flags/4x3/ae.svg',
+      countryCode: 'AE',
       name: 'UAE & Middle East Vijay Fans',
       region: 'UAE, Saudi, Kuwait, Qatar',
       description: 'One of the most energetic fan bases outside India, known for creative displays, massive cutouts, and group celebrations.',
@@ -239,7 +307,8 @@ export const GlobalNetworkPage: React.FC = () => {
     },
     {
       id: 9,
-      flag: '🇫🇷',
+      flag: 'https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/6.14.0/flags/4x3/fr.svg',
+      countryCode: 'FR',
       name: 'France Vijay Fans Club',
       region: 'France & Europe',
       description: 'A passionate European community known for street celebrations, meetups, and screenings.',
@@ -248,7 +317,8 @@ export const GlobalNetworkPage: React.FC = () => {
     },
     {
       id: 10,
-      flag: '🇿🇦',
+      flag: 'https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/6.14.0/flags/4x3/za.svg',
+      countryCode: 'ZA',
       name: 'South Africa Vijay Supporters',
       region: 'South Africa',
       description: 'A growing fan community hosting local screenings and cultural nights.',
@@ -257,7 +327,8 @@ export const GlobalNetworkPage: React.FC = () => {
     },
     {
       id: 11,
-      flag: '🇳🇿',
+      flag: 'https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/6.14.0/flags/4x3/nz.svg',
+      countryCode: 'NZ',
       name: 'New Zealand Vijay Fans',
       region: 'New Zealand',
       description: 'Growing community of Vijay supporters organizing meetups and cultural celebrations.',
@@ -266,7 +337,8 @@ export const GlobalNetworkPage: React.FC = () => {
     },
     {
       id: 12,
-      flag: '🇨🇦',
+      flag: 'https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/6.14.0/flags/4x3/ca.svg',
+      countryCode: 'CA',
       name: 'TVK Canada',
       region: 'Canada',
       description:
@@ -315,9 +387,17 @@ export const GlobalNetworkPage: React.FC = () => {
             {globalGroups.map((group) => (
               <GroupCard key={group.id}>
                 <div className="header">
-                  <div className="flag">{group.flag}</div>
-                  <h3>{group.name}</h3>
-                  <p className="region">{group.region}</p>
+                  <div 
+                    className="flag" 
+                    style={{
+                      backgroundImage: `url('${group.flag}')`,
+                    }}
+                    title={group.countryCode}
+                  />
+                  <div className="header-content">
+                    <h3>{group.name}</h3>
+                    <p className="region">{group.region}</p>
+                  </div>
                 </div>
                 <div className="content">
                   <p>{group.description}</p>
