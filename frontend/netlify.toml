@@ -1,0 +1,39 @@
+# Netlify deployment configuration
+[build]
+  # Build command
+  command = "npm run build"
+  
+  # Directory to publish (dist folder created by Vite)
+  publish = "dist"
+  
+  # Environment variables for build
+  [build.environment]
+    VITE_API_BASE_URL = "https://project-tvk.onrender.com/api"
+    # Add your actual keys here or set them in Netlify dashboard for security
+    # VITE_STRIPE_PUBLISHABLE_KEY = "pk_test_your-stripe-publishable-key"
+    # VITE_GOOGLE_CLIENT_ID = "your-google-client-id"
+
+# Redirect rules for React Router (SPA)
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# Headers for security and caching
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-XSS-Protection = "1; mode=block"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/images/*"
+  [headers.values]
+    Cache-Control = "public, max-age=86400"
