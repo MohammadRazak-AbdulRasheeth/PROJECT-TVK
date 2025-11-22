@@ -23,7 +23,8 @@
     <meta property="og:type" content="website" />
     <meta property="og:title" content="TVK Canada - The Voice of Vijay Fans in Canada" />
     <meta property="og:description" content="Join the largest Thalapathy Vijay fan community in Canada. Celebrate culture, community, and cinema together." />
-    <meta property="og:image" content="/images/og-image.jpg" />
+    <!-- Use existing gallery image as Open Graph image to avoid 404 -->
+    <meta property="og:image" content="/gallery-1.jpg" />
     <meta property="og:url" content="https://tvkcanada.netlify.app" />
     <meta property="og:site_name" content="TVK Canada" />
     
@@ -31,7 +32,7 @@
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="TVK Canada - The Voice of Vijay Fans in Canada" />
     <meta name="twitter:description" content="Join the largest Thalapathy Vijay fan community in Canada. Celebrate culture, community, and cinema together." />
-    <meta name="twitter:image" content="/images/og-image.jpg" />
+    <meta name="twitter:image" content="/gallery-1.jpg" />
     
     <!-- App Manifest -->
     <meta name="application-name" content="TVK Canada" />
@@ -40,9 +41,46 @@
     <meta name="apple-mobile-web-app-title" content="TVK Canada" />
     
     <title>TVK Canada - The Voice of Vijay Fans in Canada</title>
+    <!-- Preload critical logo asset -->
+    <link rel="preload" href="/logo.svg" as="image" type="image/svg+xml" />
+    <!-- Optional: preload one gallery image -->
+    <link rel="preload" href="/images/gallery/16170924.jpg" as="image" type="image/jpeg" />
   </head>
   <body>
+    <!-- Diagnostic asset block (temporary; remove after confirming deployment works) -->
+    <div id="asset-diagnostics" style="font-family:monospace;font-size:12px;white-space:pre-wrap;max-width:100%;padding:8px;border:1px dashed #C41E3A;margin:8px;background:#fff;color:#000;">
+      Asset diagnostics running...
+      <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:8px;align-items:center;">
+        <img src="/logo.svg" alt="Logo test" style="height:42px" />
+        <img src="/logo-large.svg" alt="Logo large test" style="height:42px" />
+        <img src="/gallery-1.jpg" alt="Gallery root test" style="height:42px" />
+        <img src="/images/gallery/16170924.jpg" alt="Gallery nested test" style="height:42px" />
+      </div>
+      <noscript>JavaScript disabled; cannot run fetch diagnostics.</noscript>
+    </div>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+    <script>
+    (function(){
+      const urls = [
+        '/logo.svg',
+        '/logo-large.svg',
+        '/gallery-1.jpg',
+        '/images/gallery/16170924.jpg'
+      ];
+      Promise.all(urls.map(u => fetch(u, {cache:'no-store'})
+        .then(r => ({url:u, ok:r.ok, status:r.status, type:r.headers.get('content-type')}))
+        .catch(err => ({url:u, ok:false, error:err.message}))
+      )).then(results => {
+        console.table(results);
+        const el = document.getElementById('asset-diagnostics');
+        if (el) {
+          el.innerHTML = '<strong>Asset check results:</strong>\n' + results.map(r => {
+            return r.url + ' => ' + (r.ok ? 'OK '+r.status+' '+(r.type||'') : 'FAIL '+(r.status||'')+' '+(r.error||''));
+          }).join('\n');
+        }
+      });
+    })();
+    </script>
   </body>
 </html>
