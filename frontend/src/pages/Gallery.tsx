@@ -18,6 +18,7 @@ const GalleryImage = styled.img`
   border: 2px solid transparent;
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
+  background: linear-gradient(135deg, ${theme.colors.surface} 0%, #f0f0f0 100%);
 
   &:hover {
     transform: scale(1.08) rotate(0.5deg);
@@ -28,6 +29,15 @@ const GalleryImage = styled.img`
 
   &:active {
     transform: scale(1.04);
+  }
+
+  &[data-placeholder="true"] {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: ${theme.colors.text.secondary};
+    font-size: ${theme.typography.fontSize.sm};
+    background: linear-gradient(135deg, ${theme.colors.primary}20 0%, ${theme.colors.secondary}20 100%);
   }
 
   @media (max-width: ${theme.breakpoints.tablet}) {

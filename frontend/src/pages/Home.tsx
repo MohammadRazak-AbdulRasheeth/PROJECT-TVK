@@ -11,7 +11,7 @@ import { Button } from '@components/Button'
 const HeroSection = styled(Section)`
   background: ${theme.colors.gradient.primary};
   color: ${theme.colors.text.inverse};
-  padding: ${theme.spacing.xxxl} 0;
+  padding: ${theme.spacing.xxl} 0;
   position: relative;
   overflow: hidden;
 
@@ -22,7 +22,7 @@ const HeroSection = styled(Section)`
     right: -100px;
     width: 500px;
     height: 500px;
-    background: radial-gradient(circle, rgba(201, 169, 97, 0.15) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(255, 215, 0, 0.15) 0%, transparent 70%);
     border-radius: 50%;
   }
 
@@ -36,6 +36,14 @@ const HeroSection = styled(Section)`
     background: radial-gradient(circle, rgba(255, 255, 255, 0.08) 0%, transparent 70%);
     border-radius: 50%;
   }
+
+  @media (max-width: ${theme.breakpoints.tablet}) {
+    padding: ${theme.spacing.xl} 0;
+  }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    padding: ${theme.spacing.lg} 0;
+  }
 `
 
 const HeroContent = styled(Container)`
@@ -45,41 +53,42 @@ const HeroContent = styled(Container)`
 `
 
 const HeroTitle = styled.h1`
-  font-size: ${theme.typography.fontSize['5xl']};
+  font-size: clamp(2rem, 4vw, 3.5rem);
   margin-bottom: ${theme.spacing.lg};
   line-height: ${theme.typography.lineHeight.tight};
   font-weight: ${theme.typography.fontWeight.extrabold};
   color: ${theme.colors.text.inverse};
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  text-shadow: 2px 4px 8px rgba(0, 0, 0, 0.4);
 
   @media (max-width: ${theme.breakpoints.tablet}) {
-    font-size: ${theme.typography.fontSize['4xl']};
     margin-bottom: ${theme.spacing.md};
   }
 
   @media (max-width: ${theme.breakpoints.mobile}) {
-    font-size: ${theme.typography.fontSize['3xl']};
     margin-bottom: ${theme.spacing.md};
   }
 `
 
 const HeroSubtitle = styled.p`
-  font-size: ${theme.typography.fontSize.xl};
+  font-size: ${theme.typography.fontSize.lg};
   margin-bottom: ${theme.spacing.xl};
   opacity: 0.95;
   max-width: 600px;
   margin-left: auto;
   margin-right: auto;
   line-height: ${theme.typography.lineHeight.relaxed};
+  text-shadow: 1px 2px 4px rgba(0, 0, 0, 0.3);
 
   @media (max-width: ${theme.breakpoints.tablet}) {
-    font-size: ${theme.typography.fontSize.lg};
+    font-size: ${theme.typography.fontSize.base};
     margin-bottom: ${theme.spacing.lg};
+    max-width: 500px;
   }
 
   @media (max-width: ${theme.breakpoints.mobile}) {
-    font-size: ${theme.typography.fontSize.base};
+    font-size: ${theme.typography.fontSize.sm};
     margin-bottom: ${theme.spacing.md};
+    max-width: 90%;
   }
 `
 
@@ -289,15 +298,22 @@ export const HomePage: React.FC = () => {
       {/* Hero Section */}
       <HeroSection>
         <HeroContent>
-          <HeroTitle>TVK CANADA – The Voice of Vijay Fans in Canada</HeroTitle>
+          <HeroTitle>
+            TVK CANADA – The Voice of Vijay Fans in Canada
+          </HeroTitle>
           <HeroSubtitle>
-            Unite with thousands of Thalapathy supporters across Canada. Celebrate culture and community.
+            Unite with thousands of Thalapathy supporters across Canada. 
+            <br />
+            Celebrate culture and community.
           </HeroSubtitle>
           <HeroButtons>
             <Button variant="secondary" size="lg">
               Join TVK Canada
             </Button>
-            <Button variant="outline" size="lg" style={{ borderColor: 'white', color: 'white' }}>
+            <Button variant="outline" size="lg" style={{ 
+              borderColor: 'white', 
+              color: 'white'
+            }}>
               Learn More
             </Button>
           </HeroButtons>
