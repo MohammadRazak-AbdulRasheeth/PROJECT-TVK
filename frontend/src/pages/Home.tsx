@@ -310,12 +310,6 @@ export const HomePage: React.FC = () => {
             <Button variant="secondary" size="lg">
               Join TVK Canada
             </Button>
-            <Button variant="outline" size="lg" style={{ 
-              borderColor: 'white', 
-              color: 'white'
-            }}>
-              Learn More
-            </Button>
           </HeroButtons>
         </HeroContent>
       </HeroSection>

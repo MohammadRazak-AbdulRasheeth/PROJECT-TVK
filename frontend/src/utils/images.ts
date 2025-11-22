@@ -3,7 +3,7 @@
  */
 
 export const images = {
-  logo: '/images/logo.heic',
+  logo: '/images/logo.svg',
 
   gallery: {
     // TVK and Vijay related images for gallery and content
