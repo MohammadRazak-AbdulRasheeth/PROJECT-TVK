@@ -7,6 +7,7 @@ import styled from 'styled-components'
 import { theme } from '@styles/theme'
 import { Container, Section, Grid, Flex } from '@components/Layout'
 import { Button } from '@components/Button'
+import { membershipService } from '../services/api'
 
 const PricingCard = styled.div<{ featured?: boolean }>`
   background: ${(props) => (props.featured ? theme.colors.primary : theme.colors.surface)};
@@ -236,6 +237,20 @@ const FAQItem = styled.details`
  */
 export const MembershipPage: React.FC = () => {
   const [selectedPlan, setSelectedPlan] = useState<'monthly' | 'yearly'>('yearly')
+  const [loading, setLoading] = useState(false)
+
+  const handleSubscribe = async () => {
+    setLoading(true)
+    try {
+      const response = await membershipService.subscribe(selectedPlan)
+      window.location.href = response.url
+    } catch (error) {
+      console.error('Subscription failed:', error)
+      alert('Failed to start subscription. Please try again.')
+    } finally {
+      setLoading(false)
+    }
+  }
 
   return (
     <>
@@ -302,6 +317,12 @@ export const MembershipPage: React.FC = () => {
               </ul>
             </PricingCard>
           </Grid>
+
+          <Flex justify="center" style={{ marginTop: theme.spacing.xl }}>
+            <Button variant="primary" size="lg" onClick={handleSubscribe} disabled={loading}>
+              {loading ? 'Processing...' : `Subscribe to ${selectedPlan === 'monthly' ? 'Monthly' : 'Yearly'} Plan`}
+            </Button>
+          </Flex>
         </Container>
       </Section>
 

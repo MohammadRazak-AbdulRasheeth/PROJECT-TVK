@@ -2,12 +2,13 @@
  * Fully Responsive Header component with mobile menu
  */
 
-import React, { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import React, { useState, useEffect, useRef } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 import { theme } from '@styles/theme'
 import { images } from '@utils/images'
 import { Button } from './Button'
+import { authService } from '../services/api'
 
 const HeaderWrapper = styled.header`
   background-color: ${theme.colors.primary};
@@ -286,11 +287,110 @@ const ButtonGroup = styled.div`
   flex-shrink: 0;
 `
 
+const UserProfile = styled.div`
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: ${theme.spacing.sm};
+  cursor: pointer;
+  padding: ${theme.spacing.sm} ${theme.spacing.md};
+  border-radius: ${theme.borderRadius.lg};
+  transition: all ${theme.transitions.base};
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: ${theme.colors.secondary};
+    transform: translateY(-2px);
+    box-shadow: ${theme.shadows.md};
+  }
+
+  img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 2px solid ${theme.colors.secondary};
+    transition: all ${theme.transitions.base};
+  }
+
+  span {
+    color: ${theme.colors.text.inverse};
+    font-weight: ${theme.typography.fontWeight.semibold};
+    font-size: ${theme.typography.fontSize.base};
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  }
+
+  @media (max-width: ${theme.breakpoints.tablet}) {
+    display: none;
+  }
+`
+
+const DropdownMenu = styled.div<{ isOpen: boolean }>`
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: ${theme.colors.background};
+  border: 1px solid ${theme.colors.border};
+  border-radius: ${theme.borderRadius.lg};
+  box-shadow: ${theme.shadows.xl};
+  min-width: 220px;
+  opacity: ${props => (props.isOpen ? '1' : '0')};
+  visibility: ${props => (props.isOpen ? 'visible' : 'hidden')};
+  transform: translateY(${props => (props.isOpen ? '0' : '-10px')});
+  transition: all ${theme.transitions.base};
+  z-index: 1000;
+  margin-top: ${theme.spacing.md};
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+  border: 2px solid ${theme.colors.secondary};
+`
+
+const DropdownItem = styled.button`
+  width: 100%;
+  padding: ${theme.spacing.md} ${theme.spacing.lg};
+  background: none;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+  color: ${theme.colors.text.primary};
+  font-size: ${theme.typography.fontSize.base};
+  font-weight: ${theme.typography.fontWeight.medium};
+  transition: all ${theme.transitions.base};
+  border-bottom: 1px solid ${theme.colors.border};
+  display: flex;
+  align-items: center;
+  gap: ${theme.spacing.sm};
+
+  &:hover {
+    background: ${theme.colors.primary};
+    color: ${theme.colors.text.inverse};
+    transform: translateX(4px);
+  }
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  &:focus-visible {
+    outline: 2px solid ${theme.colors.secondary};
+    outline-offset: -2px;
+  }
+
+  &:active {
+    transform: translateX(2px);
+  }
+`
+
 /**
  * Header Component with fully responsive mobile menu
  */
 export const Header: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [user, setUser] = useState<any>(null)
+  const [dropdownOpen, setDropdownOpen] = useState(false)
+  const dropdownRef = useRef<HTMLDivElement>(null)
+  const navigate = useNavigate()
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen)
@@ -299,6 +399,59 @@ export const Header: React.FC = () => {
   const closeMenu = () => {
     setIsMenuOpen(false)
   }
+
+  const handleGoogleLogin = () => {
+    authService.googleLogin()
+  }
+
+  const handleLogout = () => {
+    localStorage.removeItem('token')
+    setUser(null)
+    setDropdownOpen(false)
+    navigate('/')
+  }
+
+  // Check for token in URL params (OAuth redirect)
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search)
+    const token = urlParams.get('token')
+    
+    if (token) {
+      localStorage.setItem('token', token)
+      // Clean URL
+      window.history.replaceState({}, document.title, window.location.pathname)
+      // Fetch user profile
+      fetchUserProfile()
+    } else {
+      // Check for existing token
+      const existingToken = localStorage.getItem('token')
+      if (existingToken) {
+        fetchUserProfile()
+      }
+    }
+  }, [])
+
+  const fetchUserProfile = async () => {
+    try {
+      const userData = await authService.getProfile()
+      setUser(userData)
+    } catch (error) {
+      console.error('Failed to fetch user profile:', error)
+      localStorage.removeItem('token')
+    }
+  }
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setDropdownOpen(false)
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [])
 
   // Prevent body scroll when mobile menu is open
   useEffect(() => {
@@ -347,9 +500,34 @@ export const Header: React.FC = () => {
           </DesktopNav>
 
           <ButtonGroup>
-            <DesktopCTAButton variant="secondary" size="md">
-              Join TVK
-            </DesktopCTAButton>
+            {user ? (
+              <UserProfile 
+                ref={dropdownRef}
+                onClick={() => setDropdownOpen(!dropdownOpen)}
+                title="Click to open menu"
+              >
+                <img 
+                  src={user.profile?.avatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name)}&background=C41E3A&color=FFD700&size=40`} 
+                  alt={user.name} 
+                />
+                <span>{user.name.split(' ')[0]}</span>
+                <DropdownMenu isOpen={dropdownOpen}>
+                  <DropdownItem onClick={() => { setDropdownOpen(false); navigate('/membership'); }}>
+                    My Membership
+                  </DropdownItem>
+                  <DropdownItem onClick={() => { setDropdownOpen(false); navigate('/events'); }}>
+                    My Events
+                  </DropdownItem>
+                  <DropdownItem onClick={handleLogout}>
+                    Logout
+                  </DropdownItem>
+                </DropdownMenu>
+              </UserProfile>
+            ) : (
+              <DesktopCTAButton variant="secondary" size="md" onClick={handleGoogleLogin}>
+                Login
+              </DesktopCTAButton>
+            )}
 
             <MobileMenuButton
               onClick={toggleMenu}
@@ -371,9 +549,71 @@ export const Header: React.FC = () => {
         <NavLink to="/gallery" onClick={closeMenu}>Gallery</NavLink>
         <NavLink to="/contact" onClick={closeMenu}>Contact</NavLink>
         
-        <MobileCTAButton variant="secondary" size="md" onClick={closeMenu}>
-          Join TVK
-        </MobileCTAButton>
+        {user ? (
+          <div style={{ 
+            marginTop: theme.spacing.lg, 
+            padding: theme.spacing.lg, 
+            background: 'rgba(255, 255, 255, 0.95)', 
+            borderRadius: theme.borderRadius.lg,
+            border: `2px solid ${theme.colors.secondary}`,
+            backdropFilter: 'blur(10px)',
+            boxShadow: theme.shadows.lg
+          }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: theme.spacing.md, marginBottom: theme.spacing.lg }}>
+              <img 
+                src={user.profile?.avatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name)}&background=C41E3A&color=FFD700&size=40`} 
+                alt={user.name}
+                style={{ 
+                  width: '40px', 
+                  height: '40px', 
+                  borderRadius: '50%', 
+                  border: `3px solid ${theme.colors.secondary}`,
+                  boxShadow: theme.shadows.md
+                }}
+              />
+              <span style={{ 
+                color: theme.colors.text.primary, 
+                fontWeight: theme.typography.fontWeight.bold,
+                fontSize: theme.typography.fontSize.lg
+              }}>{user.name}</span>
+            </div>
+            <Button 
+              variant="primary" 
+              size="md" 
+              fullWidth 
+              onClick={() => { closeMenu(); navigate('/membership'); }} 
+              style={{ 
+                marginBottom: theme.spacing.md,
+                fontSize: theme.typography.fontSize.base,
+                fontWeight: theme.typography.fontWeight.semibold
+              }}
+            >
+              My Membership
+            </Button>
+            <Button 
+              variant="outline" 
+              size="md" 
+              fullWidth 
+              onClick={handleLogout}
+              style={{
+                borderColor: theme.colors.primary,
+                color: theme.colors.primary,
+                fontSize: theme.typography.fontSize.base,
+                fontWeight: theme.typography.fontWeight.semibold,
+                '&:hover': {
+                  background: theme.colors.primary,
+                  color: theme.colors.text.inverse
+                }
+              }}
+            >
+              Logout
+            </Button>
+          </div>
+        ) : (
+          <MobileCTAButton variant="secondary" size="md" onClick={handleGoogleLogin}>
+            Login
+          </MobileCTAButton>
+        )}
       </MobileNav>
     </>
   )

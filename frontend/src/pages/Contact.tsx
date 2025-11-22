@@ -9,6 +9,7 @@ import { Container, Section, Grid, Flex } from '@components/Layout'
 import { Button } from '@components/Button'
 import { FaXTwitter, FaInstagram, FaFacebook, FaTiktok, FaYoutube } from 'react-icons/fa6'
 import { FaWhatsapp, FaMapLocationDot, FaEnvelope } from 'react-icons/fa6'
+import { contactService } from '../services/api'
 
 const ContactForm = styled.form`
   display: flex;
@@ -179,11 +180,33 @@ const FormGroup = styled.div`
  */
 export const ContactPage: React.FC = () => {
   const [submitted, setSubmitted] = useState(false)
+  const [loading, setLoading] = useState(false)
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    setSubmitted(true)
-    setTimeout(() => setSubmitted(false), 3000)
+    setLoading(true)
+    
+    const formData = new FormData(e.target as HTMLFormElement)
+    const data = {
+      name: formData.get('name'),
+      email: formData.get('email'),
+      phone: formData.get('phone'),
+      city: formData.get('city'),
+      type: formData.get('subject'),
+      message: formData.get('message')
+    }
+    
+    try {
+      await contactService.submitForm(data)
+      setSubmitted(true)
+      window.setTimeout(() => setSubmitted(false), 3000)
+      (e.target as HTMLFormElement).reset()
+    } catch (error) {
+      console.error('Failed to submit form:', error)
+      alert('Failed to send message. Please try again.')
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -277,8 +300,8 @@ export const ContactPage: React.FC = () => {
                   <textarea id="message" name="message" required></textarea>
                 </FormGroup>
 
-                <Button variant="primary" type="submit">
-                  {submitted ? '✓ Message Sent!' : 'Send Message'}
+                <Button variant="primary" type="submit" disabled={loading}>
+                  {loading ? 'Sending...' : submitted ? '✓ Message Sent!' : 'Send Message'}
                 </Button>
 
                 {submitted && (

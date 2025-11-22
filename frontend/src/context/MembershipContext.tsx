@@ -2,7 +2,8 @@
  * Membership Context for managing membership state across the application
  */
 
-import React, { createContext, useContext, useState, ReactNode } from 'react'
+import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react'
+import { membershipService } from '../services/api'
 import type { Membership, MembershipPlan } from '../types'
 
 interface MembershipContextType {
@@ -17,38 +18,32 @@ const MembershipContext = createContext<MembershipContextType | undefined>(undef
 
 export const MembershipProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [memberships, setMemberships] = useState<Membership[]>([])
+  const [activePlans, setActivePlans] = useState<MembershipPlan[]>([])
 
-  const activePlans: MembershipPlan[] = [
-    {
-      id: 'monthly-plan',
-      type: 'monthly',
-      price: 10,
-      currency: 'CAD',
-      description: 'Monthly membership',
-      perks: [
-        'Official TVK Canada membership card',
-        'Access to exclusive events',
-        'Member-only discounts with partners',
-        'Early access to event registration',
-        'Community forum access',
-      ],
-    },
-    {
-      id: 'yearly-plan',
-      type: 'yearly',
-      price: 100,
-      currency: 'CAD',
-      description: 'Annual membership - Save $20!',
-      perks: [
-        'Official TVK Canada membership card',
-        'Access to all exclusive events',
-        'Premium partner discounts',
-        'Priority event registration',
-        'VIP community forum access',
-        'Annual celebration event invitation',
-      ],
-    },
-  ]
+  useEffect(() => {
+    const fetchPlans = async () => {
+      try {
+        const plans = await membershipService.getPlans()
+        setActivePlans(plans.map((plan: any) => ({
+          id: plan.id,
+          type: plan.id,
+          price: plan.price / 100, // Convert cents to dollars
+          currency: 'USD',
+          description: plan.name,
+          perks: [
+            'Official TVK Canada membership card',
+            'Access to exclusive events',
+            'Member-only discounts with partners',
+            'Early access to event registration',
+            'Community forum access',
+          ],
+        })))
+      } catch (error) {
+        console.error('Failed to fetch membership plans:', error)
+      }
+    }
+    fetchPlans()
+  }, [])
 
   const addMembership = (membership: Membership) => {
     setMemberships((prev) => [...prev, membership])

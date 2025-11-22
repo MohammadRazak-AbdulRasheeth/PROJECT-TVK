@@ -3,12 +3,11 @@
  * Showcasing Vijay fan groups across the world under the TVK brand
  */
 
-import React, { useState } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 import { theme } from '@styles/theme'
-import { Container, Section, Grid, Flex } from '@components/Layout'
+import { Container, Section, Grid } from '@components/Layout'
 import { Button } from '@components/Button'
-import { FaGlobe, FaHeart } from 'react-icons/fa6'
 
 const HeroSection = styled.div`
   background: linear-gradient(135deg, ${theme.colors.primary} 0%, #a01829 100%);
@@ -80,17 +79,6 @@ const HeroSection = styled.div`
       font-size: 14px;
     }
   }
-`
-
-const CountryFlag = styled.div`
-  font-size: 72px;
-  margin-bottom: ${theme.spacing.md};
-  display: block;
-  line-height: 1;
-  font-weight: bold;
-  letter-spacing: 8px;
-  text-indent: 8px;
-  color: ${theme.colors.primary};
 `
 
 const GroupCard = styled.div`

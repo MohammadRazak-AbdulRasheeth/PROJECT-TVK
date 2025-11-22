@@ -5,14 +5,13 @@
 import React from 'react'
 import styled from 'styled-components'
 import { theme } from '@styles/theme'
-import { images, getGalleryImages } from '@utils/images'
 import { Container, Section, Grid, Flex } from '@components/Layout'
 import { Button } from '@components/Button'
 
 const HeroSection = styled(Section)`
   background: ${theme.colors.gradient.primary};
   color: ${theme.colors.text.inverse};
-  padding: ${theme.spacing.xxxl * 2.5}px 0;
+  padding: ${theme.spacing.xxxl} 0;
   position: relative;
   overflow: hidden;
 
@@ -50,12 +49,8 @@ const HeroTitle = styled.h1`
   margin-bottom: ${theme.spacing.lg};
   line-height: ${theme.typography.lineHeight.tight};
   font-weight: ${theme.typography.fontWeight.extrabold};
-  background: linear-gradient(135deg, #FFD700 0%, #FFA500 50%, #FF6B6B 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  text-shadow: none;
-  filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.2));
+  color: ${theme.colors.text.inverse};
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
 
   @media (max-width: ${theme.breakpoints.tablet}) {
     font-size: ${theme.typography.fontSize['4xl']};

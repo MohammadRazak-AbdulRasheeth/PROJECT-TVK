@@ -6,7 +6,6 @@ import React from 'react'
 import styled from 'styled-components'
 import { theme } from '@styles/theme'
 import { Container, Section, Grid } from '@components/Layout'
-import { Button } from '@components/Button'
 
 const CalendarPlaceholder = styled.div`
   width: 100%;
