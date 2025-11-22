@@ -5,6 +5,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { theme } from '@styles/theme'
+import { FaXTwitter, FaInstagram, FaFacebook, FaTiktok, FaYoutube } from 'react-icons/fa6'
 
 const FooterWrapper = styled.footer`
   background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
@@ -52,21 +53,31 @@ const SocialLinks = styled.div`
   display: flex;
   gap: ${theme.spacing.md};
   margin-top: ${theme.spacing.md};
+  flex-wrap: wrap;
+`
 
-  a {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 40px;
-    height: 40px;
-    background-color: ${theme.colors.primary};
-    border-radius: ${theme.borderRadius.full};
-    transition: all ${theme.transitions.base};
+const SocialLink = styled.a`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 45px;
+  height: 45px;
+  background: linear-gradient(135deg, ${theme.colors.primary}, ${theme.colors.accent});
+  color: white;
+  border-radius: ${theme.borderRadius['2xl']};
+  text-decoration: none;
+  transition: all ${theme.transitions.base};
+  font-size: 20px;
+  border: 2px solid transparent;
 
-    &:hover {
-      background-color: ${theme.colors.secondary};
-      transform: translateY(-2px);
-    }
+  &:hover {
+    transform: translateY(-4px) scale(1.1);
+    border-color: ${theme.colors.secondary};
+    background: linear-gradient(135deg, ${theme.colors.accent}, ${theme.colors.primary});
+  }
+
+  &:active {
+    transform: scale(0.95);
   }
 `
 
@@ -121,21 +132,21 @@ export const Footer: React.FC = () => {
         <FooterSection>
           <h4>Follow Us</h4>
           <SocialLinks>
-            <a href="https://twitter.com" title="Twitter" aria-label="Follow us on Twitter">
-              𝕏
-            </a>
-            <a href="https://instagram.com" title="Instagram" aria-label="Follow us on Instagram">
-              📷
-            </a>
-            <a href="https://facebook.com" title="Facebook" aria-label="Follow us on Facebook">
-              f
-            </a>
-            <a href="https://tiktok.com" title="TikTok" aria-label="Follow us on TikTok">
-              🎵
-            </a>
-            <a href="https://youtube.com" title="YouTube" aria-label="Subscribe on YouTube">
-              ▶️
-            </a>
+            <SocialLink href="https://twitter.com/TVKCanada" target="_blank" rel="noopener noreferrer" title="Twitter" aria-label="Follow us on Twitter">
+              <FaXTwitter />
+            </SocialLink>
+            <SocialLink href="https://instagram.com/TVKCanada" target="_blank" rel="noopener noreferrer" title="Instagram" aria-label="Follow us on Instagram">
+              <FaInstagram />
+            </SocialLink>
+            <SocialLink href="https://facebook.com/TVKCanadaOfficial" target="_blank" rel="noopener noreferrer" title="Facebook" aria-label="Follow us on Facebook">
+              <FaFacebook />
+            </SocialLink>
+            <SocialLink href="https://tiktok.com/@TVKCanada" target="_blank" rel="noopener noreferrer" title="TikTok" aria-label="Follow us on TikTok">
+              <FaTiktok />
+            </SocialLink>
+            <SocialLink href="https://youtube.com/@TVKCanada" target="_blank" rel="noopener noreferrer" title="YouTube" aria-label="Subscribe on YouTube">
+              <FaYoutube />
+            </SocialLink>
           </SocialLinks>
         </FooterSection>
       </FooterContent>

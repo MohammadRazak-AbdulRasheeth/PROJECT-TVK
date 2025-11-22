@@ -50,7 +50,12 @@ const HeroTitle = styled.h1`
   margin-bottom: ${theme.spacing.lg};
   line-height: ${theme.typography.lineHeight.tight};
   font-weight: ${theme.typography.fontWeight.extrabold};
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+  background: linear-gradient(135deg, #FFD700 0%, #FFA500 50%, #FF6B6B 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: none;
+  filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.2));
 
   @media (max-width: ${theme.breakpoints.tablet}) {
     font-size: ${theme.typography.fontSize['4xl']};
@@ -218,20 +223,65 @@ const SectionTitle = styled.h2`
 `
 
 const EventCard = styled(HighlightCard)`
-  border-left: 5px solid ${theme.colors.primary};
+  border-left: 6px solid ${theme.colors.secondary};
   border-top: none;
+  background: linear-gradient(135deg, #fff8e7 0%, #fffaed 100%);
+  border: 2px solid ${theme.colors.secondary};
+  border-left: 6px solid ${theme.colors.secondary};
 
   &::before {
     display: none;
   }
 
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, ${theme.colors.secondary}, ${theme.colors.accent});
+    border-radius: ${theme.borderRadius['2xl']} ${theme.borderRadius['2xl']} 0 0;
+  }
+
+  &:hover {
+    background: linear-gradient(135deg, #ffeed4 0%, #fff5cc 100%);
+    box-shadow: ${theme.shadows.xl};
+    transform: translateY(-6px) translateX(4px);
+    border-left-width: 8px;
+  }
+
   .date {
-    color: ${theme.colors.secondary};
+    background: linear-gradient(135deg, ${theme.colors.secondary}, ${theme.colors.accent});
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
     font-weight: ${theme.typography.fontWeight.bold};
     font-size: ${theme.typography.fontSize.sm};
     text-transform: uppercase;
     letter-spacing: 1px;
     margin-bottom: ${theme.spacing.md};
+  }
+
+  h3 {
+    color: ${theme.colors.primary};
+  }
+
+  p {
+    color: ${theme.colors.text.secondary};
+  }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    background: linear-gradient(135deg, #fff8e7 0%, #fffaed 100%);
+
+    &:active {
+      transform: scale(0.97);
+      box-shadow: ${theme.shadows.md};
+    }
+
+    &::after {
+      display: none;
+    }
   }
 `
 

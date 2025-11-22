@@ -7,11 +7,126 @@ import styled from 'styled-components'
 import { theme } from '@styles/theme'
 import { Container, Section, Grid, Flex } from '@components/Layout'
 import { Button } from '@components/Button'
+import { FaXTwitter, FaInstagram, FaFacebook, FaTiktok, FaYoutube } from 'react-icons/fa6'
+import { FaWhatsapp, FaMapLocationDot, FaEnvelope } from 'react-icons/fa6'
 
 const ContactForm = styled.form`
   display: flex;
   flex-direction: column;
   gap: ${theme.spacing.lg};
+`
+
+const SocialIconLink = styled.a`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(135deg, ${theme.colors.primary}, ${theme.colors.accent});
+  color: white;
+  border-radius: ${theme.borderRadius['2xl']};
+  text-decoration: none;
+  transition: all ${theme.transitions.base};
+  box-shadow: ${theme.shadows.md};
+  font-size: 28px;
+  border: 2px solid transparent;
+
+  &:hover {
+    transform: translateY(-8px) scale(1.1);
+    box-shadow: ${theme.shadows.xl};
+    border-color: ${theme.colors.secondary};
+    background: linear-gradient(135deg, ${theme.colors.accent}, ${theme.colors.primary});
+  }
+
+  &:active {
+    transform: scale(0.95);
+    box-shadow: ${theme.shadows.md};
+  }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    width: 50px;
+    height: 50px;
+    font-size: 24px;
+
+    &:active {
+      transform: scale(0.9);
+    }
+  }
+`
+
+const ContactInfoItem = styled.div`
+  display: flex;
+  gap: ${theme.spacing.lg};
+  margin-bottom: ${theme.spacing.xl};
+  align-items: flex-start;
+  padding: ${theme.spacing.md};
+  background: linear-gradient(135deg, ${theme.colors.surface} 0%, #fafafa 100%);
+  border-radius: ${theme.borderRadius.lg};
+  border-left: 4px solid ${theme.colors.secondary};
+  transition: all ${theme.transitions.base};
+
+  &:hover {
+    transform: translateX(8px);
+    box-shadow: ${theme.shadows.md};
+    border-left-color: ${theme.colors.primary};
+  }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    padding: ${theme.spacing.md};
+    gap: ${theme.spacing.md};
+  }
+`
+
+const ContactIcon = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+  background: linear-gradient(135deg, ${theme.colors.primary}, ${theme.colors.accent});
+  color: white;
+  border-radius: ${theme.borderRadius.lg};
+  font-size: 24px;
+  flex-shrink: 0;
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    width: 45px;
+    height: 45px;
+    font-size: 20px;
+  }
+`
+
+const ContactDetails = styled.div`
+  flex: 1;
+
+  h4 {
+    color: ${theme.colors.primary};
+    margin: 0 0 ${theme.spacing.sm} 0;
+    font-weight: ${theme.typography.fontWeight.bold};
+  }
+
+  p, a {
+    margin: 0;
+    color: ${theme.colors.text.secondary};
+    text-decoration: none;
+    font-size: ${theme.typography.fontSize.base};
+    transition: color ${theme.transitions.base};
+
+    &:hover {
+      color: ${theme.colors.primary};
+      text-decoration: underline;
+    }
+  }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    h4 {
+      font-size: ${theme.typography.fontSize.sm};
+    }
+
+    p, a {
+      font-size: ${theme.typography.fontSize.sm};
+    }
+  }
 `
 
 const FormGroup = styled.div`
@@ -90,28 +205,33 @@ export const ContactPage: React.FC = () => {
           <Grid columns={2} gap={theme.spacing.xl}>
             <div>
               <h3 style={{ marginBottom: theme.spacing.lg }}>Get in Touch</h3>
-              <div style={{ marginBottom: theme.spacing.lg }}>
-                <h4 style={{ color: theme.colors.primary, marginBottom: theme.spacing.sm }}>
-                  📧 Email
-                </h4>
-                <p style={{ margin: 0 }}>
+              <ContactInfoItem>
+                <ContactIcon>
+                  <FaEnvelope />
+                </ContactIcon>
+                <ContactDetails>
+                  <h4>Email</h4>
                   <a href="mailto:tvk.canada@gmail.com">tvk.canada@gmail.com</a>
-                </p>
-              </div>
-              <div style={{ marginBottom: theme.spacing.lg }}>
-                <h4 style={{ color: theme.colors.primary, marginBottom: theme.spacing.sm }}>
-                  📱 WhatsApp
-                </h4>
-                <p style={{ margin: 0 }}>
+                </ContactDetails>
+              </ContactInfoItem>
+              <ContactInfoItem>
+                <ContactIcon>
+                  <FaWhatsapp />
+                </ContactIcon>
+                <ContactDetails>
+                  <h4>WhatsApp</h4>
                   <a href="https://wa.me/1234567890">Contact via WhatsApp</a>
-                </p>
-              </div>
-              <div>
-                <h4 style={{ color: theme.colors.primary, marginBottom: theme.spacing.sm }}>
-                  📍 Location
-                </h4>
-                <p style={{ margin: 0 }}>Canada-wide</p>
-              </div>
+                </ContactDetails>
+              </ContactInfoItem>
+              <ContactInfoItem>
+                <ContactIcon>
+                  <FaMapLocationDot />
+                </ContactIcon>
+                <ContactDetails>
+                  <h4>Location</h4>
+                  <p>Canada-wide</p>
+                </ContactDetails>
+              </ContactInfoItem>
             </div>
 
             <div>
@@ -185,21 +305,21 @@ export const ContactPage: React.FC = () => {
             Stay updated with events, announcements, and community highlights.
           </p>
           <Flex gap={theme.spacing.lg} justify="center" style={{ flexWrap: 'wrap' }}>
-            <a href="https://twitter.com/TVKCanada" target="_blank" rel="noopener noreferrer">
-              𝕏 Twitter
-            </a>
-            <a href="https://instagram.com/TVKCanada" target="_blank" rel="noopener noreferrer">
-              📷 Instagram
-            </a>
-            <a href="https://facebook.com/TVKCanadaOfficial" target="_blank" rel="noopener noreferrer">
-              👍 Facebook
-            </a>
-            <a href="https://tiktok.com/@TVKCanada" target="_blank" rel="noopener noreferrer">
-              🎵 TikTok
-            </a>
-            <a href="https://youtube.com/@TVKCanada" target="_blank" rel="noopener noreferrer">
-              ▶️ YouTube
-            </a>
+            <SocialIconLink href="https://twitter.com/TVKCanada" target="_blank" rel="noopener noreferrer" title="Twitter">
+              <FaXTwitter />
+            </SocialIconLink>
+            <SocialIconLink href="https://instagram.com/TVKCanada" target="_blank" rel="noopener noreferrer" title="Instagram">
+              <FaInstagram />
+            </SocialIconLink>
+            <SocialIconLink href="https://facebook.com/TVKCanadaOfficial" target="_blank" rel="noopener noreferrer" title="Facebook">
+              <FaFacebook />
+            </SocialIconLink>
+            <SocialIconLink href="https://tiktok.com/@TVKCanada" target="_blank" rel="noopener noreferrer" title="TikTok">
+              <FaTiktok />
+            </SocialIconLink>
+            <SocialIconLink href="https://youtube.com/@TVKCanada" target="_blank" rel="noopener noreferrer" title="YouTube">
+              <FaYoutube />
+            </SocialIconLink>
           </Flex>
         </Container>
       </Section>

@@ -21,6 +21,10 @@ export const theme = {
     error: '#F44336',
     warning: '#FF9800',
     info: '#2196F3',
+    gradient: {
+      primary: 'linear-gradient(135deg, #C41E3A 0%, #8b1428 100%)',
+      secondary: 'linear-gradient(135deg, #FFD700 0%, #FFA500 100%)',
+    },
   },
   spacing: {
     xs: '0.25rem',
