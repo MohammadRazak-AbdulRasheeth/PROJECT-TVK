@@ -1,5 +1,5 @@
 {
-  "name": "TVK Canada - The Voice of Vijay Fans in Canada",
+  "name": "TVK Canada",
   "short_name": "TVK Canada",
   "description": "The official fan community for Thalapathy Vijay supporters across Canada",
   "icons": [
@@ -17,7 +17,6 @@
   "theme_color": "#C41E3A",
   "background_color": "#C41E3A",
   "display": "standalone",
-  "orientation": "portrait",
   "start_url": "/",
   "scope": "/"
 }
