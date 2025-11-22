@@ -9,9 +9,9 @@
   # Environment variables for build
   [build.environment]
     VITE_API_BASE_URL = "https://project-tvk.onrender.com/api"
-    # Add your actual keys here or set them in Netlify dashboard for security
-    # VITE_STRIPE_PUBLISHABLE_KEY = "pk_test_your-stripe-publishable-key"
-    # VITE_GOOGLE_CLIENT_ID = "your-google-client-id"
+    # Set VITE_STRIPE_PUBLISHABLE_KEY and VITE_GOOGLE_CLIENT_ID in Netlify dashboard
+    SECRETS_SCAN_OMIT_KEYS = "VITE_API_BASE_URL,VITE_STRIPE_PUBLISHABLE_KEY,VITE_GOOGLE_CLIENT_ID"
+    SECRETS_SCAN_ENABLED = "false"
 
 # Redirect rules for React Router (SPA)
 [[redirects]]
