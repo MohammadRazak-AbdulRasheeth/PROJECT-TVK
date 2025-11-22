@@ -199,8 +199,8 @@ export const ContactPage: React.FC = () => {
     try {
       await contactService.submitForm(data)
       setSubmitted(true)
-      window.setTimeout(() => setSubmitted(false), 3000)
-      (e.target as HTMLFormElement).reset()
+      setTimeout(() => setSubmitted(false), 3000)
+      ;(e.target as HTMLFormElement).reset()
     } catch (error) {
       console.error('Failed to submit form:', error)
       alert('Failed to send message. Please try again.')

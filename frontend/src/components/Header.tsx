@@ -599,11 +599,7 @@ export const Header: React.FC = () => {
                 borderColor: theme.colors.primary,
                 color: theme.colors.primary,
                 fontSize: theme.typography.fontSize.base,
-                fontWeight: theme.typography.fontWeight.semibold,
-                '&:hover': {
-                  background: theme.colors.primary,
-                  color: theme.colors.text.inverse
-                }
+                fontWeight: theme.typography.fontWeight.semibold
               }}
             >
               Logout

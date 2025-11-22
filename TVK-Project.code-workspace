@@ -1,0 +1,25 @@
+{
+  "folders": [
+    {
+      "name": "Frontend",
+      "path": "./frontend"
+    },
+    {
+      "name": "Backend", 
+      "path": "./backend"
+    }
+  ],
+  "settings": {
+    "typescript.preferences.includePackageJsonAutoImports": "auto",
+    "typescript.suggest.autoImports": true,
+    "typescript.validate.enable": true
+  },
+  "extensions": {
+    "recommendations": [
+      "ms-vscode.vscode-typescript-next",
+      "bradlc.vscode-tailwindcss",
+      "esbenp.prettier-vscode",
+      "ms-vscode.vscode-eslint"
+    ]
+  }
+}
