@@ -7,9 +7,6 @@ import { Link, useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 import { theme } from '@styles/theme'
 import { images } from '@utils/images'
-// Direct imports ensure Vite resolves from public root and enables hashing if moved to assets later
-import logoSrc from '/logo.svg'
-import logoFallbackSrc from '/logo-large.svg'
 import { Button } from './Button'
 import { authService } from '../services/api'
 
@@ -489,19 +486,16 @@ export const Header: React.FC = () => {
         <HeaderContent>
           <Logo to="/" onClick={closeMenu}>
             <img
-              src={logoSrc}
+              src={images.logo}
               alt="TVK Canada Logo"
               title="TVK Canada"
               onError={(e) => {
                 const target = e.currentTarget
                 if (target.dataset.fallbackApplied) return
                 target.dataset.fallbackApplied = 'true'
-                target.src = logoFallbackSrc || images.logoFallback || images.logo
+                target.src = images.logoFallback || images.logo
               }}
-              style={{
-                objectFit: 'contain',
-                background: 'transparent'
-              }}
+              style={{ objectFit: 'contain', background: 'transparent' }}
             />
             <span>TVK CANADA</span>
           </Logo>
