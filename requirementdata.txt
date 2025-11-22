@@ -1,0 +1,300 @@
+TVK CANADA – WEBSITE PLAN (DOC VERSION) 
+1. SITE STRUCTURE - Home - About Us - Membership - Events & Calendar - TVK Around The World Past Events & Gallery - Contact Us 
+Global: Banner, Join TVK button, social icons. 
+1. HOME PAGE - Hero: “TVK CANADA – The Voice of Vijay Fans in Canada” - Membership highlights: 
+• $10/month or $100/year 
+• First 200 members get 6 months FREE 
+• Physical Membership Card 
+• Discounts, free movie nights, Mahaanadu watch parties, weekly events - Live X Feed - Weekly event highlights - Community purpose - Quick links 
+2. ABOUT US PAGE 
+Who Are We 
+TVK Canada is the official fan club for Thalapathy Vijay in Canada, created to unite 
+fans, families, and Tamil Canadians through celebration, culture, and community. We 
+are a nonprofit organization built on passion, togetherness, and the shared 
+admiration for Vijay’s talent, discipline, and values. 
+Our Mission 
+Our mission is to bring people together through meaningful community building, 
+memorable events, and a positive fan experience. We aim to create a welcoming 
+space where supporters of Vijay can connect, celebrate, and enjoy being part of a 
+vibrant Canadian fan community. 
+Our Values 
+We are guided by principles that reflect the spirit of our members: 
+● Unity — forming strong bonds across cities and cultures 
+● Democracy — encouraging openness, equality, and fairness within our 
+community 
+● Respect — treating everyone with kindness, dignity, and inclusiveness 
+What We Do 
+TVK Canada hosts exciting, family-friendly, and engaging activities throughout the 
+year, including: 
+● Movie Nights to enjoy Vijay’s films together 
+● Watch Parties for major releases and special moments 
+● Weekly Meetups to build friendships and community spirit 
+● Cultural gatherings, celebrations, and fan events 
+We are more than a fan club, we are a joyful and growing Canadian community 
+brought together by our love and admiration for Thalapathy Vijay. 
+3. MEMBERSHIP PAGE 
+TVK Canada Membership 
+�
+�
+ Membership Launching Soon! 
+�
+�
+ 
+Join the official Canadian fan community of Thalapathy Vijay. 
+Enjoy exclusive perks, priority access, and your own official physical membership 
+card. 
+The first 200 members receive 6 months FREE + a Special Edition Founding 
+Member Card. 
+Pricing 
+Monthly Membership 
+$10.00 / month 
+✔ Cancel anytime 
+✔ Full access to perks and events 
+Yearly Membership 
+$100.00 / year 
+✔ Save $20 
+✔ Priority shipping of membership card 
+✔ Full access to all membership benefits 
+Membership Perks 
+✔ Official Physical Membership Card 
+A custom-designed, high-quality card mailed to your home. 
+First 200 members receive a Special Edition Founding Member Card. 
+✔ Partner Discounts 
+Exclusive offers and reduced prices from TVK corporate partners across Canada. 
+✔ Free or Discounted Movie Nights 
+Join us for Vijay film screenings with special pricing just for members. 
+✔ Watch Parties 
+Experience major movie releases and special moments together as a community. 
+✔ Weekly Events 
+Fun gatherings, meetups, and activities held every week for members. 
+✔ Priority Access 
+Early registration and VIP access for high-demand events and limited-seat programs. 
+First 200 Members Offer 
+The first 200 registered members will receive: 
+�
+�
+ 6 Months FREE Membership 
+�
+�
+ Special Edition Founding Member Physical Card 
+This offer is strictly limited to the first 200 sign-ups. 
+How It Works 
+1. Sign Up Online once registration opens. 
+2. Choose Monthly or Yearly membership. 
+3. Receive Your Physical Card delivered to your mailing address. 
+4. Enjoy Member Perks at events and partner businesses. 
+5. Stay Connected with exclusive updates and announcements. 
+FAQ 
+1. When does membership launch? 
+Membership will officially open soon. Announcements will be posted on our website 
+and social media. 
+2. How do I get my membership card? 
+Your physical membership card will be mailed to the address you provide. Delivery takes 
+approximately 2–4 weeks. 
+3. What is the Special Edition Founding Member Card? 
+A limited-edition card with premium design, given only to the first 200 members. 
+4. What discounts do members get? 
+TVK partners with Canadian businesses to provide: 
+● Event discounts 
+● Food & product offers 
+● Free & discounted movie nights 
+● Exclusive promotions 
+A full list of partner benefits will appear on the website. 
+5. Do you offer family or group plans? 
+Not at launch, but we plan to roll out family packages in the future. 
+6. Can I cancel my membership? 
+Yes. 
+● Monthly memberships can be cancelled anytime. 
+● Yearly memberships are final but include additional perks. 
+7. Do I need my card for events? 
+Yes. Your physical membership card must be shown to receive member pricing, 
+discounts, and access. 
+8. Are events only in Toronto? 
+No. TVK Canada will host events all across Canada, including: 
+Toronto, GTA, Ottawa, Montreal, Calgary, Edmonton, Winnipeg, Vancouver, Surrey, 
+Halifax, and more. 
+Our goal is to bring TVK events to every major Canadian city. 
+9. How often are events held? 
+We plan to host weekly events, plus major gatherings for movie releases and special 
+celebrations. 
+10. How will I receive event updates? 
+Members will get priority email notifications, text alerts, and access to exclusive 
+member communication channels. 
+4. EVENTS & CALENDAR PAGE - Integrated  Public Google Calendar - Upcoming events list - Weekly events - Member-only events requiring physical card 
+5.TVK GLOBAL NETWORK PAGE 
+A showcase of Vijay fan groups across the world under the TVK brand 
+This page introduces, celebrates, and displays all global TVK-related fan 
+organizations, showing unity and worldwide presence. 
+Page Purpose 
+This page exists to: 
+● Showcase Vijay fan groups around the world 
+● Present the global strength of the TVK family 
+● Highlight unity between Canada and international TVK communities 
+● Build credibility and global connectivity 
+● Inspire Canadian members by showing the worldwide movement 
+This is not about past Canadian events — this is about the global TVK brand. 
+Page Header (Hero Section) 
+Title: 
+TVK Around the World 
+Subtitle: 
+Proudly showcasing TVK fan groups that represent Vijay and support the global TVK 
+brand. 
+Visual Direction: 
+● A world map background with highlighted TVK regions 
+● TVK red & yellow colour theme 
+● Subtle Vijay silhouette optional 
+Global Map Section 
+A clickable or visual map showing TVK presence across continents. 
+Highlighted Regions: 
+● India (Tamil Nadu districts) 
+● Sri Lanka 
+● Malaysia 
+● Singapore 
+● United Kingdom 
+● United States 
+● Canada 
+● Australia 
+● New Zealand 
+● Middle East (UAE, Saudi, Kuwait, Qatar) 
+● France & Europe 
+● South Africa 
+Each region lights up, representing the TVK global network. 
+Country-Based Fan Group Blocks 
+Each major TVK group gets its own profile block. 
+Block Structure: 
+● Country Flag 
+● Group/Chapter Name 
+● Short DescriptioN 
+● 2–3 Photos (optional) 
+● About the Group (3–5 lines) 
+● What They Are Known For 
+● Their Social Media Links (optional) 
+● Hashtags 
+Suggested Global Group Profiles (Use These) 
+�
+�
+ India – Vijay Makkal Mandram (Tamil Nadu) 
+The original and largest TVK-aligned fan network. - Active in community events, volunteer programs, and massive fan celebrations. 
+�
+�
+ Sri Lanka Vijay Fans 
+Known for organized screenings, youth activities, and strong community unity. - One of the most loyal overseas Vijay fan bases. 
+�
+�
+ Malaysia Vijay Fans 
+Huge fan following with stadium-level celebrations during major movie releases. - Highly active in charity and cultural events. 
+�
+�
+ Singapore Vijay FC 
+Professional, disciplined, and well-respected. - Organizes screenings, community meetups, and youth programs. 
+�
+�
+ UK Vijay Fans Network 
+A growing group active in London and other major cities. - Known for elegant celebrations and culturally rich events. 
+�
+�
+ USA Vijay Fans Groups 
+Strong fan groups in: 
+Dallas, New Jersey, California, Chicago 
+They regularly host screenings and large family events. 
+�
+�
+ Australia Vijay Fans Association 
+Active in Sydney, Melbourne, Brisbane. 
+Known for sports-themed events, cultural days, and big movie celebrations. 
+�
+�
+ UAE & Middle East Vijay Fans 
+One of the most energetic fan bases outside India. 
+Known for creative displays, massive cutouts, and group celebrations. 
+�
+�
+ France Vijay Fans Club 
+A passionate European community known for street celebrations, meetups, and 
+screenings. 
+�
+�
+ South Africa Vijay Supporters 
+A growing fan community hosting local screenings and cultural nights. 
+“Featured Global Groups” Slider 
+A scrolling slider or carousel that features: 
+● 4–6 prominent TVK groups 
+● Each with photo + name + short description 
+Video Montage Section (Optional) 
+A 30–60 second montage showing: 
+● Global celebrations 
+● People holding Vijay banners 
+● Cutouts across countries 
+● Group photos 
+● TVK colours displayed worldwide 
+“TVK Global Family Values” Section 
+Highlight the shared identity of all TVK fan clubs: 
+● Unity 
+● Respect 
+● Community 
+● Culture 
+● Positivity 
+● Fan Brotherhood 
+CTA Section – Connect With Global TVK 
+Title: 
+TVK is Global. Be Part of It. 
+Buttons: 
+● Join TVK Canada (Membership) 
+● Follow Global TVK Updates 
+● Connect With Other Country Groups 
+6.CONTACT US PAGE — FULL CONTENT 
+Page Header 
+Contact TVK Canada 
+We’re here to connect, support, and grow our community together. 
+1. Contact Information 
+Email tvk.canada@gmail.com 
+(Use this for general questions, membership inquiries, event information, Member 
+support, or event questions.) 
+Whatsapp  
+2. Contact Form - Form Title 
+Send Us a Message 
+Fields Required 
+● Full Name 
+● Email Address 
+● Phone Number (optional) 
+● City (optional but useful for event planning) 
+● Subject Dropdown: 
+○ General Inquiry 
+○ Membership Registration 
+○ Membership Card Inquiry 
+○ Event Information 
+○ Volunteer Opportunities 
+○ Corporate Partnership 
+○ Media/Press 
+○ Other 
+● Message Box 
+Submission Note 
+“Thank you for reaching out. Our team will get back to you within 24–48 hours.” 
+Social Media Links 
+Include icons linking to: 
+● X (Twitter): @TVKCanada 
+● Instagram: @TVKCanada 
+● Facebook Page: TVK Canada Official 
+● TikTok: @TVKCanada 
+● YouTube: TVK Canada 
+Section Header 
+Follow Us Online 
+Stay updated with events, announcements, and community highlights. 
+Corporate Partnership Invitation 
+Section Title: 
+Corporate Partners & Business Sponsors 
+Text: 
+TVK Canada proudly collaborates with Canadian businesses to offer exclusive 
+discounts, perks, and event benefits to our members. 
+If you’re a business looking to: 
+● Offer discounts to TVK members 
+● Sponsor a movie night or community event 
+● Provide giveaways or product samples 
+● Become an official TVK Corporate Partner 
+We’d love to work with you. 
+Button: 
+Become a Corporate Partner 
+Optional Extra Text: 
+“Corporate partners gain visibility across our Canada-wide network, event 
+promotions, social media spotlights, and special recognition within our membership 
+community.” 

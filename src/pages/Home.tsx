@@ -10,7 +10,7 @@ import { Container, Section, Grid, Flex } from '@components/Layout'
 import { Button } from '@components/Button'
 
 const HeroSection = styled(Section)`
-  background: linear-gradient(135deg, ${theme.colors.primary} 0%, #8b1428 100%);
+  background: ${theme.colors.gradient.primary};
   color: ${theme.colors.text.inverse};
   padding: ${theme.spacing.xxxl * 2.5}px 0;
   position: relative;
@@ -19,22 +19,22 @@ const HeroSection = styled(Section)`
   &::before {
     content: '';
     position: absolute;
-    top: 0;
-    right: -200px;
-    width: 400px;
-    height: 400px;
-    background: rgba(255, 215, 0, 0.1);
+    top: -100px;
+    right: -100px;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(201, 169, 97, 0.15) 0%, transparent 70%);
     border-radius: 50%;
   }
 
   &::after {
     content: '';
     position: absolute;
-    bottom: -100px;
-    left: -150px;
-    width: 300px;
-    height: 300px;
-    background: rgba(255, 255, 255, 0.05);
+    bottom: -150px;
+    left: -100px;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.08) 0%, transparent 70%);
     border-radius: 50%;
   }
 `
@@ -117,27 +117,42 @@ const HighlightCard = styled.div<{ gradient?: boolean }>`
 
   &:hover {
     box-shadow: ${theme.shadows.xl};
-    transform: translateY(-8px);
+    transform: translateY(-8px) scale(1.02);
+    border-color: ${theme.colors.primary};
+  }
+
+  &:active {
+    transform: translateY(-4px) scale(1.01);
   }
 
   h3 {
     font-size: ${theme.typography.fontSize.xl};
     margin: ${theme.spacing.md} 0;
     color: ${theme.colors.text.primary};
+    transition: color ${theme.transitions.base};
   }
 
   p {
     font-size: ${theme.typography.fontSize.base};
     color: ${theme.colors.text.secondary};
     line-height: ${theme.typography.lineHeight.relaxed};
+    transition: color ${theme.transitions.base};
   }
 
   @media (max-width: ${theme.breakpoints.tablet}) {
     padding: ${theme.spacing.lg};
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+
+    &:active {
+      transform: translateY(-2px) scale(1.01);
+      box-shadow: ${theme.shadows.lg};
+    }
   }
 
   @media (max-width: ${theme.breakpoints.mobile}) {
     padding: ${theme.spacing.md};
+    touch-action: manipulation;
 
     h3 {
       font-size: ${theme.typography.fontSize.lg};
@@ -146,6 +161,11 @@ const HighlightCard = styled.div<{ gradient?: boolean }>`
 
     p {
       font-size: ${theme.typography.fontSize.sm};
+    }
+
+    &:active {
+      transform: scale(0.98);
+      box-shadow: ${theme.shadows.md};
     }
   }
 `
