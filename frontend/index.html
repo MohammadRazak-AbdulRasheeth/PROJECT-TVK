@@ -47,40 +47,7 @@
     <link rel="preload" href="/images/gallery/16170924.jpg" as="image" type="image/jpeg" />
   </head>
   <body>
-    <!-- Diagnostic asset block (temporary; remove after confirming deployment works) -->
-    <div id="asset-diagnostics" style="font-family:monospace;font-size:12px;white-space:pre-wrap;max-width:100%;padding:8px;border:1px dashed #C41E3A;margin:8px;background:#fff;color:#000;">
-      Asset diagnostics running...
-      <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:8px;align-items:center;">
-        <img src="/logo.svg" alt="Logo test" style="height:42px" />
-        <img src="/logo-large.svg" alt="Logo large test" style="height:42px" />
-        <img src="/gallery-1.jpg" alt="Gallery root test" style="height:42px" />
-        <img src="/images/gallery/16170924.jpg" alt="Gallery nested test" style="height:42px" />
-      </div>
-      <noscript>JavaScript disabled; cannot run fetch diagnostics.</noscript>
-    </div>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
-    <script>
-    (function(){
-      const urls = [
-        '/logo.svg',
-        '/logo-large.svg',
-        '/gallery-1.jpg',
-        '/images/gallery/16170924.jpg'
-      ];
-      Promise.all(urls.map(u => fetch(u, {cache:'no-store'})
-        .then(r => ({url:u, ok:r.ok, status:r.status, type:r.headers.get('content-type')}))
-        .catch(err => ({url:u, ok:false, error:err.message}))
-      )).then(results => {
-        console.table(results);
-        const el = document.getElementById('asset-diagnostics');
-        if (el) {
-          el.innerHTML = '<strong>Asset check results:</strong>\n' + results.map(r => {
-            return r.url + ' => ' + (r.ok ? 'OK '+r.status+' '+(r.type||'') : 'FAIL '+(r.status||'')+' '+(r.error||''));
-          }).join('\n');
-        }
-      });
-    })();
-    </script>
   </body>
 </html>
