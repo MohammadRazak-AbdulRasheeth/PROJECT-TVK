@@ -23,8 +23,8 @@ export const AuthProvider = ({ children }) => {
             if (token) {
                 try {
                     const response = await authService.getProfile();
-                    setUser(response.user);
-                    console.log('Auth check successful:', response.user);
+                    setUser(response);
+                    console.log('Auth check successful:', response);
                 }
                 catch (error) {
                     console.log('Profile fetch failed:', error.response?.status);

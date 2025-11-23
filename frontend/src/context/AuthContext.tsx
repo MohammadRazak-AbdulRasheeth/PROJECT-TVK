@@ -60,8 +60,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       if (token) {
         try {
           const response = await authService.getProfile()
-          setUser(response.user)
-          console.log('Auth check successful:', response.user)
+          setUser(response)
+          console.log('Auth check successful:', response)
         } catch (error: any) {
           console.log('Profile fetch failed:', error.response?.status)
           // If token is invalid (401, 403), clear it and user state
