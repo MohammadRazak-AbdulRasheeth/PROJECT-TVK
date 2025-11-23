@@ -6,7 +6,7 @@ import React, { useState, useEffect } from 'react'
 import { useSearchParams, useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 import { theme } from '@styles/theme'
-import { Container, Section } from '@components/Layout'
+import { Container } from '@components/Layout'
 import { Button } from '@components/Button'
 import { invoiceService } from '../services/api'
 

@@ -203,7 +203,7 @@ const PremiumCard = styled.div`
     inset 0 1px 0 rgba(255, 255, 255, 0.8);
   position: relative;
   overflow: hidden;
-  transition: all ${theme.transitions.smooth};
+  transition: all ${theme.transitions.base};
   animation: ${fadeInUp} 0.8s ease-out 0.2s both;
 
   &:hover {
@@ -385,7 +385,7 @@ const StatCard = styled.div`
   border-radius: ${theme.borderRadius.xl};
   padding: ${theme.spacing.lg};
   text-align: center;
-  transition: all ${theme.transitions.smooth};
+  transition: all ${theme.transitions.base};
   position: relative;
   overflow: hidden;
 
@@ -448,7 +448,7 @@ const PerkCard = styled.div`
   border-radius: ${theme.borderRadius.xl};
   padding: ${theme.spacing.xl};
   text-align: center;
-  transition: all ${theme.transitions.smooth};
+  transition: all ${theme.transitions.base};
   position: relative;
   overflow: hidden;
   animation: ${fadeInUp} 0.8s ease-out var(--delay, 0s) both;
