@@ -2,7 +2,7 @@
  * Events & Calendar Page
  */
 
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 import { theme } from '@styles/theme'
 import { Container, Section, Grid, Flex } from '@components/Layout'
@@ -87,34 +87,7 @@ const GoogleCalendarEmbed = styled.div`
   }
 `
 
-const CalendarPlaceholder = styled.div`
-  width: 100%;
-  height: 500px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background: ${theme.colors.background};
-  color: ${theme.colors.text.secondary};
-  text-align: center;
-  padding: ${theme.spacing.xl};
 
-  .calendar-icon {
-    font-size: 4rem;
-    margin-bottom: ${theme.spacing.lg};
-    color: ${theme.colors.primary};
-  }
-
-  h4 {
-    color: ${theme.colors.primary};
-    margin-bottom: ${theme.spacing.md};
-  }
-
-  p {
-    margin-bottom: ${theme.spacing.lg};
-    max-width: 400px;
-  }
-`
 
 const EventCard = styled.div<{ featured?: boolean }>`
   background: ${props => props.featured ? `linear-gradient(135deg, ${theme.colors.primary}15 0%, ${theme.colors.secondary}15 100%)` : theme.colors.surface};
@@ -279,7 +252,7 @@ const FilterTab = styled.button<{ active: boolean }>`
  * Events & Calendar Page Component
  */
 export const EventsPage: React.FC = () => {
-  const { user, isAuthenticated } = useAuth()
+  const { isAuthenticated } = useAuth()
   const [activeFilter, setActiveFilter] = useState<string>('all')
   const [currentMonth, setCurrentMonth] = useState(new Date().toLocaleString('default', { month: 'long', year: 'numeric' }))
 
