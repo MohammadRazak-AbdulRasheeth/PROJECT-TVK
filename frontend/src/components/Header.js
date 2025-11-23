@@ -399,11 +399,12 @@ export const Header = () => {
             localStorage.setItem('token', token);
             // Clean URL by removing the token parameter
             try {
-                const url = new URL(window.location);
+                const url = new URL(window.location.href);
                 url.searchParams.delete('token');
                 const cleanUrl = url.toString();
                 window.history.replaceState({}, document.title, cleanUrl);
-            } catch (error) {
+            }
+            catch (error) {
                 console.warn('Could not clean URL:', error);
                 // Fallback: just reload without token
                 setTimeout(() => {

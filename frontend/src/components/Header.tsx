@@ -420,7 +420,7 @@ export const Header: React.FC = () => {
       localStorage.setItem('token', token)
       // Clean URL by removing the token parameter
       try {
-        const url = new URL(window.location)
+        const url = new URL(window.location.href)
         url.searchParams.delete('token')
         const cleanUrl = url.toString()
         window.history.replaceState({}, document.title, cleanUrl)
