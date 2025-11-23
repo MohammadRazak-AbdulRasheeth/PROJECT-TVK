@@ -10,7 +10,6 @@ import { Container } from '@components/Layout'
 import { Button } from '@components/Button'
 import { invoiceService } from '../services/api'
 import jsPDF from 'jspdf'
-import html2canvas from 'html2canvas'
 
 interface InvoiceData {
   id: string
@@ -419,6 +418,8 @@ export const MembershipInvoice: React.FC = () => {
 
   const handleDownload = async () => {
     try {
+      if (!invoiceData) return
+
       // Show loading state
       const downloadBtn = document.querySelector('[data-download-btn]') as HTMLButtonElement
       const originalText = downloadBtn?.textContent
@@ -427,53 +428,198 @@ export const MembershipInvoice: React.FC = () => {
         downloadBtn.textContent = '📄 Generating PDF...'
       }
 
-      const invoiceElement = document.getElementById('invoice-content')
-      if (!invoiceElement) {
-        console.error('Invoice element not found')
-        return
-      }
-
-      // Configure html2canvas for better quality
-      const canvas = await html2canvas(invoiceElement, {
-        scale: 2, // Higher resolution
-        useCORS: true,
-        allowTaint: false,
-        backgroundColor: '#ffffff',
-        logging: false,
-        width: invoiceElement.scrollWidth,
-        height: invoiceElement.scrollHeight
-      })
-
-      const imgData = canvas.toDataURL('image/png')
-      
-      // Create PDF with A4 dimensions
+      // Create new PDF document
       const pdf = new jsPDF({
         orientation: 'portrait',
         unit: 'mm',
         format: 'a4'
       })
 
-      // Calculate dimensions to fit the page
-      const pdfWidth = pdf.internal.pageSize.getWidth()
-      const pdfHeight = pdf.internal.pageSize.getHeight()
-      const imgWidth = canvas.width
-      const imgHeight = canvas.height
-      const ratio = Math.min(pdfWidth / imgWidth, pdfHeight / imgHeight)
-      const imgX = (pdfWidth - imgWidth * ratio) / 2
-      const imgY = 10 // Small top margin
-
-      pdf.addImage(
-        imgData,
-        'PNG',
-        imgX,
-        imgY,
-        imgWidth * ratio,
-        imgHeight * ratio
-      )
-
-      // Generate filename with invoice number and date
-      const filename = `TVK-Canada-Invoice-${invoiceData?.invoiceNumber || 'Unknown'}-${new Date().toISOString().split('T')[0]}.pdf`
+      const pageWidth = pdf.internal.pageSize.width
+      const pageHeight = pdf.internal.pageSize.height
+      const margin = 20
+      const contentWidth = pageWidth - (margin * 2)
       
+      let yPosition = margin
+
+      // Helper function to add text
+      const addText = (text: string, x: number, y: number, fontSize = 10, isBold = false, color = '#000000') => {
+        pdf.setFontSize(fontSize)
+        pdf.setFont('helvetica', isBold ? 'bold' : 'normal')
+        pdf.setTextColor(color)
+        pdf.text(text, x, y)
+      }
+
+      // Helper function to add centered text
+      const addCenteredText = (text: string, y: number, fontSize = 10, isBold = false, color = '#000000') => {
+        pdf.setFontSize(fontSize)
+        pdf.setFont('helvetica', isBold ? 'bold' : 'normal')
+        pdf.setTextColor(color)
+        const textWidth = pdf.getTextWidth(text)
+        pdf.text(text, (pageWidth - textWidth) / 2, y)
+      }
+
+      // Header - Company Name and Logo area
+      pdf.setFillColor(196, 30, 58) // TVK red
+      pdf.rect(0, 0, pageWidth, 50, 'F')
+      
+      addCenteredText('TVK CANADA', 25, 24, true, '#FFFFFF')
+      addCenteredText('Tamil Vijay Kumar Fan Club', 35, 14, false, '#FFFFFF')
+      
+      // Invoice title and number
+      pdf.setFillColor(255, 215, 0, 0.2) // Light gold
+      pdf.rect(pageWidth - 80, 10, 70, 30, 'F')
+      pdf.setDrawColor(255, 215, 0)
+      pdf.rect(pageWidth - 80, 10, 70, 30, 'S')
+      
+      addText('INVOICE', pageWidth - 75, 20, 14, true, '#C41E3A')
+      addText(`#${invoiceData.invoiceNumber}`, pageWidth - 75, 30, 10, false, '#C41E3A')
+      
+      yPosition = 70
+
+      // Company Info and Bill To - Two columns
+      const columnWidth = (contentWidth - 10) / 2
+      
+      // Company Info (Left)
+      addText('FROM:', margin, yPosition, 10, true, '#C41E3A')
+      yPosition += 8
+      addText('TVK Canada', margin, yPosition, 10, true)
+      yPosition += 6
+      addText('123 Queen Street West', margin, yPosition, 9)
+      yPosition += 5
+      addText('Toronto, ON M5H 2M9', margin, yPosition, 9)
+      yPosition += 5
+      addText('Canada', margin, yPosition, 9)
+      yPosition += 5
+      addText('Email: support@tvkcanada.com', margin, yPosition, 9)
+      yPosition += 5
+      addText('Phone: (416) 555-0100', margin, yPosition, 9)
+      
+      // Bill To (Right)
+      let billToY = 70 + 8
+      const rightColumn = margin + columnWidth + 10
+      
+      addText('BILL TO:', rightColumn, billToY, 10, true, '#C41E3A')
+      billToY += 8
+      addText(invoiceData.customerName, rightColumn, billToY, 10, true)
+      billToY += 6
+      addText(`Membership: ${invoiceData.membershipNumber}`, rightColumn, billToY, 9)
+      billToY += 5
+      addText(invoiceData.email, rightColumn, billToY, 9)
+      billToY += 5
+      if (invoiceData.phone) {
+        addText(invoiceData.phone, rightColumn, billToY, 9)
+        billToY += 5
+      }
+      addText(invoiceData.address.street, rightColumn, billToY, 9)
+      billToY += 5
+      addText(`${invoiceData.address.city}, ${invoiceData.address.province}`, rightColumn, billToY, 9)
+      billToY += 5
+      addText(`${invoiceData.address.postalCode}, ${invoiceData.address.country}`, rightColumn, billToY, 9)
+      
+      yPosition = Math.max(yPosition, billToY) + 15
+
+      // Invoice Details
+      addText('INVOICE DETAILS:', margin, yPosition, 10, true, '#C41E3A')
+      yPosition += 8
+      
+      const details = [
+        ['Invoice Date:', formatDate(invoiceData.issuedDate)],
+        ['Due Date:', formatDate(invoiceData.dueDate)],
+        ...(invoiceData.paidDate ? [['Paid Date:', formatDate(invoiceData.paidDate)]] : []),
+        ['Payment Method:', invoiceData.paymentMethod],
+        ['Status:', invoiceData.status.toUpperCase()]
+      ]
+      
+      details.forEach(([label, value]) => {
+        addText(label, margin, yPosition, 9, true)
+        addText(value, margin + 35, yPosition, 9)
+        yPosition += 6
+      })
+      
+      yPosition += 10
+
+      // Items Table
+      // Table header
+      pdf.setFillColor(196, 30, 58, 0.1)
+      pdf.rect(margin, yPosition - 2, contentWidth, 12, 'F')
+      pdf.setDrawColor(196, 30, 58)
+      pdf.rect(margin, yPosition - 2, contentWidth, 12, 'S')
+      
+      addText('DESCRIPTION', margin + 2, yPosition + 6, 10, true, '#C41E3A')
+      addText('QTY', margin + contentWidth * 0.6, yPosition + 6, 10, true, '#C41E3A')
+      addText('UNIT PRICE', margin + contentWidth * 0.7, yPosition + 6, 10, true, '#C41E3A')
+      addText('AMOUNT', margin + contentWidth * 0.85, yPosition + 6, 10, true, '#C41E3A')
+      
+      yPosition += 15
+      
+      // Table row
+      pdf.setDrawColor(220, 220, 220)
+      pdf.line(margin, yPosition + 8, margin + contentWidth, yPosition + 8)
+      
+      addText(`${invoiceData.membershipType} Membership`, margin + 2, yPosition + 3, 10, true)
+      addText('Annual membership with premium benefits', margin + 2, yPosition + 8, 8, false, '#666666')
+      addText('1', margin + contentWidth * 0.6, yPosition + 3, 10)
+      addText(formatCurrency(invoiceData.subtotal), margin + contentWidth * 0.7, yPosition + 3, 10)
+      addText(formatCurrency(invoiceData.subtotal), margin + contentWidth * 0.85, yPosition + 3, 10, true)
+      
+      yPosition += 20
+
+      // Totals section
+      const totalsX = margin + contentWidth * 0.6
+      const amountX = margin + contentWidth * 0.85
+      
+      pdf.setDrawColor(220, 220, 220)
+      pdf.line(totalsX, yPosition, margin + contentWidth, yPosition)
+      yPosition += 8
+      
+      addText('Subtotal:', totalsX, yPosition, 10)
+      addText(formatCurrency(invoiceData.subtotal), amountX, yPosition, 10)
+      yPosition += 8
+      
+      addText('HST (13%):', totalsX, yPosition, 10)
+      addText(formatCurrency(invoiceData.taxAmount), amountX, yPosition, 10)
+      yPosition += 10
+      
+      // Total - highlighted
+      pdf.setFillColor(196, 30, 58, 0.1)
+      pdf.rect(totalsX - 2, yPosition - 5, contentWidth * 0.4 + 4, 12, 'F')
+      pdf.setDrawColor(196, 30, 58)
+      pdf.rect(totalsX - 2, yPosition - 5, contentWidth * 0.4 + 4, 12, 'S')
+      
+      addText('TOTAL:', totalsX, yPosition + 2, 12, true, '#C41E3A')
+      addText(formatCurrency(invoiceData.total), amountX, yPosition + 2, 12, true, '#C41E3A')
+      
+      yPosition += 25
+
+      // Payment Status
+      if (invoiceData.status === 'paid') {
+        pdf.setFillColor(76, 175, 80, 0.2)
+        pdf.setDrawColor(76, 175, 80)
+        addText('✓ PAID IN FULL', margin, yPosition, 12, true, '#4CAF50')
+      } else {
+        pdf.setFillColor(255, 152, 0, 0.2)
+        pdf.setDrawColor(255, 152, 0)
+        addText('⏳ PAYMENT PENDING', margin, yPosition, 12, true, '#FF9800')
+      }
+      
+      yPosition += 20
+
+      // Footer
+      if (yPosition > pageHeight - 60) {
+        pdf.addPage()
+        yPosition = margin
+      }
+      
+      pdf.setDrawColor(196, 30, 58)
+      pdf.line(margin, pageHeight - 40, margin + contentWidth, pageHeight - 40)
+      
+      addCenteredText('Thank you for your membership!', pageHeight - 30, 12, true, '#C41E3A')
+      addCenteredText('This invoice was generated automatically. For questions, contact support@tvkcanada.com', pageHeight - 22, 8)
+      addCenteredText('TVK Canada • www.tvkcanada.com', pageHeight - 15, 8)
+
+      // Generate filename and save
+      const filename = `TVK-Canada-Invoice-${invoiceData.invoiceNumber}-${new Date().toISOString().split('T')[0]}.pdf`
       pdf.save(filename)
 
       // Reset button state
