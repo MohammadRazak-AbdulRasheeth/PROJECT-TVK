@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const membershipSchema = new mongoose.Schema({
-  user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+  user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }, // Made optional for guest purchases
   type: { type: String, enum: ['monthly', 'yearly', 'student'], required: true },
   status: { type: String, enum: ['pending', 'active', 'expired', 'cancelled'], default: 'pending' },
   membershipNumber: { type: String, unique: true },

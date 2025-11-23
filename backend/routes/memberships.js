@@ -92,7 +92,7 @@ router.get('/plans', (req, res) => {
   ]);
 });
 
-// Simple subscription endpoint (minimal auth, for testing)
+// Simple subscription endpoint with MongoDB storage
 router.post('/simple-subscription', upload.fields([
   { name: 'studentId', maxCount: 1 },
   { name: 'timetable', maxCount: 1 }
@@ -102,7 +102,19 @@ router.post('/simple-subscription', upload.fields([
     console.log('Request body:', req.body);
     console.log('Request files:', req.files);
     
-    const { plan, firstName, lastName, email, phone } = req.body;
+    const { 
+      plan, 
+      firstName, 
+      lastName, 
+      email, 
+      phone,
+      address,
+      city,
+      province,
+      postalCode,
+      university,
+      program
+    } = req.body;
 
     console.log('Extracted fields:', { plan, firstName, lastName, email, phone });
 
@@ -124,7 +136,6 @@ router.post('/simple-subscription', upload.fields([
 
     // Student plan validation
     if (plan === 'student') {
-      const { university, program } = req.body;
       if (!university || !program || !req.files?.studentId || !req.files?.timetable) {
         console.log('Student validation failed:', {
           university: !!university,
@@ -152,15 +163,56 @@ router.post('/simple-subscription', upload.fields([
       return res.status(400).json({ message: 'Invalid plan selected', validPlans: Object.keys(planPrices) });
     }
 
-    console.log('Creating Stripe session for plan:', plan, 'price:', price);
+    // Try to get authenticated user (optional)
+    const token = req.header('Authorization')?.replace('Bearer ', '');
+    let userId = null;
+    if (token) {
+      try {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        userId = decoded.id;
+      } catch (err) {
+        console.log('Token verification failed, proceeding without user ID');
+      }
+    }
 
-    // Create basic Stripe checkout session
+    // Create membership record in MongoDB FIRST
+    const membershipData = {
+      user: userId, // Will be null if no authentication
+      type: plan,
+      status: 'pending',
+      firstName,
+      lastName,
+      email,
+      phone,
+      address: address || '',
+      city: city || '',
+      province: province || '',
+      postalCode: postalCode || ''
+    };
+
+    // Add student verification data if applicable
+    if (plan === 'student') {
+      membershipData.studentVerification = {
+        university,
+        program,
+        studentIdDocument: req.files.studentId[0].path,
+        timetableDocument: req.files.timetable[0].path,
+        verificationStatus: 'pending'
+      };
+    }
+
+    console.log('Creating membership record in MongoDB:', membershipData);
+    const membership = new Membership(membershipData);
+    await membership.save();
+    console.log('Membership saved to MongoDB with ID:', membership._id);
+
+    // Now create Stripe checkout session with membership ID in metadata
     const lineItems = [{
       price_data: {
         currency: 'cad',
         product_data: {
           name: `TVK Canada ${plan.charAt(0).toUpperCase() + plan.slice(1)} Membership`,
-          description: `${plan} membership with full benefits`
+          description: plan === 'student' ? 'Student membership with verification required' : `${plan} membership with full benefits`
         },
         unit_amount: price,
         recurring: plan !== 'yearly' ? { interval: 'month' } : null
@@ -176,21 +228,27 @@ router.post('/simple-subscription', upload.fields([
       cancel_url: `${process.env.FRONTEND_URL || 'https://tvkcanada.netlify.app'}/membership?canceled=true`,
       customer_email: email,
       metadata: {
+        membershipId: membership._id.toString(), // Critical: link to our DB record
         planType: plan,
+        userId: userId || 'guest',
         customerName: `${firstName} ${lastName}`,
         phone: phone
       }
     };
 
-    console.log('Stripe session config:', sessionConfig);
-
+    console.log('Creating Stripe session with metadata:', sessionConfig.metadata);
     const session = await stripe.checkout.sessions.create(sessionConfig);
 
-    console.log('Stripe session created:', session.id);
+    // Update membership with Stripe session ID
+    membership.stripeSessionId = session.id;
+    await membership.save();
+
+    console.log('Stripe session created and linked:', session.id);
 
     res.json({ 
       checkoutUrl: session.url,
-      sessionId: session.id
+      sessionId: session.id,
+      membershipId: membership._id
     });
 
   } catch (err) {
@@ -368,71 +426,142 @@ router.post('/confirm-payment', async (req, res) => {
       return res.status(400).json({ message: 'Session ID is required' });
     }
 
+    console.log('Confirming payment for session:', sessionId);
+
     // Retrieve session from Stripe
     const session = await stripe.checkout.sessions.retrieve(sessionId);
+    console.log('Stripe session retrieved:', {
+      id: session.id,
+      payment_status: session.payment_status,
+      customer: session.customer,
+      subscription: session.subscription,
+      metadata: session.metadata
+    });
     
     if (session.payment_status !== 'paid') {
-      return res.status(400).json({ message: 'Payment not completed' });
+      return res.status(400).json({ 
+        message: 'Payment not completed',
+        paymentStatus: session.payment_status
+      });
     }
 
     // Find membership by session ID
     const membership = await Membership.findOne({ stripeSessionId: sessionId });
+    console.log('Membership found:', membership ? membership._id : 'Not found');
     
     if (!membership) {
-      return res.status(404).json({ message: 'Membership not found' });
+      return res.status(404).json({ 
+        message: 'Membership not found for session',
+        sessionId,
+        suggestion: 'Please contact support with your payment confirmation'
+      });
     }
 
-    // Update membership status
+    // Calculate membership dates
+    const activatedAt = new Date();
+    let expiresAt = new Date();
+    let nextBillingDate = null;
+
+    if (membership.type === 'yearly') {
+      expiresAt.setFullYear(expiresAt.getFullYear() + 1);
+    } else if (membership.type === 'monthly') {
+      expiresAt.setMonth(expiresAt.getMonth() + 1);
+      nextBillingDate = new Date(expiresAt);
+    } else if (membership.type === 'student') {
+      expiresAt.setMonth(expiresAt.getMonth() + 1);
+      nextBillingDate = new Date(expiresAt);
+    }
+
+    // Update membership status and payment info
     if (membership.type === 'student') {
-      // Student memberships need verification
-      membership.status = 'pending';
+      // Student memberships need verification, but payment is confirmed
+      membership.status = 'pending'; // Waiting for document verification
     } else {
       // Regular memberships are activated immediately
       membership.status = 'active';
-      membership.activatedAt = new Date();
-      
-      // Set expiry date
-      const expiryDate = new Date();
-      if (membership.type === 'yearly') {
-        expiryDate.setFullYear(expiryDate.getFullYear() + 1);
-      } else {
-        expiryDate.setMonth(expiryDate.getMonth() + 1);
-      }
-      membership.expiresAt = expiryDate;
+      membership.activatedAt = activatedAt;
+      membership.expiresAt = expiresAt;
+      membership.nextBillingDate = nextBillingDate;
     }
 
-    // Store Stripe customer ID
+    // Store Stripe payment information
     membership.stripeCustomerId = session.customer;
     if (session.subscription) {
       membership.stripeSubscriptionId = session.subscription;
     }
 
+    // Save membership with all payment data
     await membership.save();
+    console.log('Membership updated with payment confirmation');
 
     // Update user's membership status if user is authenticated
     if (membership.user) {
-      await User.findByIdAndUpdate(membership.user, {
-        'membership.type': membership.type,
-        'membership.status': membership.status,
-        'membership.startDate': membership.activatedAt,
-        'membership.endDate': membership.expiresAt,
-        'membership.stripeCustomerId': membership.stripeCustomerId,
-        'membership.membershipId': membership._id
-      });
+      const userUpdate = {
+        currentMembership: membership._id,
+        stripeCustomerId: membership.stripeCustomerId,
+        updatedAt: new Date()
+      };
+      await User.findByIdAndUpdate(membership.user, userUpdate);
+      console.log('User record updated with membership link');
     }
 
+    // Prepare response with complete membership data
+    const responseData = {
+      success: true,
+      membership: {
+        id: membership._id,
+        type: membership.type,
+        status: membership.status,
+        membershipNumber: membership.membershipNumber,
+        firstName: membership.firstName,
+        lastName: membership.lastName,
+        email: membership.email,
+        phone: membership.phone,
+        address: {
+          street: membership.address,
+          city: membership.city,
+          province: membership.province,
+          postalCode: membership.postalCode
+        },
+        activatedAt: membership.activatedAt,
+        expiresAt: membership.expiresAt,
+        nextBillingDate: membership.nextBillingDate,
+        stripeCustomerId: membership.stripeCustomerId,
+        stripeSubscriptionId: membership.stripeSubscriptionId
+      },
+      message: membership.type === 'student' 
+        ? 'Payment received successfully! Your student documents are being reviewed and you will be notified within 2-3 business days.'
+        : `Congratulations! Your ${membership.type} membership has been activated successfully.`,
+      nextSteps: membership.type === 'student' 
+        ? [
+            'Check your email for payment confirmation',
+            'Our team will review your student documents within 2-3 business days',
+            'You will receive an email when your membership is approved and activated',
+            'Contact support if you have questions about the verification process'
+          ]
+        : [
+            'Check your email for membership confirmation and digital card',
+            'Explore exclusive member benefits on our website',
+            'Join our member community forum',
+            'Stay tuned for upcoming exclusive events and offers'
+          ]
+    };
+
+    // Return legacy format for backward compatibility
     res.json({
-      status: membership.status,
-      type: membership.type,
-      membershipNumber: membership.membershipNumber,
-      activatedAt: membership.activatedAt,
-      expiresAt: membership.expiresAt,
-      message: membership.type === 'student' ? 'Payment received. Student verification pending.' : 'Membership activated successfully!'
+      ...responseData.membership,
+      message: responseData.message,
+      nextSteps: responseData.nextSteps
     });
 
   } catch (err) {
     console.error('Payment confirmation error:', err);
-    res.status(500).json({ message: 'Failed to confirm payment' });
+    console.error('Error details:', err.stack);
+    res.status(500).json({ 
+      message: 'Failed to confirm payment',
+      error: err.message,
+      suggestion: 'Please contact support with your session ID if payment was completed'
+    });
   }
 });
 
