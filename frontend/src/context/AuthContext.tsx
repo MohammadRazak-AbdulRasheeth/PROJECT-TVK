@@ -6,12 +6,21 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react'
 import { authService } from '../services/api'
 
+interface Membership {
+  type?: 'monthly' | 'yearly' | 'student'
+  status?: 'active' | 'pending' | 'expired' | 'cancelled'
+  membershipNumber?: string
+  expiresAt?: string
+  hasActiveMembership: boolean
+}
+
 interface User {
   id: string
   name: string
   email: string
   isVerified: boolean
   createdAt: string
+  membership?: Membership
 }
 
 interface AuthContextType {

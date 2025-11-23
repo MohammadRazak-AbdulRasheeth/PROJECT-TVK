@@ -11,6 +11,7 @@ import { Button } from '@components/Button'
 import { MembershipModal } from '@components/MembershipModal'
 import { LoginModal } from '@components/LoginModal'
 import { useAuth } from '../context/AuthContext'
+import { membershipService } from '../services/api'
 
 const PricingCard = styled.div<{ featured?: boolean }>`
   background: ${(props) => (props.featured ? theme.colors.primary : theme.colors.surface)};
@@ -235,6 +236,43 @@ const FAQItem = styled.details`
   }
 `
 
+const ActivatedBadge = styled.div`
+  position: absolute;
+  top: ${theme.spacing.sm};
+  right: ${theme.spacing.sm};
+  background: linear-gradient(135deg, ${theme.colors.secondary} 0%, #ffed4e 100%);
+  color: ${theme.colors.text.primary};
+  padding: ${theme.spacing.xs} ${theme.spacing.sm};
+  border-radius: ${theme.borderRadius.full};
+  font-size: ${theme.typography.fontSize.xs};
+  font-weight: ${theme.typography.fontWeight.bold};
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow: ${theme.shadows.md};
+  z-index: 2;
+  animation: pulse 2s infinite;
+
+  @keyframes pulse {
+    0% {
+      transform: scale(1);
+      box-shadow: ${theme.shadows.md};
+    }
+    50% {
+      transform: scale(1.05);
+      box-shadow: ${theme.shadows.lg};
+    }
+    100% {
+      transform: scale(1);
+      box-shadow: ${theme.shadows.md};
+    }
+  }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    font-size: ${theme.typography.fontSize.xs};
+    padding: ${theme.spacing.xs} ${theme.spacing.xs};
+  }
+`
+
 /**
  * Membership Page Component
  */
@@ -243,6 +281,7 @@ export const MembershipPage: React.FC = () => {
   const [showModal, setShowModal] = useState(false)
   const [showLoginModal, setShowLoginModal] = useState(false)
   const [searchParams] = useSearchParams()
+  const [userMembership, setUserMembership] = useState<any>(null)
   const { isAuthenticated, hasValidToken, user, isLoading } = useAuth()
 
   // Debug logging
@@ -257,6 +296,31 @@ export const MembershipPage: React.FC = () => {
       tokenLength: token?.length
     })
   }, [isAuthenticated, hasValidToken, user, isLoading])
+
+  // Fetch user membership status if authenticated
+  useEffect(() => {
+    const fetchMembershipStatus = async () => {
+      if (user && (isAuthenticated || hasValidToken())) {
+        try {
+          // First check if user object already has membership info
+          if (user.membership) {
+            setUserMembership(user.membership)
+          } else {
+            // Fallback to API call if needed
+            const membershipData = await membershipService.getMembershipStatus()
+            setUserMembership(membershipData)
+          }
+        } catch (error) {
+          console.log('Failed to fetch membership status:', error)
+          setUserMembership(null)
+        }
+      } else {
+        setUserMembership(null)
+      }
+    }
+
+    fetchMembershipStatus()
+  }, [user, isAuthenticated, hasValidToken])
 
   // Check if we should show subscription modal after login
   useEffect(() => {
@@ -285,6 +349,19 @@ export const MembershipPage: React.FC = () => {
     setShowModal(true)
   }
 
+  // Helper function to check if a plan is currently active
+  const isPlanActivated = (planType: 'monthly' | 'yearly' | 'student'): boolean => {
+    if (!userMembership || !userMembership.hasActiveMembership) return false
+    
+    // Map plan types to match membership types
+    const membershipType = userMembership.type
+    if (planType === 'yearly' && membershipType === 'yearly') return true
+    if (planType === 'monthly' && membershipType === 'monthly') return true
+    if (planType === 'student' && membershipType === 'student') return true
+    
+    return false
+  }
+
   return (
     <>
       {/* First 200 Offer */}
@@ -308,6 +385,7 @@ export const MembershipPage: React.FC = () => {
 
           <Grid columns={3} gap={theme.spacing.xl}>
             <PricingCard featured={selectedPlan === 'monthly'}>
+              {isPlanActivated('monthly') && <ActivatedBadge>✓ Activated</ActivatedBadge>}
               <h3>Monthly</h3>
               <div className="price">
                 $10<span>/month</span>
@@ -316,8 +394,9 @@ export const MembershipPage: React.FC = () => {
                 variant={selectedPlan === 'monthly' ? 'secondary' : 'outline'}
                 fullWidth
                 onClick={() => setSelectedPlan('monthly')}
+                disabled={isPlanActivated('monthly')}
               >
-                {selectedPlan === 'monthly' ? 'Selected' : 'Choose Plan'}
+                {isPlanActivated('monthly') ? 'Current Plan' : selectedPlan === 'monthly' ? 'Selected' : 'Choose Plan'}
               </Button>
               <ul>
                 <li>Official TVK Canada membership card</li>
@@ -329,6 +408,7 @@ export const MembershipPage: React.FC = () => {
             </PricingCard>
 
             <PricingCard featured={selectedPlan === 'yearly'}>
+              {isPlanActivated('yearly') && <ActivatedBadge>✓ Activated</ActivatedBadge>}
               <h3>Annual - Save $20!</h3>
               <div className="price">
                 $100<span>/year</span>
@@ -337,8 +417,9 @@ export const MembershipPage: React.FC = () => {
                 variant={selectedPlan === 'yearly' ? 'secondary' : 'outline'}
                 fullWidth
                 onClick={() => setSelectedPlan('yearly')}
+                disabled={isPlanActivated('yearly')}
               >
-                {selectedPlan === 'yearly' ? 'Selected' : 'Choose Plan'}
+                {isPlanActivated('yearly') ? 'Current Plan' : selectedPlan === 'yearly' ? 'Selected' : 'Choose Plan'}
               </Button>
               <ul>
                 <li>Official TVK Canada membership card</li>
@@ -351,6 +432,7 @@ export const MembershipPage: React.FC = () => {
             </PricingCard>
 
             <PricingCard featured={selectedPlan === 'student'}>
+              {isPlanActivated('student') && <ActivatedBadge>✓ Activated</ActivatedBadge>}
               <h3>Student</h3>
               <div className="price">
                 $5<span>/month</span>
@@ -359,8 +441,9 @@ export const MembershipPage: React.FC = () => {
                 variant={selectedPlan === 'student' ? 'secondary' : 'outline'}
                 fullWidth
                 onClick={() => setSelectedPlan('student')}
+                disabled={isPlanActivated('student')}
               >
-                {selectedPlan === 'student' ? 'Selected' : 'Choose Plan'}
+                {isPlanActivated('student') ? 'Current Plan' : selectedPlan === 'student' ? 'Selected' : 'Choose Plan'}
               </Button>
               <ul>
                 <li>Student ID verification required</li>
@@ -374,9 +457,16 @@ export const MembershipPage: React.FC = () => {
           </Grid>
 
           <Flex justify="center" style={{ marginTop: theme.spacing.xl }}>
-            <Button variant="primary" size="lg" onClick={handleSubscribe}>
-              {selectedPlan === 'student' ? 'Apply for Student Plan' : `Subscribe to ${selectedPlan === 'monthly' ? 'Monthly' : 'Yearly'} Plan`}
-            </Button>
+            {/* Show different button text based on membership status */}
+            {userMembership?.hasActiveMembership ? (
+              <Button variant="secondary" size="lg" disabled>
+                Current Plan: {userMembership.type?.charAt(0).toUpperCase() + userMembership.type?.slice(1)} Membership
+              </Button>
+            ) : (
+              <Button variant="primary" size="lg" onClick={handleSubscribe}>
+                {selectedPlan === 'student' ? 'Apply for Student Plan' : `Subscribe to ${selectedPlan === 'monthly' ? 'Monthly' : 'Yearly'} Plan`}
+              </Button>
+            )}
           </Flex>
         </Container>
       </Section>
