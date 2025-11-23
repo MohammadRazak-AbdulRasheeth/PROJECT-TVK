@@ -207,16 +207,22 @@ router.post('/simple-subscription', upload.fields([
     console.log('Membership saved to MongoDB with ID:', membership._id);
 
     // Now create Stripe checkout session with membership ID in metadata
-    const lineItems = [{
-      price_data: {
-        currency: 'cad',
-        product_data: {
-          name: `TVK Canada ${plan.charAt(0).toUpperCase() + plan.slice(1)} Membership`,
-          description: plan === 'student' ? 'Student membership with verification required' : `${plan} membership with full benefits`
-        },
-        unit_amount: price,
-        recurring: plan !== 'yearly' ? { interval: 'month' } : null
+    const priceData = {
+      currency: 'cad',
+      product_data: {
+        name: `TVK Canada ${plan.charAt(0).toUpperCase() + plan.slice(1)} Membership`,
+        description: plan === 'student' ? 'Student membership with verification required' : `${plan} membership with full benefits`
       },
+      unit_amount: price
+    };
+
+    // Only add recurring for subscription plans (monthly/student), omit for one-time payments (yearly)
+    if (plan !== 'yearly') {
+      priceData.recurring = { interval: 'month' };
+    }
+
+    const lineItems = [{
+      price_data: priceData,
       quantity: 1,
     }];
 
@@ -364,16 +370,22 @@ router.post('/create-subscription', (req, res, next) => {
     await membership.save();
 
     // Create Stripe checkout session
-    const lineItems = [{
-      price_data: {
-        currency: 'cad', // Canadian dollars
-        product_data: {
-          name: `TVK Canada ${plan.charAt(0).toUpperCase() + plan.slice(1)} Membership`,
-          description: plan === 'student' ? 'Student membership with verification required' : `${plan} membership with full benefits`
-        },
-        unit_amount: price,
-        recurring: plan !== 'yearly' ? { interval: 'month' } : null
+    const priceDataFull = {
+      currency: 'cad', // Canadian dollars
+      product_data: {
+        name: `TVK Canada ${plan.charAt(0).toUpperCase() + plan.slice(1)} Membership`,
+        description: plan === 'student' ? 'Student membership with verification required' : `${plan} membership with full benefits`
       },
+      unit_amount: price
+    };
+
+    // Only add recurring for subscription plans (monthly/student), omit for one-time payments (yearly)
+    if (plan !== 'yearly') {
+      priceDataFull.recurring = { interval: 'month' };
+    }
+
+    const lineItems = [{
+      price_data: priceDataFull,
       quantity: 1,
     }];
 
