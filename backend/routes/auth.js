@@ -37,9 +37,19 @@ router.post('/login', async (req, res) => {
 
 // Google OAuth
 router.get('/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
-router.get('/google/callback', passport.authenticate('google', { failureRedirect: '/' }), (req, res) => {
-  const token = jwt.sign({ id: req.user._id, role: req.user.role }, process.env.JWT_SECRET);
-  res.redirect(`${process.env.FRONTEND_URL}/?token=${token}`);
+router.get('/google/callback', passport.authenticate('google', { 
+  failureRedirect: '/' 
+}), (req, res) => {
+  try {
+    if (!req.user) {
+      return res.redirect(`${process.env.FRONTEND_URL}/?error=auth_failed`);
+    }
+    const token = jwt.sign({ id: req.user._id, role: req.user.role }, process.env.JWT_SECRET);
+    res.redirect(`${process.env.FRONTEND_URL}/?token=${token}`);
+  } catch (err) {
+    console.error('OAuth callback error:', err);
+    res.redirect(`${process.env.FRONTEND_URL}/?error=auth_error`);
+  }
 });
 
 // Profile
