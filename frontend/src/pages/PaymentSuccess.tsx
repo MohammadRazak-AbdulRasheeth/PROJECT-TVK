@@ -11,49 +11,49 @@ import { Button } from '@components/Button'
 import { membershipService } from '../services/api'
 
 const SuccessCard = styled.div`
-  background: ${theme.colors.surface}
-  border-radius: ${theme.borderRadius['2xl']}
-  padding: ${theme.spacing.xxxl}
-  text-align: center
-  border-left: 4px solid ${theme.colors.success}
-  box-shadow: ${theme.shadows.lg}
-  max-width: 600px
-  margin: 0 auto
+  background: ${theme.colors.surface};
+  border-radius: ${theme.borderRadius['2xl']};
+  padding: ${theme.spacing.xxxl};
+  text-align: center;
+  border-left: 4px solid ${theme.colors.success};
+  box-shadow: ${theme.shadows.lg};
+  max-width: 600px;
+  margin: 0 auto;
 
   .success-icon {
-    font-size: 4rem
-    color: ${theme.colors.success}
-    margin-bottom: ${theme.spacing.lg}
+    font-size: 4rem;
+    color: ${theme.colors.success};
+    margin-bottom: ${theme.spacing.lg};
   }
 
   h1 {
-    color: ${theme.colors.success}
-    margin-bottom: ${theme.spacing.lg}
-    font-size: ${theme.typography.fontSize['3xl']}
+    color: ${theme.colors.success};
+    margin-bottom: ${theme.spacing.lg};
+    font-size: ${theme.typography.fontSize['3xl']};
   }
 
   h2 {
-    color: ${theme.colors.primary}
-    margin-bottom: ${theme.spacing.md}
+    color: ${theme.colors.primary};
+    margin-bottom: ${theme.spacing.md};
   }
 `
 
 const LoadingSpinner = styled.div`
-  display: flex
-  justify-content: center
-  align-items: center
-  height: 300px
-  font-size: ${theme.typography.fontSize.lg}
-  color: ${theme.colors.text.secondary}
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 300px;
+  font-size: ${theme.typography.fontSize.lg};
+  color: ${theme.colors.text.secondary};
 
   .spinner {
-    border: 3px solid ${theme.colors.border}
-    border-top: 3px solid ${theme.colors.primary}
-    border-radius: 50%
-    width: 40px
-    height: 40px
-    animation: spin 1s linear infinite
-    margin-right: ${theme.spacing.md}
+    border: 3px solid ${theme.colors.border};
+    border-top: 3px solid ${theme.colors.primary};
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+    margin-right: ${theme.spacing.md};
   }
 
   @keyframes spin {
@@ -63,14 +63,14 @@ const LoadingSpinner = styled.div`
 `
 
 const ErrorCard = styled.div`
-  background: rgba(244, 67, 54, 0.1)
-  border: 1px solid ${theme.colors.error}
-  color: ${theme.colors.error}
-  padding: ${theme.spacing.xl}
-  border-radius: ${theme.borderRadius.lg}
-  text-align: center
-  max-width: 600px
-  margin: 0 auto
+  background: rgba(244, 67, 54, 0.1);
+  border: 1px solid ${theme.colors.error};
+  color: ${theme.colors.error};
+  padding: ${theme.spacing.xl};
+  border-radius: ${theme.borderRadius.lg};
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto;
 `
 
 export const PaymentSuccessPage: React.FC = () => {
