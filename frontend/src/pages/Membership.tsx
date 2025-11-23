@@ -8,6 +8,8 @@ import { theme } from '@styles/theme'
 import { Container, Section, Grid, Flex } from '@components/Layout'
 import { Button } from '@components/Button'
 import { MembershipModal } from '@components/MembershipModal'
+import { LoginModal } from '@components/LoginModal'
+import { useAuth } from '../context/AuthContext'
 
 const PricingCard = styled.div<{ featured?: boolean }>`
   background: ${(props) => (props.featured ? theme.colors.primary : theme.colors.surface)};
@@ -238,8 +240,23 @@ const FAQItem = styled.details`
 export const MembershipPage: React.FC = () => {
   const [selectedPlan, setSelectedPlan] = useState<'monthly' | 'yearly' | 'student'>('yearly')
   const [showModal, setShowModal] = useState(false)
+  const [showLoginModal, setShowLoginModal] = useState(false)
+  const { isAuthenticated, isLoading } = useAuth()
 
   const handleSubscribe = () => {
+    // Check if user is authenticated first
+    if (!isAuthenticated) {
+      setShowLoginModal(true)
+      return
+    }
+    
+    // User is authenticated, proceed to subscription
+    setShowModal(true)
+  }
+
+  const handleLoginSuccess = () => {
+    // After successful login, close login modal and open subscription modal
+    setShowLoginModal(false)
     setShowModal(true)
   }
 
@@ -448,6 +465,13 @@ export const MembershipPage: React.FC = () => {
         isOpen={showModal}
         onClose={() => setShowModal(false)}
         selectedPlan={selectedPlan}
+      />
+
+      {/* Login Modal */}
+      <LoginModal 
+        isOpen={showLoginModal}
+        onClose={() => setShowLoginModal(false)}
+        onSuccess={handleLoginSuccess}
       />
     </>
   )

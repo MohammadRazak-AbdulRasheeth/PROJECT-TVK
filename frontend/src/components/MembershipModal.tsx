@@ -15,158 +15,158 @@ interface MembershipModalProps {
 }
 
 const ModalOverlay = styled.div`
-  position: fixed
-  top: 0
-  left: 0
-  right: 0
-  bottom: 0
-  background: rgba(0, 0, 0, 0.7)
-  display: flex
-  align-items: center
-  justify-content: center
-  z-index: 1000
-  padding: ${theme.spacing.md}
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: ${theme.spacing.md};
 `
 
 const ModalContent = styled.div`
-  background: ${theme.colors.background}
-  border-radius: ${theme.borderRadius['2xl']}
-  padding: ${theme.spacing.xl}
-  max-width: 500px
-  width: 100%
-  max-height: 90vh
-  overflow-y: auto
-  position: relative
-  box-shadow: ${theme.shadows.xl}
+  background: ${theme.colors.background};
+  border-radius: ${theme.borderRadius['2xl']};
+  padding: ${theme.spacing.xl};
+  max-width: 500px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  box-shadow: ${theme.shadows.xl};
 `
 
 const ModalHeader = styled.div`
-  display: flex
-  justify-content: space-between
-  align-items: center
-  margin-bottom: ${theme.spacing.xl}
-  border-bottom: 1px solid ${theme.colors.border}
-  padding-bottom: ${theme.spacing.lg}
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: ${theme.spacing.xl};
+  border-bottom: 1px solid ${theme.colors.border};
+  padding-bottom: ${theme.spacing.lg};
 
   h2 {
-    color: ${theme.colors.primary}
-    margin: 0
-    font-size: ${theme.typography.fontSize['2xl']}
+    color: ${theme.colors.primary};
+    margin: 0;
+    font-size: ${theme.typography.fontSize['2xl']};
   }
 `
 
 const CloseButton = styled.button`
-  background: none
-  border: none
-  font-size: 24px
-  color: ${theme.colors.text.secondary}
-  cursor: pointer
-  padding: ${theme.spacing.sm}
-  line-height: 1
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: ${theme.colors.text.secondary};
+  cursor: pointer;
+  padding: ${theme.spacing.sm};
+  line-height: 1;
 
   &:hover {
-    color: ${theme.colors.primary}
+    color: ${theme.colors.primary};
   }
 `
 
 const FormGroup = styled.div`
-  margin-bottom: ${theme.spacing.lg}
+  margin-bottom: ${theme.spacing.lg};
 
   label {
-    display: block
-    margin-bottom: ${theme.spacing.sm}
-    font-weight: ${theme.typography.fontWeight.semibold}
-    color: ${theme.colors.text.primary}
+    display: block;
+    margin-bottom: ${theme.spacing.sm};
+    font-weight: ${theme.typography.fontWeight.semibold};
+    color: ${theme.colors.text.primary};
   }
 
   input, select, textarea {
-    width: 100%
-    padding: ${theme.spacing.md}
-    border: 1px solid ${theme.colors.border}
-    border-radius: ${theme.borderRadius.lg}
-    font-size: ${theme.typography.fontSize.base}
-    transition: border-color ${theme.transitions.base}
+    width: 100%;
+    padding: ${theme.spacing.md};
+    border: 1px solid ${theme.colors.border};
+    border-radius: ${theme.borderRadius.lg};
+    font-size: ${theme.typography.fontSize.base};
+    transition: border-color ${theme.transitions.base};
 
     &:focus {
-      outline: none
-      border-color: ${theme.colors.primary}
-      box-shadow: 0 0 0 3px rgba(196, 30, 58, 0.1)
+      outline: none;
+      border-color: ${theme.colors.primary};
+      box-shadow: 0 0 0 3px rgba(196, 30, 58, 0.1);
     }
   }
 
   textarea {
-    resize: vertical
-    min-height: 100px
+    resize: vertical;
+    min-height: 100px;
   }
 `
 
 const FileUploadArea = styled.div`
-  border: 2px dashed ${theme.colors.border}
-  border-radius: ${theme.borderRadius.lg}
-  padding: ${theme.spacing.lg}
-  text-align: center
-  cursor: pointer
-  transition: all ${theme.transitions.base}
+  border: 2px dashed ${theme.colors.border};
+  border-radius: ${theme.borderRadius.lg};
+  padding: ${theme.spacing.lg};
+  text-align: center;
+  cursor: pointer;
+  transition: all ${theme.transitions.base};
 
   &:hover {
-    border-color: ${theme.colors.primary}
-    background: ${theme.colors.surface}
+    border-color: ${theme.colors.primary};
+    background: ${theme.colors.surface};
   }
 
   &.has-file {
-    border-color: ${theme.colors.success}
-    background: rgba(76, 175, 80, 0.1)
+    border-color: ${theme.colors.success};
+    background: rgba(76, 175, 80, 0.1);
   }
 
   input[type="file"] {
-    display: none
+    display: none;
   }
 
   .upload-text {
-    color: ${theme.colors.text.secondary}
-    margin-bottom: ${theme.spacing.sm}
+    color: ${theme.colors.text.secondary};
+    margin-bottom: ${theme.spacing.sm};
   }
 
   .file-name {
-    color: ${theme.colors.primary}
-    font-weight: ${theme.typography.fontWeight.semibold}
+    color: ${theme.colors.primary};
+    font-weight: ${theme.typography.fontWeight.semibold};
   }
 `
 
 const PlanSummary = styled.div`
-  background: ${theme.colors.surface}
-  border-radius: ${theme.borderRadius.lg}
-  padding: ${theme.spacing.lg}
-  margin-bottom: ${theme.spacing.xl}
-  border-left: 4px solid ${theme.colors.primary}
+  background: ${theme.colors.surface};
+  border-radius: ${theme.borderRadius.lg};
+  padding: ${theme.spacing.lg};
+  margin-bottom: ${theme.spacing.xl};
+  border-left: 4px solid ${theme.colors.primary};
 
   .plan-title {
-    font-weight: ${theme.typography.fontWeight.bold}
-    color: ${theme.colors.primary}
-    margin-bottom: ${theme.spacing.sm}
+    font-weight: ${theme.typography.fontWeight.bold};
+    color: ${theme.colors.primary};
+    margin-bottom: ${theme.spacing.sm};
   }
 
   .plan-price {
-    font-size: ${theme.typography.fontSize['2xl']}
-    font-weight: ${theme.typography.fontWeight.bold}
-    color: ${theme.colors.text.primary}
+    font-size: ${theme.typography.fontSize['2xl']};
+    font-weight: ${theme.typography.fontWeight.bold};
+    color: ${theme.colors.text.primary};
   }
 
   .plan-features {
-    margin-top: ${theme.spacing.md}
-    font-size: ${theme.typography.fontSize.sm}
-    color: ${theme.colors.text.secondary}
+    margin-top: ${theme.spacing.md};
+    font-size: ${theme.typography.fontSize.sm};
+    color: ${theme.colors.text.secondary};
   }
 `
 
 const ErrorMessage = styled.div`
-  background: rgba(244, 67, 54, 0.1)
-  border: 1px solid ${theme.colors.error}
-  color: ${theme.colors.error}
-  padding: ${theme.spacing.md}
-  border-radius: ${theme.borderRadius.lg}
-  margin-bottom: ${theme.spacing.lg}
-  font-size: ${theme.typography.fontSize.sm}
+  background: rgba(244, 67, 54, 0.1);
+  border: 1px solid ${theme.colors.error};
+  color: ${theme.colors.error};
+  padding: ${theme.spacing.md};
+  border-radius: ${theme.borderRadius.lg};
+  margin-bottom: ${theme.spacing.lg};
+  font-size: ${theme.typography.fontSize.sm};
 `
 
 export const MembershipModal: React.FC<MembershipModalProps> = ({ isOpen, onClose, selectedPlan }) => {

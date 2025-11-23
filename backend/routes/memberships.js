@@ -69,8 +69,8 @@ router.get('/plans', (req, res) => {
   ]);
 });
 
-// Create subscription with file uploads
-router.post('/create-subscription', upload.fields([
+// Create subscription with file uploads (Authentication Required)
+router.post('/create-subscription', auth, upload.fields([
   { name: 'studentId', maxCount: 1 },
   { name: 'timetable', maxCount: 1 }
 ]), async (req, res) => {
@@ -109,19 +109,37 @@ router.post('/create-subscription', upload.fields([
       return res.status(400).json({ message: 'Invalid plan selected' });
     }
 
+    // Get the authenticated user
+    const userId = req.user.id;
+    const user = await User.findById(userId);
+    
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Check if user already has an active membership
+    const existingMembership = await Membership.findOne({
+      user: userId,
+      status: { $in: ['active', 'pending'] }
+    });
+
+    if (existingMembership) {
+      return res.status(400).json({ message: 'User already has an active or pending membership' });
+    }
+
     // Create membership record
     const membershipData = {
-      user: req.user?.id || null, // Will be null for non-authenticated users
+      user: userId,
       type: plan,
       status: 'pending',
-      firstName,
-      lastName,
-      email,
-      phone,
-      address,
-      city,
-      province,
-      postalCode
+      firstName: firstName || user.firstName,
+      lastName: lastName || user.lastName,
+      email: email || user.email,
+      phone: phone || user.phone,
+      address: address || user.address?.street,
+      city: city || user.address?.city,
+      province: province || user.address?.province,
+      postalCode: postalCode || user.address?.postalCode
     };
 
     // Add student verification data if applicable
@@ -162,7 +180,7 @@ router.post('/create-subscription', upload.fields([
       metadata: {
         membershipId: membership._id.toString(),
         planType: plan,
-        userId: req.user?.id || 'guest'
+        userId: userId
       }
     };
 
