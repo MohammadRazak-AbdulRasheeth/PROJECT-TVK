@@ -1,43 +1,194 @@
-"use strict";
-n;
-nimport;
-React, { useState, useEffect };
-from;
-'react';
-nimport;
-styled;
-from;
-'styled-components';
-nimport;
-{
-    theme;
-}
-from;
-'@styles/theme';
-nimport;
-{
-    Container;
-}
-from;
-'@components/Layout';
-nimport;
-{
-    Button;
-}
-from;
-'@components/Button';
-nimport;
-{
-    membershipService;
-}
-from;
-'../services/api';
-n;
-nconst;
-DebugContainer = styled.div `\n  background: ${theme.colors.surface};\n  border-radius: ${theme.borderRadius.lg};\n  padding: ${theme.spacing.lg};\n  margin: ${theme.spacing.lg} 0;\n  \n  h3 {\n    color: ${theme.colors.primary};\n    margin-bottom: ${theme.spacing.md};\n  }\n  \n  pre {\n    background: ${theme.colors.background};\n    border: 1px solid ${theme.colors.border};\n    border-radius: ${theme.borderRadius.sm};\n    padding: ${theme.spacing.sm};\n    overflow-x: auto;\n    font-size: ${theme.typography.fontSize.sm};\n    white-space: pre-wrap;\n  }\n  \n  .status {\n    display: inline-block;\n    padding: ${theme.spacing.xs} ${theme.spacing.sm};\n    border-radius: ${theme.borderRadius.sm};\n    font-size: ${theme.typography.fontSize.xs};\n    font-weight: ${theme.typography.fontWeight.bold};\n    \n    &.success {\n      background: rgba(76, 175, 80, 0.1);\n      color: #4caf50;\n    }\n    \n    &.error {\n      background: rgba(244, 67, 54, 0.1);\n      color: #f44336;\n    }\n    \n    &.warning {\n      background: rgba(255, 152, 0, 0.1);\n      color: #ff9800;\n    }\n  }\n`;
-n;
-nconst;
-TestButton = styled(Button) `\n  margin: ${theme.spacing.xs} ${theme.spacing.xs} ${theme.spacing.xs} 0;\n`;
-n;
-nexport;
-const MobileDebugPage = () => { n; const [debugInfo, setDebugInfo] = useState({}), n; const [testResults, setTestResults] = useState({}), n; const [loading, setLoading] = useState(''), n, n, useEffect; (() => { n; }); }; // Collect device and network information\n    const info = {\n      userAgent: navigator.userAgent,\n      platform: navigator.platform,\n      language: navigator.language,\n      cookieEnabled: navigator.cookieEnabled,\n      onLine: navigator.onLine,\n      screen: {\n        width: screen.width,\n        height: screen.height,\n        pixelRatio: window.devicePixelRatio\n      },\n      window: {\n        innerWidth: window.innerWidth,\n        innerHeight: window.innerHeight\n      },\n      connection: (navigator as any).connection ? {\n        effectiveType: (navigator as any).connection.effectiveType,\n        downlink: (navigator as any).connection.downlink,\n        rtt: (navigator as any).connection.rtt\n      } : 'Not available',\n      localStorage: {\n        available: typeof(Storage) !== 'undefined',\n        token: localStorage.getItem('token') ? 'Present' : 'None'\n      },\n      isMobile: /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent),\n      timestamp: new Date().toISOString()\n    }\n    \n    setDebugInfo(info)\n  }, [])\n\n  const testApiConnection = async () => {\n    setLoading('api')\n    try {\n      const response = await fetch('/api/memberships/plans', {\n        method: 'GET',\n        headers: {\n          'Content-Type': 'application/json'\n        }\n      })\n      \n      const data = await response.json()\n      setTestResults(prev => ({\n        ...prev,\n        api: {\n          status: response.ok ? 'success' : 'error',\n          statusCode: response.status,\n          data: data,\n          headers: Object.fromEntries(response.headers.entries())\n        }\n      }))\n    } catch (error) {\n      setTestResults(prev => ({\n        ...prev,\n        api: {\n          status: 'error',\n          error: error.message,\n          name: error.name\n        }\n      }))\n    }\n    setLoading('')\n  }\n\n  const testFormSubmission = async () => {\n    setLoading('form')\n    try {\n      const testData = new FormData()\n      testData.append('plan', 'monthly')\n      testData.append('firstName', 'Test')\n      testData.append('lastName', 'User')\n      testData.append('email', 'test@example.com')\n      testData.append('phone', '1234567890')\n      \n      const response = await membershipService.createSubscription(testData)\n      setTestResults(prev => ({\n        ...prev,\n        form: {\n          status: 'success',\n          data: response\n        }\n      }))\n    } catch (error) {\n      setTestResults(prev => ({\n        ...prev,\n        form: {\n          status: 'error',\n          error: error.message,\n          response: error.response?.data,\n          statusCode: error.response?.status\n        }\n      }))\n    }\n    setLoading('')\n  }\n\n  const testFileUpload = async () => {\n    setLoading('file')\n    try {\n      // Create a small test file\n      const testFile = new File(['test content'], 'test.txt', { type: 'text/plain' })\n      const formData = new FormData()\n      formData.append('plan', 'student')\n      formData.append('firstName', 'Test')\n      formData.append('lastName', 'Student')\n      formData.append('email', 'student@test.com')\n      formData.append('phone', '1234567890')\n      formData.append('university', 'Test University')\n      formData.append('program', 'Test Program')\n      formData.append('studentId', testFile)\n      formData.append('timetable', testFile)\n      \n      const response = await membershipService.createSubscription(formData)\n      setTestResults(prev => ({\n        ...prev,\n        file: {\n          status: 'success',\n          data: response\n        }\n      }))\n    } catch (error) {\n      setTestResults(prev => ({\n        ...prev,\n        file: {\n          status: 'error',\n          error: error.message,\n          response: error.response?.data,\n          statusCode: error.response?.status\n        }\n      }))\n    }\n    setLoading('')\n  }\n\n  return (\n    <Container>\n      <div style={{ padding: `${theme.spacing.xl} 0` }}>\n        <h1>Mobile Subscription Debug</h1>\n        <p>Use this page to diagnose mobile subscription issues.</p>\n\n        <DebugContainer>\n          <h3>Device Information</h3>\n          <div className={`status ${debugInfo.isMobile ? 'warning' : 'success'}`}>\n            {debugInfo.isMobile ? 'Mobile Device Detected' : 'Desktop Device'}\n          </div>\n          <pre>{JSON.stringify(debugInfo, null, 2)}</pre>\n        </DebugContainer>\n\n        <DebugContainer>\n          <h3>Connection Tests</h3>\n          \n          <div style={{ marginBottom: theme.spacing.md }}>\n            <TestButton \n              variant=\"outline\" \n              size=\"sm\" \n              onClick={testApiConnection}\n              disabled={loading === 'api'}\n            >\n              {loading === 'api' ? 'Testing...' : 'Test API Connection'}\n            </TestButton>\n            \n            <TestButton \n              variant=\"outline\" \n              size=\"sm\" \n              onClick={testFormSubmission}\n              disabled={loading === 'form'}\n            >\n              {loading === 'form' ? 'Testing...' : 'Test Basic Subscription'}\n            </TestButton>\n            \n            <TestButton \n              variant=\"outline\" \n              size=\"sm\" \n              onClick={testFileUpload}\n              disabled={loading === 'file'}\n            >\n              {loading === 'file' ? 'Testing...' : 'Test File Upload'}\n            </TestButton>\n          </div>\n\n          {Object.keys(testResults).map(test => (\n            <div key={test}>\n              <h4>{test.charAt(0).toUpperCase() + test.slice(1)} Test Results:</h4>\n              <div className={`status ${testResults[test].status}`}>\n                {testResults[test].status.charAt(0).toUpperCase() + testResults[test].status.slice(1)}\n              </div>\n              <pre>{JSON.stringify(testResults[test], null, 2)}</pre>\n            </div>\n          ))}\n        </DebugContainer>\n\n        <DebugContainer>\n          <h3>Common Mobile Issues & Solutions</h3>\n          <ul>\n            <li><strong>Network Timeout:</strong> Mobile networks can be slower - increased timeout to 60s</li>\n            <li><strong>File Size Limits:</strong> Mobile uploads limited to 5MB per file</li>\n            <li><strong>CORS Issues:</strong> Local mobile IP addresses now whitelisted</li>\n            <li><strong>Popup Blockers:</strong> Using _self redirect for better mobile compatibility</li>\n            <li><strong>Connection Issues:</strong> Added retry logic with exponential backoff</li>\n          </ul>\n        </DebugContainer>\n      </div>\n    </Container>\n  )\n}\n
+import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
+/**
+ * Mobile Debug Component for TVK Canada Subscription Issues
+ */
+import { useState, useEffect } from 'react';
+import styled from 'styled-components';
+import { theme } from '@styles/theme';
+import { Container } from '@components/Layout';
+import { Button } from '@components/Button';
+import { membershipService } from '../services/api';
+const DebugContainer = styled.div `
+  background: ${theme.colors.surface};
+  border-radius: ${theme.borderRadius.lg};
+  padding: ${theme.spacing.lg};
+  margin: ${theme.spacing.lg} 0;
+  
+  h3 {
+    color: ${theme.colors.primary};
+    margin-bottom: ${theme.spacing.md};
+  }
+  
+  pre {
+    background: ${theme.colors.background};
+    border: 1px solid ${theme.colors.border};
+    border-radius: ${theme.borderRadius.sm};
+    padding: ${theme.spacing.sm};
+    overflow-x: auto;
+    font-size: ${theme.typography.fontSize.sm};
+    white-space: pre-wrap;
+  }
+  
+  .status {
+    display: inline-block;
+    padding: ${theme.spacing.xs} ${theme.spacing.sm};
+    border-radius: ${theme.borderRadius.sm};
+    font-size: ${theme.typography.fontSize.xs};
+    font-weight: ${theme.typography.fontWeight.bold};
+    
+    &.success {
+      background: rgba(76, 175, 80, 0.1);
+      color: #4caf50;
+    }
+    
+    &.error {
+      background: rgba(244, 67, 54, 0.1);
+      color: #f44336;
+    }
+    
+    &.warning {
+      background: rgba(255, 152, 0, 0.1);
+      color: #ff9800;
+    }
+  }
+`;
+const TestButton = styled(Button) `
+  margin: ${theme.spacing.xs} ${theme.spacing.xs} ${theme.spacing.xs} 0;
+`;
+export const MobileDebugPage = () => {
+    const [debugInfo, setDebugInfo] = useState({});
+    const [testResults, setTestResults] = useState({});
+    const [loading, setLoading] = useState('');
+    useEffect(() => {
+        // Collect device and network information
+        const info = {
+            userAgent: navigator.userAgent,
+            platform: navigator.platform,
+            language: navigator.language,
+            cookieEnabled: navigator.cookieEnabled,
+            onLine: navigator.onLine,
+            screen: {
+                width: screen.width,
+                height: screen.height,
+                pixelRatio: window.devicePixelRatio
+            },
+            window: {
+                innerWidth: window.innerWidth,
+                innerHeight: window.innerHeight
+            },
+            connection: navigator.connection ? {
+                effectiveType: navigator.connection.effectiveType,
+                downlink: navigator.connection.downlink,
+                rtt: navigator.connection.rtt
+            } : 'Not available',
+            localStorage: {
+                available: typeof (Storage) !== 'undefined',
+                token: localStorage.getItem('token') ? 'Present' : 'None'
+            },
+            isMobile: /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent),
+            timestamp: new Date().toISOString()
+        };
+        setDebugInfo(info);
+    }, []);
+    const testApiConnection = async () => {
+        setLoading('api');
+        try {
+            const response = await fetch('/api/memberships/plans', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            const data = await response.json();
+            setTestResults((prev) => ({
+                ...prev,
+                api: {
+                    status: response.ok ? 'success' : 'error',
+                    statusCode: response.status,
+                    data: data,
+                    headers: Object.fromEntries(response.headers.entries())
+                }
+            }));
+        }
+        catch (error) {
+            setTestResults((prev) => ({
+                ...prev,
+                api: {
+                    status: 'error',
+                    error: error.message,
+                    name: error.name
+                }
+            }));
+        }
+        setLoading('');
+    };
+    const testFormSubmission = async () => {
+        setLoading('form');
+        try {
+            const testData = new FormData();
+            testData.append('plan', 'monthly');
+            testData.append('firstName', 'Test');
+            testData.append('lastName', 'User');
+            testData.append('email', 'test@example.com');
+            testData.append('phone', '1234567890');
+            const response = await membershipService.createSubscription(testData);
+            setTestResults((prev) => ({
+                ...prev,
+                form: {
+                    status: 'success',
+                    data: response
+                }
+            }));
+        }
+        catch (error) {
+            setTestResults((prev) => ({
+                ...prev,
+                form: {
+                    status: 'error',
+                    error: error.message,
+                    response: error.response?.data,
+                    statusCode: error.response?.status
+                }
+            }));
+        }
+        setLoading('');
+    };
+    const testFileUpload = async () => {
+        setLoading('file');
+        try {
+            // Create a small test file
+            const testFile = new File(['test content'], 'test.txt', { type: 'text/plain' });
+            const formData = new FormData();
+            formData.append('plan', 'student');
+            formData.append('firstName', 'Test');
+            formData.append('lastName', 'Student');
+            formData.append('email', 'student@test.com');
+            formData.append('phone', '1234567890');
+            formData.append('university', 'Test University');
+            formData.append('program', 'Test Program');
+            formData.append('studentId', testFile);
+            formData.append('timetable', testFile);
+            const response = await membershipService.createSubscription(formData);
+            setTestResults((prev) => ({
+                ...prev,
+                file: {
+                    status: 'success',
+                    data: response
+                }
+            }));
+        }
+        catch (error) {
+            setTestResults((prev) => ({
+                ...prev,
+                file: {
+                    status: 'error',
+                    error: error.message,
+                    response: error.response?.data,
+                    statusCode: error.response?.status
+                }
+            }));
+        }
+        setLoading('');
+    };
+    return (_jsx(Container, { children: _jsxs("div", { style: { padding: `${theme.spacing.xl} 0` }, children: [_jsx("h1", { children: "Mobile Subscription Debug" }), _jsx("p", { children: "Use this page to diagnose mobile subscription issues." }), _jsxs(DebugContainer, { children: [_jsx("h3", { children: "Device Information" }), _jsx("div", { className: `status ${debugInfo.isMobile ? 'warning' : 'success'}`, children: debugInfo.isMobile ? 'Mobile Device Detected' : 'Desktop Device' }), _jsx("pre", { children: JSON.stringify(debugInfo, null, 2) })] }), _jsxs(DebugContainer, { children: [_jsx("h3", { children: "Connection Tests" }), _jsxs("div", { style: { marginBottom: theme.spacing.md }, children: [_jsx(TestButton, { variant: "outline", size: "sm", onClick: testApiConnection, disabled: loading === 'api', children: loading === 'api' ? 'Testing...' : 'Test API Connection' }), _jsx(TestButton, { variant: "outline", size: "sm", onClick: testFormSubmission, disabled: loading === 'form', children: loading === 'form' ? 'Testing...' : 'Test Basic Subscription' }), _jsx(TestButton, { variant: "outline", size: "sm", onClick: testFileUpload, disabled: loading === 'file', children: loading === 'file' ? 'Testing...' : 'Test File Upload' })] }), Object.keys(testResults).map(test => (_jsxs("div", { children: [_jsxs("h4", { children: [test.charAt(0).toUpperCase() + test.slice(1), " Test Results:"] }), _jsx("div", { className: `status ${testResults[test]?.status || 'loading'}`, children: testResults[test]?.status?.charAt(0).toUpperCase() + testResults[test]?.status?.slice(1) || 'No results yet' }), _jsx("pre", { children: JSON.stringify(testResults[test], null, 2) })] }, test)))] }), _jsxs(DebugContainer, { children: [_jsx("h3", { children: "Common Mobile Issues & Solutions" }), _jsxs("ul", { children: [_jsxs("li", { children: [_jsx("strong", { children: "Network Timeout:" }), " Mobile networks can be slower - increased timeout to 60s"] }), _jsxs("li", { children: [_jsx("strong", { children: "File Size Limits:" }), " Mobile uploads limited to 5MB per file"] }), _jsxs("li", { children: [_jsx("strong", { children: "CORS Issues:" }), " Local mobile IP addresses now whitelisted"] }), _jsxs("li", { children: [_jsx("strong", { children: "Popup Blockers:" }), " Using _self redirect for better mobile compatibility"] }), _jsxs("li", { children: [_jsx("strong", { children: "Connection Issues:" }), " Added retry logic with exponential backoff"] })] })] })] }) }));
+};

@@ -9,6 +9,7 @@ import { theme } from '@styles/theme'
 import { images } from '@utils/images'
 import { Button } from './Button'
 import { authService } from '../services/api'
+import { useAuth } from '../context/AuthContext'
 
 const HeaderWrapper = styled.header`
   background-color: ${theme.colors.primary};
@@ -387,10 +388,10 @@ const DropdownItem = styled.button`
  */
 export const Header: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const [user, setUser] = useState<any>(null)
   const [dropdownOpen, setDropdownOpen] = useState(false)
   const dropdownRef = useRef<HTMLDivElement>(null)
   const navigate = useNavigate()
+  const { user, logout } = useAuth()
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen)
@@ -405,10 +406,10 @@ export const Header: React.FC = () => {
   }
 
   const handleLogout = () => {
-    localStorage.removeItem('token')
-    setUser(null)
+    logout() // Use AuthContext logout function which clears all localStorage
     setDropdownOpen(false)
     navigate('/')
+    console.log('Logout completed - all authentication tokens and data cleared')
   }
 
   // Check for token in URL params (OAuth redirect)
@@ -445,7 +446,8 @@ export const Header: React.FC = () => {
   const fetchUserProfile = async () => {
     try {
       const userData = await authService.getProfile()
-      setUser(userData)
+      // The user data is now handled by AuthContext, no need to set local state
+      console.log('User profile fetched:', userData)
     } catch (error) {
       console.error('Failed to fetch user profile:', error)
       localStorage.removeItem('token')
@@ -529,7 +531,7 @@ export const Header: React.FC = () => {
                 title="Click to open menu"
               >
                 <img 
-                  src={user.profile?.avatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name)}&background=C41E3A&color=FFD700&size=40`} 
+                  src={`https://ui-avatars.com/api/?name=${encodeURIComponent(user.name)}&background=C41E3A&color=FFD700&size=40`} 
                   alt={user.name} 
                 />
                 <span>{user.name.split(' ')[0]}</span>
@@ -583,7 +585,7 @@ export const Header: React.FC = () => {
           }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: theme.spacing.md, marginBottom: theme.spacing.lg }}>
               <img 
-                src={user.profile?.avatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name)}&background=C41E3A&color=FFD700&size=40`} 
+                src={`https://ui-avatars.com/api/?name=${encodeURIComponent(user.name)}&background=C41E3A&color=FFD700&size=40`} 
                 alt={user.name}
                 style={{ 
                   width: '40px', 

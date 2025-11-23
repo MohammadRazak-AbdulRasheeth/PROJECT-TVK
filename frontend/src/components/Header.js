@@ -9,6 +9,7 @@ import { theme } from '@styles/theme';
 import { images } from '@utils/images';
 import { Button } from './Button';
 import { authService } from '../services/api';
+import { useAuth } from '../context/AuthContext';
 const HeaderWrapper = styled.header `
   background-color: ${theme.colors.primary};
   color: ${theme.colors.text.inverse};
@@ -372,10 +373,10 @@ const DropdownItem = styled.button `
  */
 export const Header = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-    const [user, setUser] = useState(null);
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const dropdownRef = useRef(null);
     const navigate = useNavigate();
+    const { user, logout } = useAuth();
     const toggleMenu = () => {
         setIsMenuOpen(!isMenuOpen);
     };
@@ -386,10 +387,10 @@ export const Header = () => {
         authService.googleLogin();
     };
     const handleLogout = () => {
-        localStorage.removeItem('token');
-        setUser(null);
+        logout(); // Use AuthContext logout function which clears all localStorage
         setDropdownOpen(false);
         navigate('/');
+        console.log('Logout completed - all authentication tokens and data cleared');
     };
     // Check for token in URL params (OAuth redirect)
     useEffect(() => {
@@ -425,7 +426,8 @@ export const Header = () => {
     const fetchUserProfile = async () => {
         try {
             const userData = await authService.getProfile();
-            setUser(userData);
+            // The user data is now handled by AuthContext, no need to set local state
+            console.log('User profile fetched:', userData);
         }
         catch (error) {
             console.error('Failed to fetch user profile:', error);
@@ -470,7 +472,7 @@ export const Header = () => {
                                             return;
                                         target.dataset.fallbackApplied = 'true';
                                         target.src = images.logoFallback || images.logo;
-                                    }, style: { objectFit: 'contain', background: 'transparent' } }), _jsx("span", { children: "TVK CANADA" })] }), _jsxs(DesktopNav, { children: [_jsx(NavLink, { to: "/", children: "Home" }), _jsx(NavLink, { to: "/about", children: "About Us" }), _jsx(NavLink, { to: "/membership", children: "Membership" }), _jsx(NavLink, { to: "/events", children: "Events" }), _jsx(NavLink, { to: "/global-network", children: "Global Network" }), _jsx(NavLink, { to: "/gallery", children: "Gallery" }), _jsx(NavLink, { to: "/contact", children: "Contact" })] }), _jsxs(ButtonGroup, { children: [user ? (_jsxs(UserProfile, { ref: dropdownRef, onClick: () => setDropdownOpen(!dropdownOpen), title: "Click to open menu", children: [_jsx("img", { src: user.profile?.avatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name)}&background=C41E3A&color=FFD700&size=40`, alt: user.name }), _jsx("span", { children: user.name.split(' ')[0] }), _jsxs(DropdownMenu, { isOpen: dropdownOpen, children: [_jsx(DropdownItem, { onClick: () => { setDropdownOpen(false); navigate('/my-membership'); }, children: "My Membership" }), _jsx(DropdownItem, { onClick: () => { setDropdownOpen(false); navigate('/events'); }, children: "My Events" }), _jsx(DropdownItem, { onClick: handleLogout, children: "Logout" })] })] })) : (_jsx(DesktopCTAButton, { variant: "secondary", size: "md", onClick: handleGoogleLogin, children: "Login" })), _jsx(MobileMenuButton, { onClick: toggleMenu, "aria-label": isMenuOpen ? 'Close menu' : 'Open menu', "aria-expanded": isMenuOpen, children: isMenuOpen ? '✕' : '☰' })] })] }) }), _jsxs(MobileNav, { isOpen: isMenuOpen, children: [_jsx(NavLink, { to: "/", onClick: closeMenu, children: "Home" }), _jsx(NavLink, { to: "/about", onClick: closeMenu, children: "About Us" }), _jsx(NavLink, { to: "/membership", onClick: closeMenu, children: "Membership" }), _jsx(NavLink, { to: "/events", onClick: closeMenu, children: "Events" }), _jsx(NavLink, { to: "/global-network", onClick: closeMenu, children: "Global Network" }), _jsx(NavLink, { to: "/gallery", onClick: closeMenu, children: "Gallery" }), _jsx(NavLink, { to: "/contact", onClick: closeMenu, children: "Contact" }), user ? (_jsxs("div", { style: {
+                                    }, style: { objectFit: 'contain', background: 'transparent' } }), _jsx("span", { children: "TVK CANADA" })] }), _jsxs(DesktopNav, { children: [_jsx(NavLink, { to: "/", children: "Home" }), _jsx(NavLink, { to: "/about", children: "About Us" }), _jsx(NavLink, { to: "/membership", children: "Membership" }), _jsx(NavLink, { to: "/events", children: "Events" }), _jsx(NavLink, { to: "/global-network", children: "Global Network" }), _jsx(NavLink, { to: "/gallery", children: "Gallery" }), _jsx(NavLink, { to: "/contact", children: "Contact" })] }), _jsxs(ButtonGroup, { children: [user ? (_jsxs(UserProfile, { ref: dropdownRef, onClick: () => setDropdownOpen(!dropdownOpen), title: "Click to open menu", children: [_jsx("img", { src: `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name)}&background=C41E3A&color=FFD700&size=40`, alt: user.name }), _jsx("span", { children: user.name.split(' ')[0] }), _jsxs(DropdownMenu, { isOpen: dropdownOpen, children: [_jsx(DropdownItem, { onClick: () => { setDropdownOpen(false); navigate('/my-membership'); }, children: "My Membership" }), _jsx(DropdownItem, { onClick: () => { setDropdownOpen(false); navigate('/events'); }, children: "My Events" }), _jsx(DropdownItem, { onClick: handleLogout, children: "Logout" })] })] })) : (_jsx(DesktopCTAButton, { variant: "secondary", size: "md", onClick: handleGoogleLogin, children: "Login" })), _jsx(MobileMenuButton, { onClick: toggleMenu, "aria-label": isMenuOpen ? 'Close menu' : 'Open menu', "aria-expanded": isMenuOpen, children: isMenuOpen ? '✕' : '☰' })] })] }) }), _jsxs(MobileNav, { isOpen: isMenuOpen, children: [_jsx(NavLink, { to: "/", onClick: closeMenu, children: "Home" }), _jsx(NavLink, { to: "/about", onClick: closeMenu, children: "About Us" }), _jsx(NavLink, { to: "/membership", onClick: closeMenu, children: "Membership" }), _jsx(NavLink, { to: "/events", onClick: closeMenu, children: "Events" }), _jsx(NavLink, { to: "/global-network", onClick: closeMenu, children: "Global Network" }), _jsx(NavLink, { to: "/gallery", onClick: closeMenu, children: "Gallery" }), _jsx(NavLink, { to: "/contact", onClick: closeMenu, children: "Contact" }), user ? (_jsxs("div", { style: {
                             marginTop: theme.spacing.lg,
                             padding: theme.spacing.lg,
                             background: 'rgba(255, 255, 255, 0.95)',
@@ -478,7 +480,7 @@ export const Header = () => {
                             border: `2px solid ${theme.colors.secondary}`,
                             backdropFilter: 'blur(10px)',
                             boxShadow: theme.shadows.lg
-                        }, children: [_jsxs("div", { style: { display: 'flex', alignItems: 'center', gap: theme.spacing.md, marginBottom: theme.spacing.lg }, children: [_jsx("img", { src: user.profile?.avatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name)}&background=C41E3A&color=FFD700&size=40`, alt: user.name, style: {
+                        }, children: [_jsxs("div", { style: { display: 'flex', alignItems: 'center', gap: theme.spacing.md, marginBottom: theme.spacing.lg }, children: [_jsx("img", { src: `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name)}&background=C41E3A&color=FFD700&size=40`, alt: user.name, style: {
                                             width: '40px',
                                             height: '40px',
                                             borderRadius: '50%',

@@ -88,8 +88,13 @@ export const AuthProvider = ({ children }) => {
         }
     };
     const logout = () => {
+        // Clear all authentication-related localStorage items
         localStorage.removeItem('token');
+        localStorage.removeItem('loginCallback');
+        localStorage.removeItem('redirectPath');
+        // Clear user state
         setUser(null);
+        console.log('User logged out - all tokens and auth data cleared');
     };
     const googleLogin = () => {
         // Store current location for redirect after login
