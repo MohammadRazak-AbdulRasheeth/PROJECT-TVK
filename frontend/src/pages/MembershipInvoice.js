@@ -9,6 +9,8 @@ import { theme } from '@styles/theme';
 import { Container } from '@components/Layout';
 import { Button } from '@components/Button';
 import { invoiceService } from '../services/api';
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
 const InvoiceContainer = styled.div `
   min-height: 100vh;
   background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
@@ -375,9 +377,65 @@ export const MembershipInvoice = () => {
     const handlePrint = () => {
         window.print();
     };
-    const handleDownload = () => {
-        // In a real implementation, this would generate a PDF
-        window.print();
+    const handleDownload = async () => {
+        try {
+            // Show loading state
+            const downloadBtn = document.querySelector('[data-download-btn]');
+            const originalText = downloadBtn?.textContent;
+            if (downloadBtn) {
+                downloadBtn.disabled = true;
+                downloadBtn.textContent = '📄 Generating PDF...';
+            }
+            const invoiceElement = document.getElementById('invoice-content');
+            if (!invoiceElement) {
+                console.error('Invoice element not found');
+                return;
+            }
+            // Configure html2canvas for better quality
+            const canvas = await html2canvas(invoiceElement, {
+                scale: 2, // Higher resolution
+                useCORS: true,
+                allowTaint: false,
+                backgroundColor: '#ffffff',
+                logging: false,
+                width: invoiceElement.scrollWidth,
+                height: invoiceElement.scrollHeight
+            });
+            const imgData = canvas.toDataURL('image/png');
+            // Create PDF with A4 dimensions
+            const pdf = new jsPDF({
+                orientation: 'portrait',
+                unit: 'mm',
+                format: 'a4'
+            });
+            // Calculate dimensions to fit the page
+            const pdfWidth = pdf.internal.pageSize.getWidth();
+            const pdfHeight = pdf.internal.pageSize.getHeight();
+            const imgWidth = canvas.width;
+            const imgHeight = canvas.height;
+            const ratio = Math.min(pdfWidth / imgWidth, pdfHeight / imgHeight);
+            const imgX = (pdfWidth - imgWidth * ratio) / 2;
+            const imgY = 10; // Small top margin
+            pdf.addImage(imgData, 'PNG', imgX, imgY, imgWidth * ratio, imgHeight * ratio);
+            // Generate filename with invoice number and date
+            const filename = `TVK-Canada-Invoice-${invoiceData?.invoiceNumber || 'Unknown'}-${new Date().toISOString().split('T')[0]}.pdf`;
+            pdf.save(filename);
+            // Reset button state
+            if (downloadBtn) {
+                downloadBtn.disabled = false;
+                downloadBtn.textContent = originalText;
+            }
+        }
+        catch (error) {
+            console.error('Error generating PDF:', error);
+            alert('Failed to generate PDF. Please try again or use the print option.');
+            // Reset button state on error
+            const downloadBtn = document.querySelector('[data-download-btn]');
+            if (downloadBtn) {
+                downloadBtn.disabled = false;
+                downloadBtn.textContent = '📄 Download PDF';
+            }
+        }
     };
     const formatCurrency = (amount) => {
         return new Intl.NumberFormat('en-CA', {
@@ -404,5 +462,5 @@ export const MembershipInvoice = () => {
     if (error || !invoiceData) {
         return (_jsx(InvoiceContainer, { children: _jsx(Container, { children: _jsxs("div", { style: { textAlign: 'center', padding: theme.spacing.xxxl }, children: [_jsx("h2", { children: "Invoice Not Found" }), _jsx("p", { children: error }), _jsx(Button, { variant: "primary", onClick: () => navigate('/my-membership'), children: "Back to Dashboard" })] }) }) }));
     }
-    return (_jsx(InvoiceContainer, { children: _jsx(Container, { children: _jsxs(InvoiceCard, { children: [_jsx(InvoiceHeader, { children: _jsxs("div", { className: "header-content", children: [_jsxs("div", { className: "company-info", children: [_jsx("h1", { children: "TVK CANADA" }), _jsx("p", { className: "subtitle", children: "Tamil Vijay Kumar Fan Club" })] }), _jsxs("div", { className: "invoice-badge", children: [_jsx("h2", { children: "Invoice" }), _jsxs("p", { className: "invoice-number", children: ["#", invoiceData.invoiceNumber] })] })] }) }), _jsxs(InvoiceBody, { children: [_jsxs(BillingSection, { children: [_jsxs("div", { className: "billing-info", children: [_jsx("h3", { children: "Bill To:" }), _jsx("p", { className: "highlight", children: invoiceData.customerName }), _jsxs("p", { children: ["Membership: ", invoiceData.membershipNumber] }), _jsx("p", { children: invoiceData.email }), _jsx("p", { children: invoiceData.phone }), _jsx("p", { children: invoiceData.address.street }), _jsxs("p", { children: [invoiceData.address.city, ", ", invoiceData.address.province, " ", invoiceData.address.postalCode] }), _jsx("p", { children: invoiceData.address.country })] }), _jsxs("div", { className: "billing-info", children: [_jsx("h3", { children: "Invoice Details:" }), _jsxs("p", { children: [_jsx("span", { className: "highlight", children: "Invoice Date:" }), " ", formatDate(invoiceData.issuedDate)] }), _jsxs("p", { children: [_jsx("span", { className: "highlight", children: "Due Date:" }), " ", formatDate(invoiceData.dueDate)] }), invoiceData.paidDate && (_jsxs("p", { children: [_jsx("span", { className: "highlight", children: "Paid Date:" }), " ", formatDate(invoiceData.paidDate)] })), _jsxs("p", { children: [_jsx("span", { className: "highlight", children: "Payment Method:" }), " ", invoiceData.paymentMethod] }), _jsx("p", { style: { marginTop: theme.spacing.lg }, children: _jsxs(PaymentStatus, { status: invoiceData.status, children: [invoiceData.status === 'paid' ? '✅' : '⏳', " ", invoiceData.status.toUpperCase()] }) })] })] }), _jsxs(InvoiceTable, { children: [_jsx("thead", { children: _jsxs("tr", { children: [_jsx("th", { children: "Description" }), _jsx("th", { children: "Quantity" }), _jsx("th", { children: "Unit Price" }), _jsx("th", { children: "Amount" })] }) }), _jsx("tbody", { children: _jsxs("tr", { children: [_jsxs("td", { children: [_jsxs("strong", { children: [invoiceData.membershipType, " Membership"] }), _jsx("br", {}), _jsx("small", { style: { color: theme.colors.text.secondary }, children: "Annual membership with premium benefits and exclusive access" })] }), _jsx("td", { children: "1" }), _jsx("td", { children: formatCurrency(invoiceData.subtotal) }), _jsx("td", { className: "amount", children: formatCurrency(invoiceData.subtotal) })] }) })] }), _jsxs(TotalSection, { children: [_jsxs("div", { className: "total-row", children: [_jsx("span", { className: "label", children: "Subtotal:" }), _jsx("span", { className: "amount", children: formatCurrency(invoiceData.subtotal) })] }), _jsxs("div", { className: "total-row", children: [_jsx("span", { className: "label", children: "HST (13%):" }), _jsx("span", { className: "amount", children: formatCurrency(invoiceData.taxAmount) })] }), _jsxs("div", { className: "total-row grand-total", children: [_jsx("span", { className: "label", children: "Total Amount:" }), _jsx("span", { className: "amount", children: formatCurrency(invoiceData.total) })] })] }), _jsxs(ActionButtons, { children: [_jsx(Button, { variant: "primary", onClick: handlePrint, children: "\uD83D\uDDA8\uFE0F Print Invoice" }), _jsx(Button, { variant: "secondary", onClick: handleDownload, children: "\uD83D\uDCC4 Download PDF" }), _jsx(Button, { variant: "outline", onClick: () => navigate('/my-membership'), children: "\u2190 Back to Dashboard" })] })] }), _jsxs(Footer, { children: [_jsx("div", { className: "thank-you", children: "Thank you for your membership!" }), _jsx("p", { children: "This invoice was generated automatically. For any questions or concerns, please contact our support team at support@tvkcanada.com or call (416) 555-0100." }), _jsx("p", { children: "TVK Canada \u2022 123 Queen Street West, Toronto, ON M5H 2M9 \u2022 www.tvkcanada.com" })] })] }) }) }));
+    return (_jsx(InvoiceContainer, { children: _jsx(Container, { children: _jsxs(InvoiceCard, { id: "invoice-content", children: [_jsx(InvoiceHeader, { children: _jsxs("div", { className: "header-content", children: [_jsxs("div", { className: "company-info", children: [_jsx("h1", { children: "TVK CANADA" }), _jsx("p", { className: "subtitle", children: "Tamil Vijay Kumar Fan Club" })] }), _jsxs("div", { className: "invoice-badge", children: [_jsx("h2", { children: "Invoice" }), _jsxs("p", { className: "invoice-number", children: ["#", invoiceData.invoiceNumber] })] })] }) }), _jsxs(InvoiceBody, { children: [_jsxs(BillingSection, { children: [_jsxs("div", { className: "billing-info", children: [_jsx("h3", { children: "Bill To:" }), _jsx("p", { className: "highlight", children: invoiceData.customerName }), _jsxs("p", { children: ["Membership: ", invoiceData.membershipNumber] }), _jsx("p", { children: invoiceData.email }), _jsx("p", { children: invoiceData.phone }), _jsx("p", { children: invoiceData.address.street }), _jsxs("p", { children: [invoiceData.address.city, ", ", invoiceData.address.province, " ", invoiceData.address.postalCode] }), _jsx("p", { children: invoiceData.address.country })] }), _jsxs("div", { className: "billing-info", children: [_jsx("h3", { children: "Invoice Details:" }), _jsxs("p", { children: [_jsx("span", { className: "highlight", children: "Invoice Date:" }), " ", formatDate(invoiceData.issuedDate)] }), _jsxs("p", { children: [_jsx("span", { className: "highlight", children: "Due Date:" }), " ", formatDate(invoiceData.dueDate)] }), invoiceData.paidDate && (_jsxs("p", { children: [_jsx("span", { className: "highlight", children: "Paid Date:" }), " ", formatDate(invoiceData.paidDate)] })), _jsxs("p", { children: [_jsx("span", { className: "highlight", children: "Payment Method:" }), " ", invoiceData.paymentMethod] }), _jsx("p", { style: { marginTop: theme.spacing.lg }, children: _jsxs(PaymentStatus, { status: invoiceData.status, children: [invoiceData.status === 'paid' ? '✅' : '⏳', " ", invoiceData.status.toUpperCase()] }) })] })] }), _jsxs(InvoiceTable, { children: [_jsx("thead", { children: _jsxs("tr", { children: [_jsx("th", { children: "Description" }), _jsx("th", { children: "Quantity" }), _jsx("th", { children: "Unit Price" }), _jsx("th", { children: "Amount" })] }) }), _jsx("tbody", { children: _jsxs("tr", { children: [_jsxs("td", { children: [_jsxs("strong", { children: [invoiceData.membershipType, " Membership"] }), _jsx("br", {}), _jsx("small", { style: { color: theme.colors.text.secondary }, children: "Annual membership with premium benefits and exclusive access" })] }), _jsx("td", { children: "1" }), _jsx("td", { children: formatCurrency(invoiceData.subtotal) }), _jsx("td", { className: "amount", children: formatCurrency(invoiceData.subtotal) })] }) })] }), _jsxs(TotalSection, { children: [_jsxs("div", { className: "total-row", children: [_jsx("span", { className: "label", children: "Subtotal:" }), _jsx("span", { className: "amount", children: formatCurrency(invoiceData.subtotal) })] }), _jsxs("div", { className: "total-row", children: [_jsx("span", { className: "label", children: "HST (13%):" }), _jsx("span", { className: "amount", children: formatCurrency(invoiceData.taxAmount) })] }), _jsxs("div", { className: "total-row grand-total", children: [_jsx("span", { className: "label", children: "Total Amount:" }), _jsx("span", { className: "amount", children: formatCurrency(invoiceData.total) })] })] }), _jsxs(ActionButtons, { children: [_jsx(Button, { variant: "primary", onClick: handlePrint, children: "\uD83D\uDDA8\uFE0F Print Invoice" }), _jsx(Button, { variant: "secondary", onClick: handleDownload, "data-download-btn": "true", children: "\uD83D\uDCC4 Download PDF" }), _jsx(Button, { variant: "outline", onClick: () => navigate('/my-membership'), children: "\u2190 Back to Dashboard" })] })] }), _jsxs(Footer, { children: [_jsx("div", { className: "thank-you", children: "Thank you for your membership!" }), _jsx("p", { children: "This invoice was generated automatically. For any questions or concerns, please contact our support team at support@tvkcanada.com or call (416) 555-0100." }), _jsx("p", { children: "TVK Canada \u2022 123 Queen Street West, Toronto, ON M5H 2M9 \u2022 www.tvkcanada.com" })] })] }) }) }));
 };

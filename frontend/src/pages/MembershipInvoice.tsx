@@ -9,6 +9,8 @@ import { theme } from '@styles/theme'
 import { Container } from '@components/Layout'
 import { Button } from '@components/Button'
 import { invoiceService } from '../services/api'
+import jsPDF from 'jspdf'
+import html2canvas from 'html2canvas'
 
 interface InvoiceData {
   id: string
@@ -415,9 +417,81 @@ export const MembershipInvoice: React.FC = () => {
     window.print()
   }
 
-  const handleDownload = () => {
-    // In a real implementation, this would generate a PDF
-    window.print()
+  const handleDownload = async () => {
+    try {
+      // Show loading state
+      const downloadBtn = document.querySelector('[data-download-btn]') as HTMLButtonElement
+      const originalText = downloadBtn?.textContent
+      if (downloadBtn) {
+        downloadBtn.disabled = true
+        downloadBtn.textContent = '📄 Generating PDF...'
+      }
+
+      const invoiceElement = document.getElementById('invoice-content')
+      if (!invoiceElement) {
+        console.error('Invoice element not found')
+        return
+      }
+
+      // Configure html2canvas for better quality
+      const canvas = await html2canvas(invoiceElement, {
+        scale: 2, // Higher resolution
+        useCORS: true,
+        allowTaint: false,
+        backgroundColor: '#ffffff',
+        logging: false,
+        width: invoiceElement.scrollWidth,
+        height: invoiceElement.scrollHeight
+      })
+
+      const imgData = canvas.toDataURL('image/png')
+      
+      // Create PDF with A4 dimensions
+      const pdf = new jsPDF({
+        orientation: 'portrait',
+        unit: 'mm',
+        format: 'a4'
+      })
+
+      // Calculate dimensions to fit the page
+      const pdfWidth = pdf.internal.pageSize.getWidth()
+      const pdfHeight = pdf.internal.pageSize.getHeight()
+      const imgWidth = canvas.width
+      const imgHeight = canvas.height
+      const ratio = Math.min(pdfWidth / imgWidth, pdfHeight / imgHeight)
+      const imgX = (pdfWidth - imgWidth * ratio) / 2
+      const imgY = 10 // Small top margin
+
+      pdf.addImage(
+        imgData,
+        'PNG',
+        imgX,
+        imgY,
+        imgWidth * ratio,
+        imgHeight * ratio
+      )
+
+      // Generate filename with invoice number and date
+      const filename = `TVK-Canada-Invoice-${invoiceData?.invoiceNumber || 'Unknown'}-${new Date().toISOString().split('T')[0]}.pdf`
+      
+      pdf.save(filename)
+
+      // Reset button state
+      if (downloadBtn) {
+        downloadBtn.disabled = false
+        downloadBtn.textContent = originalText
+      }
+    } catch (error) {
+      console.error('Error generating PDF:', error)
+      alert('Failed to generate PDF. Please try again or use the print option.')
+      
+      // Reset button state on error
+      const downloadBtn = document.querySelector('[data-download-btn]') as HTMLButtonElement
+      if (downloadBtn) {
+        downloadBtn.disabled = false
+        downloadBtn.textContent = '📄 Download PDF'
+      }
+    }
   }
 
   const formatCurrency = (amount: number) => {
@@ -472,7 +546,7 @@ export const MembershipInvoice: React.FC = () => {
   return (
     <InvoiceContainer>
       <Container>
-        <InvoiceCard>
+        <InvoiceCard id="invoice-content">
           <InvoiceHeader>
             <div className="header-content">
               <div className="company-info">
@@ -559,7 +633,7 @@ export const MembershipInvoice: React.FC = () => {
               <Button variant="primary" onClick={handlePrint}>
                 🖨️ Print Invoice
               </Button>
-              <Button variant="secondary" onClick={handleDownload}>
+              <Button variant="secondary" onClick={handleDownload} data-download-btn="true">
                 📄 Download PDF
               </Button>
               <Button variant="outline" onClick={() => navigate('/my-membership')}>
