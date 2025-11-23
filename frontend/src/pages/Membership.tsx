@@ -2,7 +2,8 @@
  * Membership Page
  */
 
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import styled from 'styled-components'
 import { theme } from '@styles/theme'
 import { Container, Section, Grid, Flex } from '@components/Layout'
@@ -241,11 +242,22 @@ export const MembershipPage: React.FC = () => {
   const [selectedPlan, setSelectedPlan] = useState<'monthly' | 'yearly' | 'student'>('yearly')
   const [showModal, setShowModal] = useState(false)
   const [showLoginModal, setShowLoginModal] = useState(false)
+  const [searchParams] = useSearchParams()
   const { isAuthenticated } = useAuth()
+
+  // Check if we should show subscription modal after login
+  useEffect(() => {
+    const showSubscription = searchParams.get('showSubscription')
+    if (showSubscription === 'true' && isAuthenticated) {
+      setShowModal(true)
+    }
+  }, [searchParams, isAuthenticated])
 
   const handleSubscribe = () => {
     // Check if user is authenticated first
     if (!isAuthenticated) {
+      // Store the intent to show subscription modal after login
+      localStorage.setItem('loginCallback', 'membership')
       setShowLoginModal(true)
       return
     }

@@ -36,6 +36,16 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const checkAuthStatus = async () => {
     try {
+      // Check for token in URL first (from Google OAuth redirect)
+      const urlParams = new URLSearchParams(window.location.search)
+      const urlToken = urlParams.get('token')
+      
+      if (urlToken) {
+        localStorage.setItem('token', urlToken)
+        // Clean up URL
+        window.history.replaceState({}, document.title, window.location.pathname)
+      }
+
       const token = localStorage.getItem('token')
       if (token) {
         const response = await authService.getProfile()

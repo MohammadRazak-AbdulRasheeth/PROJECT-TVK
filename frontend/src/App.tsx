@@ -11,6 +11,7 @@ import { MembershipProvider } from '@context/MembershipContext'
 import { AuthProvider } from '@context/AuthContext'
 import { Header } from '@components/Header'
 import { Footer } from '@components/Footer'
+import { AuthRedirectHandler } from '@components/AuthRedirectHandler'
 import { HomePage } from '@pages/Home'
 import { AboutPage } from '@pages/About'
 import { MembershipPage } from '@pages/Membership'
@@ -47,6 +48,7 @@ export const App: React.FC = () => {
       <AuthProvider>
         <MembershipProvider>
           <Router>
+            <AuthRedirectHandler />
             <ScrollToTop />
             <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
               <Header />
