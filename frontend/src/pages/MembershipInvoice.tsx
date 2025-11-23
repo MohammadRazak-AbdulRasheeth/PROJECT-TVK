@@ -465,7 +465,7 @@ export const MembershipInvoice: React.FC = () => {
       
       // Company name and subtitle - left aligned with better spacing
       addText('TVK CANADA', margin, 25, 20, true, '#FFFFFF')
-      addText('Tamil Vijay Kumar Fan Club', margin, 35, 12, false, '#FFFFFF')
+      addText('Tamizhaga Vetri Kazhagam Canada', margin, 35, 12, false, '#FFFFFF')
       addText('123 Queen Street West, Toronto, ON M5H 2M9', margin, 45, 9, false, '#FFFFFF')
       addText('support@tvkcanada.com | (416) 555-0100', margin, 52, 9, false, '#FFFFFF')
       
@@ -496,7 +496,7 @@ export const MembershipInvoice: React.FC = () => {
       yPosition += 10
       addText('TVK Canada', margin, yPosition, 11, true)
       yPosition += 7
-      addText('Official Tamil Vijay Kumar Fan Club', margin, yPosition, 9, false, '#666666')
+      addText('Tamizhaga Vetri Kazhagam Canada', margin, yPosition, 9, false, '#666666')
       yPosition += 6
       addText('123 Queen Street West', margin, yPosition, 9)
       yPosition += 5
