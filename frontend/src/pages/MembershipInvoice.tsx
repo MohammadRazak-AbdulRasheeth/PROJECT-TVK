@@ -461,51 +461,62 @@ export const MembershipInvoice: React.FC = () => {
 
       // Header - Company Name and Logo area
       pdf.setFillColor(196, 30, 58) // TVK red
-      pdf.rect(0, 0, pageWidth, 50, 'F')
+      pdf.rect(0, 0, pageWidth, 60, 'F')
       
-      addCenteredText('TVK CANADA', 25, 24, true, '#FFFFFF')
-      addCenteredText('Tamil Vijay Kumar Fan Club', 35, 14, false, '#FFFFFF')
+      // Company name and subtitle - left aligned with better spacing
+      addText('TVK CANADA', margin, 25, 20, true, '#FFFFFF')
+      addText('Tamil Vijay Kumar Fan Club', margin, 35, 12, false, '#FFFFFF')
+      addText('123 Queen Street West, Toronto, ON M5H 2M9', margin, 45, 9, false, '#FFFFFF')
+      addText('support@tvkcanada.com | (416) 555-0100', margin, 52, 9, false, '#FFFFFF')
       
-      // Invoice title and number
-      pdf.setFillColor(255, 215, 0, 0.2) // Light gold
-      pdf.rect(pageWidth - 80, 10, 70, 30, 'F')
-      pdf.setDrawColor(255, 215, 0)
-      pdf.rect(pageWidth - 80, 10, 70, 30, 'S')
+      // Invoice title and number - properly positioned on right
+      const invoiceBoxX = pageWidth - 70
+      const invoiceBoxY = 15
+      pdf.setFillColor(255, 255, 255) // White background
+      pdf.rect(invoiceBoxX, invoiceBoxY, 60, 30, 'F')
+      pdf.setDrawColor(255, 215, 0) // Gold border
+      pdf.setLineWidth(2)
+      pdf.rect(invoiceBoxX, invoiceBoxY, 60, 30, 'S')
       
-      addText('INVOICE', pageWidth - 75, 20, 14, true, '#C41E3A')
-      addText(`#${invoiceData.invoiceNumber}`, pageWidth - 75, 30, 10, false, '#C41E3A')
+      addText('INVOICE', invoiceBoxX + 5, invoiceBoxY + 12, 14, true, '#C41E3A')
+      addText(`#${invoiceData.invoiceNumber}`, invoiceBoxX + 5, invoiceBoxY + 25, 11, false, '#C41E3A')
       
-      yPosition = 70
+      yPosition = 80
 
-      // Company Info and Bill To - Two columns
-      const columnWidth = (contentWidth - 10) / 2
+      // Company Info and Bill To - Two columns with better spacing
+      const columnWidth = (contentWidth - 20) / 2
+      
+      // Add separator line
+      pdf.setDrawColor(220, 220, 220)
+      pdf.setLineWidth(1)
+      pdf.line(margin, yPosition - 5, margin + contentWidth, yPosition - 5)
       
       // Company Info (Left)
-      addText('FROM:', margin, yPosition, 10, true, '#C41E3A')
-      yPosition += 8
-      addText('TVK Canada', margin, yPosition, 10, true)
+      addText('FROM:', margin, yPosition, 11, true, '#C41E3A')
+      yPosition += 10
+      addText('TVK Canada', margin, yPosition, 11, true)
+      yPosition += 7
+      addText('Official Tamil Vijay Kumar Fan Club', margin, yPosition, 9, false, '#666666')
       yPosition += 6
       addText('123 Queen Street West', margin, yPosition, 9)
       yPosition += 5
-      addText('Toronto, ON M5H 2M9', margin, yPosition, 9)
+      addText('Toronto, ON M5H 2M9, Canada', margin, yPosition, 9)
       yPosition += 5
-      addText('Canada', margin, yPosition, 9)
+      addText('support@tvkcanada.com', margin, yPosition, 9, false, '#C41E3A')
       yPosition += 5
-      addText('Email: support@tvkcanada.com', margin, yPosition, 9)
-      yPosition += 5
-      addText('Phone: (416) 555-0100', margin, yPosition, 9)
+      addText('(416) 555-0100', margin, yPosition, 9)
       
-      // Bill To (Right)
-      let billToY = 70 + 8
-      const rightColumn = margin + columnWidth + 10
+      // Bill To (Right) - Reset yPosition for right column
+      let billToY = yPosition - 45 // Start at same level as FROM:
+      const rightColumn = margin + columnWidth + 20
       
-      addText('BILL TO:', rightColumn, billToY, 10, true, '#C41E3A')
-      billToY += 8
-      addText(invoiceData.customerName, rightColumn, billToY, 10, true)
+      addText('BILL TO:', rightColumn, billToY, 11, true, '#C41E3A')
+      billToY += 10
+      addText(invoiceData.customerName, rightColumn, billToY, 11, true)
+      billToY += 7
+      addText(`Member ID: ${invoiceData.membershipNumber}`, rightColumn, billToY, 9, false, '#666666')
       billToY += 6
-      addText(`Membership: ${invoiceData.membershipNumber}`, rightColumn, billToY, 9)
-      billToY += 5
-      addText(invoiceData.email, rightColumn, billToY, 9)
+      addText(invoiceData.email, rightColumn, billToY, 9, false, '#C41E3A')
       billToY += 5
       if (invoiceData.phone) {
         addText(invoiceData.phone, rightColumn, billToY, 9)
@@ -517,106 +528,137 @@ export const MembershipInvoice: React.FC = () => {
       billToY += 5
       addText(`${invoiceData.address.postalCode}, ${invoiceData.address.country}`, rightColumn, billToY, 9)
       
-      yPosition = Math.max(yPosition, billToY) + 15
+      yPosition = Math.max(yPosition, billToY) + 20
 
-      // Invoice Details
-      addText('INVOICE DETAILS:', margin, yPosition, 10, true, '#C41E3A')
-      yPosition += 8
+      // Invoice Details - in a clean box
+      pdf.setFillColor(248, 249, 250) // Light gray background
+      pdf.rect(margin, yPosition - 5, contentWidth, 45, 'F')
+      pdf.setDrawColor(196, 30, 58)
+      pdf.setLineWidth(1)
+      pdf.rect(margin, yPosition - 5, contentWidth, 45, 'S')
+      
+      addText('INVOICE DETAILS', margin + 5, yPosition + 5, 12, true, '#C41E3A')
+      yPosition += 15
       
       const details = [
         ['Invoice Date:', formatDate(invoiceData.issuedDate)],
         ['Due Date:', formatDate(invoiceData.dueDate)],
         ...(invoiceData.paidDate ? [['Paid Date:', formatDate(invoiceData.paidDate)]] : []),
-        ['Payment Method:', invoiceData.paymentMethod],
-        ['Status:', invoiceData.status.toUpperCase()]
+        ['Payment Method:', invoiceData.paymentMethod]
       ]
       
-      details.forEach(([label, value]) => {
-        addText(label, margin, yPosition, 9, true)
-        addText(value, margin + 35, yPosition, 9)
-        yPosition += 6
+      // Display details in two columns
+      details.forEach(([label, value], index) => {
+        const col = index % 2
+        const row = Math.floor(index / 2)
+        const xPos = margin + 5 + (col * (contentWidth / 2))
+        const yPos = yPosition + (row * 7)
+        
+        addText(label, xPos, yPos, 9, true)
+        addText(value, xPos + 40, yPos, 9)
       })
       
-      yPosition += 10
+      yPosition += 35
 
-      // Items Table
-      // Table header
-      pdf.setFillColor(196, 30, 58, 0.1)
-      pdf.rect(margin, yPosition - 2, contentWidth, 12, 'F')
-      pdf.setDrawColor(196, 30, 58)
-      pdf.rect(margin, yPosition - 2, contentWidth, 12, 'S')
-      
-      addText('DESCRIPTION', margin + 2, yPosition + 6, 10, true, '#C41E3A')
-      addText('QTY', margin + contentWidth * 0.6, yPosition + 6, 10, true, '#C41E3A')
-      addText('UNIT PRICE', margin + contentWidth * 0.7, yPosition + 6, 10, true, '#C41E3A')
-      addText('AMOUNT', margin + contentWidth * 0.85, yPosition + 6, 10, true, '#C41E3A')
-      
-      yPosition += 15
-      
-      // Table row
-      pdf.setDrawColor(220, 220, 220)
-      pdf.line(margin, yPosition + 8, margin + contentWidth, yPosition + 8)
-      
-      addText(`${invoiceData.membershipType} Membership`, margin + 2, yPosition + 3, 10, true)
-      addText('Annual membership with premium benefits', margin + 2, yPosition + 8, 8, false, '#666666')
-      addText('1', margin + contentWidth * 0.6, yPosition + 3, 10)
-      addText(formatCurrency(invoiceData.subtotal), margin + contentWidth * 0.7, yPosition + 3, 10)
-      addText(formatCurrency(invoiceData.subtotal), margin + contentWidth * 0.85, yPosition + 3, 10, true)
-      
-      yPosition += 20
-
-      // Totals section
-      const totalsX = margin + contentWidth * 0.6
-      const amountX = margin + contentWidth * 0.85
-      
-      pdf.setDrawColor(220, 220, 220)
-      pdf.line(totalsX, yPosition, margin + contentWidth, yPosition)
-      yPosition += 8
-      
-      addText('Subtotal:', totalsX, yPosition, 10)
-      addText(formatCurrency(invoiceData.subtotal), amountX, yPosition, 10)
-      yPosition += 8
-      
-      addText('HST (13%):', totalsX, yPosition, 10)
-      addText(formatCurrency(invoiceData.taxAmount), amountX, yPosition, 10)
+      // Items Table with better styling
       yPosition += 10
       
-      // Total - highlighted
-      pdf.setFillColor(196, 30, 58, 0.1)
-      pdf.rect(totalsX - 2, yPosition - 5, contentWidth * 0.4 + 4, 12, 'F')
+      // Table header with improved colors
+      pdf.setFillColor(248, 249, 250) // Light gray instead of dark red
+      pdf.rect(margin, yPosition - 2, contentWidth, 15, 'F')
       pdf.setDrawColor(196, 30, 58)
-      pdf.rect(totalsX - 2, yPosition - 5, contentWidth * 0.4 + 4, 12, 'S')
+      pdf.setLineWidth(2)
+      pdf.rect(margin, yPosition - 2, contentWidth, 15, 'S')
       
-      addText('TOTAL:', totalsX, yPosition + 2, 12, true, '#C41E3A')
-      addText(formatCurrency(invoiceData.total), amountX, yPosition + 2, 12, true, '#C41E3A')
+      addText('DESCRIPTION', margin + 3, yPosition + 8, 10, true, '#C41E3A')
+      addText('QTY', margin + contentWidth * 0.65, yPosition + 8, 10, true, '#C41E3A')
+      addText('UNIT PRICE', margin + contentWidth * 0.75, yPosition + 8, 10, true, '#C41E3A')
+      addText('AMOUNT', margin + contentWidth * 0.88, yPosition + 8, 10, true, '#C41E3A')
+      
+      yPosition += 18
+      
+      // Table row with proper spacing
+      pdf.setFillColor(255, 255, 255) // White background
+      pdf.rect(margin, yPosition - 2, contentWidth, 20, 'F')
+      pdf.setDrawColor(220, 220, 220)
+      pdf.setLineWidth(1)
+      pdf.rect(margin, yPosition - 2, contentWidth, 20, 'S')
+      
+      addText(`${invoiceData.membershipType} Membership`, margin + 3, yPosition + 6, 11, true)
+      addText('Premium benefits and exclusive member access', margin + 3, yPosition + 12, 8, false, '#666666')
+      addText('1', margin + contentWidth * 0.65, yPosition + 6, 10)
+      addText(formatCurrency(invoiceData.subtotal), margin + contentWidth * 0.75, yPosition + 6, 10)
+      addText(formatCurrency(invoiceData.subtotal), margin + contentWidth * 0.88, yPosition + 6, 10, true, '#C41E3A')
       
       yPosition += 25
 
-      // Payment Status
+      // Totals section with better alignment
+      const totalsX = margin + contentWidth * 0.55
+      const labelX = totalsX + 5
+      const amountX = margin + contentWidth * 0.88
+      
+      // Subtotal and tax
+      pdf.setDrawColor(220, 220, 220)
+      pdf.line(totalsX, yPosition, margin + contentWidth, yPosition)
+      yPosition += 10
+      
+      addText('Subtotal:', labelX, yPosition, 10)
+      addText(formatCurrency(invoiceData.subtotal), amountX, yPosition, 10)
+      yPosition += 8
+      
+      addText('HST (13%):', labelX, yPosition, 10)
+      addText(formatCurrency(invoiceData.taxAmount), amountX, yPosition, 10)
+      yPosition += 12
+      
+      // Total - properly highlighted
+      pdf.setFillColor(248, 249, 250)
+      pdf.rect(totalsX, yPosition - 6, contentWidth * 0.45, 16, 'F')
+      pdf.setDrawColor(196, 30, 58)
+      pdf.setLineWidth(2)
+      pdf.rect(totalsX, yPosition - 6, contentWidth * 0.45, 16, 'S')
+      
+      addText('TOTAL AMOUNT:', labelX, yPosition + 3, 12, true, '#C41E3A')
+      addText(formatCurrency(invoiceData.total), amountX, yPosition + 3, 12, true, '#C41E3A')
+      
+      yPosition += 25
+      
+      // Payment Status with better positioning
       if (invoiceData.status === 'paid') {
         pdf.setFillColor(76, 175, 80, 0.2)
+        pdf.rect(margin, yPosition - 3, 80, 12, 'F')
         pdf.setDrawColor(76, 175, 80)
-        addText('✓ PAID IN FULL', margin, yPosition, 12, true, '#4CAF50')
+        pdf.rect(margin, yPosition - 3, 80, 12, 'S')
+        addText('✓ PAID IN FULL', margin + 5, yPosition + 4, 11, true, '#4CAF50')
       } else {
         pdf.setFillColor(255, 152, 0, 0.2)
+        pdf.rect(margin, yPosition - 3, 100, 12, 'F')
         pdf.setDrawColor(255, 152, 0)
-        addText('⏳ PAYMENT PENDING', margin, yPosition, 12, true, '#FF9800')
+        pdf.rect(margin, yPosition - 3, 100, 12, 'S')
+        addText('⏳ PAYMENT PENDING', margin + 5, yPosition + 4, 11, true, '#FF9800')
       }
       
-      yPosition += 20
+      yPosition += 25
 
-      // Footer
-      if (yPosition > pageHeight - 60) {
+      // Professional Footer
+      if (yPosition > pageHeight - 70) {
         pdf.addPage()
         yPosition = margin
       }
       
+      // Footer separator
       pdf.setDrawColor(196, 30, 58)
-      pdf.line(margin, pageHeight - 40, margin + contentWidth, pageHeight - 40)
+      pdf.setLineWidth(2)
+      pdf.line(margin, pageHeight - 50, margin + contentWidth, pageHeight - 50)
       
-      addCenteredText('Thank you for your membership!', pageHeight - 30, 12, true, '#C41E3A')
-      addCenteredText('This invoice was generated automatically. For questions, contact support@tvkcanada.com', pageHeight - 22, 8)
-      addCenteredText('TVK Canada • www.tvkcanada.com', pageHeight - 15, 8)
+      // Thank you message
+      addCenteredText('Thank you for your membership with TVK Canada!', pageHeight - 38, 12, true, '#C41E3A')
+      
+      // Support information
+      addCenteredText('Questions? Contact our support team:', pageHeight - 28, 9, false, '#666666')
+      addCenteredText('support@tvkcanada.com • (416) 555-0100', pageHeight - 21, 9, false, '#C41E3A')
+      
+      // Website and address
+      addCenteredText('TVK Canada • www.tvkcanada.com', pageHeight - 12, 8, false, '#666666')
 
       // Generate filename and save
       const filename = `TVK-Canada-Invoice-${invoiceData.invoiceNumber}-${new Date().toISOString().split('T')[0]}.pdf`
