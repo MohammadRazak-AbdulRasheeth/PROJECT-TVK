@@ -397,12 +397,18 @@ export const Header = () => {
         const token = urlParams.get('token');
         if (token) {
             localStorage.setItem('token', token);
-            // Clean URL safely
+            // Clean URL by removing the token parameter
             try {
-                const cleanUrl = window.location.origin + window.location.pathname;
+                const url = new URL(window.location);
+                url.searchParams.delete('token');
+                const cleanUrl = url.toString();
                 window.history.replaceState({}, document.title, cleanUrl);
             } catch (error) {
                 console.warn('Could not clean URL:', error);
+                // Fallback: just reload without token
+                setTimeout(() => {
+                    window.location.href = window.location.origin + window.location.pathname;
+                }, 100);
             }
             // Fetch user profile
             fetchUserProfile();
