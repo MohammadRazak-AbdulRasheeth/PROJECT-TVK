@@ -275,8 +275,14 @@ export const MembershipModal: React.FC<MembershipModalProps> = ({ isOpen, onClos
         setError('No checkout URL received from server')
       }
     } catch (err: any) {
-      console.error('Subscription error:', err)
+      console.log('Subscription error:', err)
       console.error('Error response:', err.response?.data)
+      console.error('Full error object:', {
+        status: err.response?.status,
+        statusText: err.response?.statusText,
+        data: err.response?.data,
+        message: err.message
+      })
       setError(err.response?.data?.message || err.message || 'Failed to create subscription. Please try again.')
     } finally {
       setLoading(false)

@@ -93,16 +93,55 @@ router.get('/plans', (req, res) => {
 });
 
 // Simple subscription endpoint (minimal auth, for testing)
-router.post('/simple-subscription', async (req, res) => {
+router.post('/simple-subscription', upload.fields([
+  { name: 'studentId', maxCount: 1 },
+  { name: 'timetable', maxCount: 1 }
+]), async (req, res) => {
   try {
     console.log('Simple subscription request received');
     console.log('Request body:', req.body);
+    console.log('Request files:', req.files);
     
     const { plan, firstName, lastName, email, phone } = req.body;
 
+    console.log('Extracted fields:', { plan, firstName, lastName, email, phone });
+
     // Validate required fields
     if (!plan || !firstName || !lastName || !email || !phone) {
-      return res.status(400).json({ message: 'Missing required fields' });
+      console.log('Validation failed - missing fields:', {
+        plan: !!plan,
+        firstName: !!firstName, 
+        lastName: !!lastName,
+        email: !!email,
+        phone: !!phone
+      });
+      return res.status(400).json({ 
+        message: 'Missing required fields',
+        required: ['plan', 'firstName', 'lastName', 'email', 'phone'],
+        received: { plan, firstName, lastName, email, phone }
+      });
+    }
+
+    // Student plan validation
+    if (plan === 'student') {
+      const { university, program } = req.body;
+      if (!university || !program || !req.files?.studentId || !req.files?.timetable) {
+        console.log('Student validation failed:', {
+          university: !!university,
+          program: !!program,
+          studentId: !!req.files?.studentId,
+          timetable: !!req.files?.timetable
+        });
+        return res.status(400).json({ 
+          message: 'Student verification documents and details are required',
+          required: ['university', 'program', 'studentId file', 'timetable file'],
+          received: { 
+            university, 
+            program, 
+            files: Object.keys(req.files || {})
+          }
+        });
+      }
     }
 
     // Get plan pricing
@@ -110,7 +149,7 @@ router.post('/simple-subscription', async (req, res) => {
     const price = planPrices[plan];
     
     if (!price) {
-      return res.status(400).json({ message: 'Invalid plan selected' });
+      return res.status(400).json({ message: 'Invalid plan selected', validPlans: Object.keys(planPrices) });
     }
 
     console.log('Creating Stripe session for plan:', plan, 'price:', price);
