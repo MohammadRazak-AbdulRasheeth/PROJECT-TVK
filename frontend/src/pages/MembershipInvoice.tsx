@@ -622,6 +622,12 @@ export const MembershipInvoice: React.FC = () => {
       
       yPosition += 25
       
+      // Check if we need a new page before payment status
+      if (yPosition > pageHeight - 80) {
+        pdf.addPage()
+        yPosition = margin + 20
+      }
+
       // Payment Status with better positioning
       if (invoiceData.status === 'paid') {
         pdf.setFillColor(76, 175, 80, 0.2)
@@ -639,10 +645,10 @@ export const MembershipInvoice: React.FC = () => {
       
       yPosition += 25
 
-      // Professional Footer
-      if (yPosition > pageHeight - 70) {
+      // Professional Footer - ensure enough space
+      if (yPosition > pageHeight - 80) {
         pdf.addPage()
-        yPosition = margin
+        yPosition = margin + 20
       }
       
       // Footer separator
