@@ -55,10 +55,13 @@ const float = keyframes`
 // Enhanced Styled Components
 const DashboardContainer = styled.div`
   min-height: 100vh;
-  background: linear-gradient(135deg, 
-    ${theme.colors.background} 0%, 
-    rgba(196, 30, 58, 0.03) 50%, 
-    ${theme.colors.background} 100%);
+  background: 
+    radial-gradient(circle at 20% 80%, rgba(196, 30, 58, 0.08) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(255, 215, 0, 0.08) 0%, transparent 50%),
+    linear-gradient(135deg, 
+      ${theme.colors.background} 0%, 
+      #f8f9fa 50%, 
+      ${theme.colors.background} 100%);
   position: relative;
   overflow: hidden;
 
@@ -68,9 +71,22 @@ const DashboardContainer = styled.div`
     top: 0;
     left: 0;
     right: 0;
-    height: 200px;
-    background: linear-gradient(135deg, ${theme.colors.primary} 0%, #8b1428 100%);
-    opacity: 0.1;
+    height: 300px;
+    background: linear-gradient(135deg, 
+      rgba(196, 30, 58, 0.1) 0%, 
+      rgba(255, 215, 0, 0.05) 50%,
+      transparent 100%);
+    z-index: 0;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(255, 215, 0, 0.05) 0%, transparent 70%);
     z-index: 0;
   }
 `
@@ -172,28 +188,30 @@ const StatusBadge = styled.span<{ status: string }>`
 `
 
 const PremiumCard = styled.div`
-  background: linear-gradient(135deg, 
-    rgba(255, 255, 255, 0.95) 0%, 
-    rgba(255, 255, 255, 0.9) 100%);
+  background: 
+    linear-gradient(135deg, 
+      rgba(255, 255, 255, 0.95) 0%, 
+      rgba(255, 255, 255, 0.85) 100%);
   backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: ${theme.borderRadius['3xl']};
   padding: ${theme.spacing.xxxl};
   margin-bottom: ${theme.spacing.xl};
   box-shadow: 
-    0 20px 40px rgba(0, 0, 0, 0.1),
-    0 10px 20px rgba(0, 0, 0, 0.05),
-    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+    0 25px 50px rgba(0, 0, 0, 0.08),
+    0 15px 30px rgba(0, 0, 0, 0.04),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
   position: relative;
   overflow: hidden;
   transition: all ${theme.transitions.smooth};
   animation: ${fadeInUp} 0.8s ease-out 0.2s both;
 
   &:hover {
-    transform: translateY(-5px);
+    transform: translateY(-8px);
     box-shadow: 
-      0 25px 50px rgba(0, 0, 0, 0.15),
-      0 15px 25px rgba(0, 0, 0, 0.08);
+      0 35px 70px rgba(0, 0, 0, 0.12),
+      0 20px 40px rgba(0, 0, 0, 0.06);
+    border-color: rgba(196, 30, 58, 0.2);
   }
 
   &::before {
@@ -202,9 +220,21 @@ const PremiumCard = styled.div`
     top: 0;
     left: 0;
     right: 0;
-    height: 4px;
-    background: linear-gradient(90deg, ${theme.colors.primary} 0%, ${theme.colors.secondary} 100%);
+    height: 6px;
+    background: linear-gradient(90deg, ${theme.colors.primary} 0%, ${theme.colors.secondary} 50%, ${theme.colors.primary} 100%);
     border-radius: ${theme.borderRadius.lg} ${theme.borderRadius.lg} 0 0;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 100px;
+    height: 100px;
+    background: radial-gradient(circle, rgba(255, 215, 0, 0.1) 0%, transparent 70%);
+    border-radius: 50%;
+    animation: ${float} 8s ease-in-out infinite;
   }
 
   @media (max-width: ${theme.breakpoints.tablet}) {
@@ -888,6 +918,9 @@ export const MembershipDashboard: React.FC = () => {
                       📱 Download Digital Card
                     </EnhancedButton>
                   )}
+                  <EnhancedButton variant="outline" onClick={() => window.location.href = `/invoice?id=${membershipData.id}`}>
+                    🧾 View Invoice
+                  </EnhancedButton>
                   <EnhancedButton variant="outline" onClick={() => window.location.href = '/events'}>
                     🎟️ Upcoming Events
                   </EnhancedButton>

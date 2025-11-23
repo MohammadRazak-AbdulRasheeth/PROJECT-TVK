@@ -54,6 +54,19 @@ export const membershipService = {
   }
 }
 
+// Invoice services
+export const invoiceService = {
+  getMembershipInvoice: async (membershipId: string) => {
+    const response = await api.get(`/invoices/membership/${membershipId}`)
+    return response.data
+  },
+
+  getUserInvoices: async () => {
+    const response = await api.get('/invoices/user')
+    return response.data
+  }
+}
+
 // Event services
 export const eventService = {
   getEvents: async () => {
