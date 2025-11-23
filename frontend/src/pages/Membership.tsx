@@ -236,6 +236,39 @@ const FAQItem = styled.details`
   }
 `
 
+const CurrentPlanBadge = styled.div`
+  position: absolute;
+  top: ${theme.spacing.sm};
+  left: ${theme.spacing.sm};
+  right: ${theme.spacing.sm};
+  background: linear-gradient(135deg, ${theme.colors.secondary} 0%, #ffed4e 100%);
+  color: ${theme.colors.text.primary};
+  padding: ${theme.spacing.sm} ${theme.spacing.md};
+  border-radius: ${theme.borderRadius.lg};
+  font-size: ${theme.typography.fontSize.sm};
+  font-weight: ${theme.typography.fontWeight.bold};
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  text-align: center;
+  box-shadow: ${theme.shadows.lg};
+  z-index: 2;
+  animation: glow 2s ease-in-out infinite alternate;
+
+  @keyframes glow {
+    from {
+      box-shadow: ${theme.shadows.lg};
+    }
+    to {
+      box-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+    }
+  }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    font-size: ${theme.typography.fontSize.xs};
+    padding: ${theme.spacing.xs} ${theme.spacing.sm};
+  }
+`
+
 const ActivatedBadge = styled.div`
   position: absolute;
   top: ${theme.spacing.sm};
@@ -385,18 +418,23 @@ export const MembershipPage: React.FC = () => {
 
           <Grid columns={3} gap={theme.spacing.xl}>
             <PricingCard featured={selectedPlan === 'monthly'}>
-              {isPlanActivated('monthly') && <ActivatedBadge>✓ Activated</ActivatedBadge>}
+              {isPlanActivated('monthly') && <CurrentPlanBadge>✓ Your Current Plan</CurrentPlanBadge>}
               <h3>Monthly</h3>
               <div className="price">
                 $10<span>/month</span>
               </div>
               <Button
-                variant={selectedPlan === 'monthly' ? 'secondary' : 'outline'}
+                variant={isPlanActivated('monthly') ? 'secondary' : selectedPlan === 'monthly' ? 'secondary' : 'outline'}
                 fullWidth
-                onClick={() => setSelectedPlan('monthly')}
+                onClick={() => !isPlanActivated('monthly') && setSelectedPlan('monthly')}
                 disabled={isPlanActivated('monthly')}
+                style={{
+                  background: isPlanActivated('monthly') ? `linear-gradient(135deg, ${theme.colors.secondary} 0%, #ffed4e 100%)` : undefined,
+                  color: isPlanActivated('monthly') ? theme.colors.text.primary : undefined,
+                  cursor: isPlanActivated('monthly') ? 'default' : 'pointer'
+                }}
               >
-                {isPlanActivated('monthly') ? 'Current Plan' : selectedPlan === 'monthly' ? 'Selected' : 'Choose Plan'}
+                {isPlanActivated('monthly') ? '✓ Active Plan' : selectedPlan === 'monthly' ? 'Selected' : 'Choose Plan'}
               </Button>
               <ul>
                 <li>Official TVK Canada membership card</li>
@@ -408,18 +446,23 @@ export const MembershipPage: React.FC = () => {
             </PricingCard>
 
             <PricingCard featured={selectedPlan === 'yearly'}>
-              {isPlanActivated('yearly') && <ActivatedBadge>✓ Activated</ActivatedBadge>}
+              {isPlanActivated('yearly') && <CurrentPlanBadge>✓ Your Current Plan</CurrentPlanBadge>}
               <h3>Annual - Save $20!</h3>
               <div className="price">
                 $100<span>/year</span>
               </div>
               <Button
-                variant={selectedPlan === 'yearly' ? 'secondary' : 'outline'}
+                variant={isPlanActivated('yearly') ? 'secondary' : selectedPlan === 'yearly' ? 'secondary' : 'outline'}
                 fullWidth
-                onClick={() => setSelectedPlan('yearly')}
+                onClick={() => !isPlanActivated('yearly') && setSelectedPlan('yearly')}
                 disabled={isPlanActivated('yearly')}
+                style={{
+                  background: isPlanActivated('yearly') ? `linear-gradient(135deg, ${theme.colors.secondary} 0%, #ffed4e 100%)` : undefined,
+                  color: isPlanActivated('yearly') ? theme.colors.text.primary : undefined,
+                  cursor: isPlanActivated('yearly') ? 'default' : 'pointer'
+                }}
               >
-                {isPlanActivated('yearly') ? 'Current Plan' : selectedPlan === 'yearly' ? 'Selected' : 'Choose Plan'}
+                {isPlanActivated('yearly') ? '✓ Active Plan' : selectedPlan === 'yearly' ? 'Selected' : 'Choose Plan'}
               </Button>
               <ul>
                 <li>Official TVK Canada membership card</li>
@@ -432,18 +475,23 @@ export const MembershipPage: React.FC = () => {
             </PricingCard>
 
             <PricingCard featured={selectedPlan === 'student'}>
-              {isPlanActivated('student') && <ActivatedBadge>✓ Activated</ActivatedBadge>}
+              {isPlanActivated('student') && <CurrentPlanBadge>✓ Your Current Plan</CurrentPlanBadge>}
               <h3>Student</h3>
               <div className="price">
                 $5<span>/month</span>
               </div>
               <Button
-                variant={selectedPlan === 'student' ? 'secondary' : 'outline'}
+                variant={isPlanActivated('student') ? 'secondary' : selectedPlan === 'student' ? 'secondary' : 'outline'}
                 fullWidth
-                onClick={() => setSelectedPlan('student')}
+                onClick={() => !isPlanActivated('student') && setSelectedPlan('student')}
                 disabled={isPlanActivated('student')}
+                style={{
+                  background: isPlanActivated('student') ? `linear-gradient(135deg, ${theme.colors.secondary} 0%, #ffed4e 100%)` : undefined,
+                  color: isPlanActivated('student') ? theme.colors.text.primary : undefined,
+                  cursor: isPlanActivated('student') ? 'default' : 'pointer'
+                }}
               >
-                {isPlanActivated('student') ? 'Current Plan' : selectedPlan === 'student' ? 'Selected' : 'Choose Plan'}
+                {isPlanActivated('student') ? '✓ Active Plan' : selectedPlan === 'student' ? 'Selected' : 'Choose Plan'}
               </Button>
               <ul>
                 <li>Student ID verification required</li>

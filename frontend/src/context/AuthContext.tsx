@@ -44,6 +44,46 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null)
   const [isLoading, setIsLoading] = useState(true)
 
+  const normalizeUser = (raw: any): User => {
+    if (!raw || typeof raw !== 'object') {
+      return {
+        id: 'unknown',
+        name: 'Member',
+        email: 'member@example.com',
+        isVerified: false,
+        createdAt: new Date().toISOString(),
+        membership: { hasActiveMembership: false }
+      }
+    }
+    
+    // Try multiple name sources and clean them
+    let nameSource = ''
+    if (raw.name && typeof raw.name === 'string') {
+      nameSource = raw.name.trim()
+    } else if (raw.firstName || raw.lastName) {
+      nameSource = `${raw.firstName || ''} ${raw.lastName || ''}`.trim()
+    } else if (raw.given_name || raw.family_name) {
+      nameSource = `${raw.given_name || ''} ${raw.family_name || ''}`.trim()
+    }
+    
+    // Filter out bad names
+    const isBadName = !nameSource || 
+                      nameSource.includes('undefined') || 
+                      nameSource.includes('null') || 
+                      nameSource === 'null null' ||
+                      nameSource.trim() === ''
+    const fallbackName = raw.email?.split('@')[0] || 'Member'
+    
+    return {
+      id: raw.id || raw._id || raw.sub || 'unknown',
+      name: isBadName ? fallbackName : nameSource,
+      email: raw.email || 'member@example.com',
+      isVerified: !!raw.isVerified || !!raw.email_verified,
+      createdAt: raw.createdAt || new Date().toISOString(),
+      membership: raw.membership || { hasActiveMembership: false }
+    }
+  }
+
   const checkAuthStatus = async () => {
     try {
       // Check for token in URL first (from Google OAuth redirect)
@@ -60,8 +100,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       if (token) {
         try {
           const response = await authService.getProfile()
-          setUser(response)
-          console.log('Auth check successful:', response)
+          const normalized = normalizeUser(response)
+          setUser(normalized)
+          console.log('Auth check successful - Raw:', response)
+          console.log('Auth check successful - Normalized:', normalized)
         } catch (error: any) {
           console.log('Profile fetch failed:', error.response?.status)
           // If token is invalid (401, 403), clear it and user state
@@ -79,14 +121,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
               const derivedEmail = payload.email || 'user@example.com'
               
               if (payload.id || payload.sub) {
-                setUser({
-                  id: payload.id || payload.sub,
-                  name: derivedName,
-                  email: derivedEmail,
-                  isVerified: !!payload.email_verified,
-                  createdAt: new Date().toISOString(),
-                  membership: { hasActiveMembership: false }
-                })
+                const fallbackUser = normalizeUser(payload)
+                setUser(fallbackUser)
               }
             } catch (tokenError) {
               console.log('Token decode failed:', tokenError)
