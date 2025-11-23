@@ -99,8 +99,20 @@ router.post('/simple-subscription', upload.fields([
 ]), async (req, res) => {
   try {
     console.log('Simple subscription request received');
+    console.log('Request headers:', {
+      'user-agent': req.get('User-Agent'),
+      'content-type': req.get('Content-Type'),
+      'content-length': req.get('Content-Length'),
+      'origin': req.get('Origin'),
+      'referer': req.get('Referer')
+    });
     console.log('Request body:', req.body);
     console.log('Request files:', req.files);
+    
+    // Mobile device detection
+    const userAgent = req.get('User-Agent') || '';
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent);
+    console.log('Mobile detection:', { isMobile, userAgent });
     
     const { 
       plan, 

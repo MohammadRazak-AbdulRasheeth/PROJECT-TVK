@@ -15,26 +15,33 @@ app.use(cors({
   origin: function (origin, callback) {
     const allowedOrigins = [
       'http://localhost:3000',
+      'http://localhost:3001',
       'https://tvkcanada.netlify.app',
       'https://project-tvk-mohammadrazak-abdulrasheeths-projects.vercel.app/',
       process.env.FRONTEND_URL?.replace(/\/$/, ''), // Remove trailing slash
-      process.env.FRONTEND_URL
+      process.env.FRONTEND_URL,
+      // Mobile development addresses
+      'http://192.168.1.0/24',
+      'http://10.0.0.0/8'
     ].filter(Boolean);
     
-    if (!origin || allowedOrigins.includes(origin)) {
+    // Allow mobile development IPs (local network)
+    if (!origin || allowedOrigins.includes(origin) || 
+        (origin && origin.match(/^http:\/\/(192\.168\.|10\.|172\.)/))) {
       callback(null, true);
     } else {
       callback(new Error('Not allowed by CORS'));
     }
   },
-  credentials: true
+  credentials: true,
+  optionsSuccessStatus: 200 // Support legacy browsers
 }));
 
 // Stripe webhook needs raw body, so register it before express.json()
 app.use('/api/memberships/webhook', express.raw({ type: 'application/json' }));
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.json({ limit: '10mb' })); // Increased for mobile uploads
+app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
 // Session for OAuth - production ready
 // Note: MemoryStore warning is expected in this simple setup

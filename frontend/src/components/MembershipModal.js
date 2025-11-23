@@ -183,7 +183,26 @@ export const MembershipModal = ({ isOpen, onClose, selectedPlan }) => {
     const handleFileUpload = (e, fieldName) => {
         const file = e.target.files?.[0];
         if (file) {
+            // Mobile-specific file size validation (5MB limit)
+            const maxSize = 5 * 1024 * 1024; // 5MB
+            if (file.size > maxSize) {
+                setError(`File "${file.name}" is too large. Please use a file smaller than 5MB.`);
+                return;
+            }
+            // Validate file type
+            const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'application/pdf'];
+            if (!allowedTypes.includes(file.type)) {
+                setError(`File type "${file.type}" is not supported. Please use JPG, PNG, or PDF.`);
+                return;
+            }
+            console.log('File selected:', {
+                name: file.name,
+                size: (file.size / 1024 / 1024).toFixed(2) + 'MB',
+                type: file.type,
+                fieldName: fieldName
+            });
             setFormData(prev => ({ ...prev, [fieldName]: file }));
+            setError(''); // Clear any previous errors
         }
     };
     const validateForm = () => {
@@ -206,60 +225,105 @@ export const MembershipModal = ({ isOpen, onClose, selectedPlan }) => {
             return;
         }
         setLoading(true);
-        try {
-            const formDataToSubmit = new FormData();
-            // Add basic fields
-            formDataToSubmit.append('plan', selectedPlan);
-            formDataToSubmit.append('firstName', formData.firstName);
-            formDataToSubmit.append('lastName', formData.lastName);
-            formDataToSubmit.append('email', formData.email);
-            formDataToSubmit.append('phone', formData.phone);
-            formDataToSubmit.append('address', formData.address);
-            formDataToSubmit.append('city', formData.city);
-            formDataToSubmit.append('province', formData.province);
-            formDataToSubmit.append('postalCode', formData.postalCode);
-            // Add student fields if applicable
-            if (selectedPlan === 'student') {
-                formDataToSubmit.append('university', formData.university);
-                formDataToSubmit.append('program', formData.program);
-                if (formData.studentId)
-                    formDataToSubmit.append('studentId', formData.studentId);
-                if (formData.timetable)
-                    formDataToSubmit.append('timetable', formData.timetable);
+        // Mobile-specific retry logic
+        const maxRetries = 3;
+        let retryCount = 0;
+        while (retryCount < maxRetries) {
+            try {
+                const formDataToSubmit = new FormData();
+                // Add basic fields
+                formDataToSubmit.append('plan', selectedPlan);
+                formDataToSubmit.append('firstName', formData.firstName);
+                formDataToSubmit.append('lastName', formData.lastName);
+                formDataToSubmit.append('email', formData.email);
+                formDataToSubmit.append('phone', formData.phone);
+                formDataToSubmit.append('address', formData.address);
+                formDataToSubmit.append('city', formData.city);
+                formDataToSubmit.append('province', formData.province);
+                formDataToSubmit.append('postalCode', formData.postalCode);
+                // Add student fields if applicable
+                if (selectedPlan === 'student') {
+                    formDataToSubmit.append('university', formData.university);
+                    formDataToSubmit.append('program', formData.program);
+                    if (formData.studentId)
+                        formDataToSubmit.append('studentId', formData.studentId);
+                    if (formData.timetable)
+                        formDataToSubmit.append('timetable', formData.timetable);
+                }
+                console.log('Submitting subscription (attempt:', retryCount + 1, '):', selectedPlan);
+                console.log('Mobile detection:', {
+                    userAgent: navigator.userAgent,
+                    isMobile: /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent),
+                    connection: navigator.connection?.effectiveType
+                });
+                const response = await membershipService.createSubscription(formDataToSubmit);
+                console.log('Subscription response (attempt:', retryCount + 1, '):', response);
+                // Success - redirect to Stripe checkout
+                if (response.checkoutUrl) {
+                    console.log('Redirecting to Stripe (attempt:', retryCount + 1, '):', response.checkoutUrl);
+                    // Mobile-specific redirect handling
+                    if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+                        // For mobile devices, use window.open for better compatibility
+                        const popup = window.open(response.checkoutUrl, '_self');
+                        if (!popup) {
+                            // Fallback if popup blocked
+                            window.location.href = response.checkoutUrl;
+                        }
+                    }
+                    else {
+                        window.location.href = response.checkoutUrl;
+                    }
+                    return; // Success, exit function
+                }
+                else {
+                    throw new Error('No checkout URL received from server');
+                }
             }
-            console.log('Submitting subscription:', selectedPlan);
-            console.log('Form data preview:', {
-                plan: selectedPlan,
-                firstName: formData.firstName,
-                email: formData.email,
-                hasStudentId: !!formData.studentId,
-                hasTimetable: !!formData.timetable
-            });
-            const response = await membershipService.createSubscription(formDataToSubmit);
-            console.log('Subscription response:', response);
-            // Redirect to Stripe checkout
-            if (response.checkoutUrl) {
-                console.log('Redirecting to Stripe:', response.checkoutUrl);
-                window.location.href = response.checkoutUrl;
-            }
-            else {
-                setError('No checkout URL received from server');
+            catch (err) {
+                retryCount++;
+                console.log(`Subscription error (attempt ${retryCount}):`, err);
+                // Check if it's a network error that should be retried
+                const isRetryableError = err.code === 'NETWORK_ERROR' ||
+                    err.code === 'TIMEOUT' ||
+                    err.message?.includes('Network Error') ||
+                    err.message?.includes('timeout') ||
+                    (err.response?.status >= 500 && err.response?.status <= 599);
+                if (retryCount < maxRetries && isRetryableError) {
+                    console.log(`Retrying in ${retryCount * 1000}ms...`);
+                    await new Promise(resolve => setTimeout(resolve, retryCount * 1000)); // Progressive delay
+                    continue; // Retry
+                }
+                // Final error handling
+                console.error('Final error response:', err.response?.data);
+                console.error('Full error object:', {
+                    status: err.response?.status,
+                    statusText: err.response?.statusText,
+                    data: err.response?.data,
+                    message: err.message,
+                    code: err.code
+                });
+                // Mobile-specific error messages
+                let errorMessage = 'Failed to create subscription. Please try again.';
+                if (err.code === 'NETWORK_ERROR' || err.message?.includes('Network Error')) {
+                    errorMessage = 'Network connection issue. Please check your internet connection and try again.';
+                }
+                else if (err.code === 'TIMEOUT' || err.message?.includes('timeout')) {
+                    errorMessage = 'Request timed out. Please check your connection and try again.';
+                }
+                else if (err.response?.status === 413) {
+                    errorMessage = 'File size too large. Please use smaller images for student documents.';
+                }
+                else if (err.response?.status >= 500) {
+                    errorMessage = 'Server error. Please try again in a few moments.';
+                }
+                else if (err.response?.data?.message) {
+                    errorMessage = err.response.data.message;
+                }
+                setError(errorMessage);
+                break; // Exit retry loop
             }
         }
-        catch (err) {
-            console.log('Subscription error:', err);
-            console.error('Error response:', err.response?.data);
-            console.error('Full error object:', {
-                status: err.response?.status,
-                statusText: err.response?.statusText,
-                data: err.response?.data,
-                message: err.message
-            });
-            setError(err.response?.data?.message || err.message || 'Failed to create subscription. Please try again.');
-        }
-        finally {
-            setLoading(false);
-        }
+        setLoading(false);
     };
     if (!isOpen)
         return null;

@@ -7,9 +7,16 @@ export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localho
 import axios from 'axios';
 const api = axios.create({
     baseURL: API_BASE_URL,
+    timeout: 60000, // 60 seconds timeout for mobile networks
     headers: {
         'Content-Type': 'application/json',
     },
+    // Mobile-specific configurations
+    withCredentials: false,
+    maxRedirects: 3,
+    validateStatus: function (status) {
+        return status >= 200 && status < 300; // default
+    }
 });
 // Add auth token to requests
 api.interceptors.request.use((config) => {
