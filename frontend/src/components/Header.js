@@ -397,8 +397,13 @@ export const Header = () => {
         const token = urlParams.get('token');
         if (token) {
             localStorage.setItem('token', token);
-            // Clean URL
-            window.history.replaceState({}, document.title, window.location.pathname);
+            // Clean URL safely
+            try {
+                const cleanUrl = window.location.origin + window.location.pathname;
+                window.history.replaceState({}, document.title, cleanUrl);
+            } catch (error) {
+                console.warn('Could not clean URL:', error);
+            }
             // Fetch user profile
             fetchUserProfile();
         }
