@@ -42,13 +42,16 @@ router.get('/google/callback', passport.authenticate('google', {
 }), (req, res) => {
   try {
     if (!req.user) {
-      return res.redirect(`${process.env.FRONTEND_URL}/?error=auth_failed`);
+      const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:3000';
+      return res.redirect(`${frontendUrl}/?error=auth_failed`);
     }
     const token = jwt.sign({ id: req.user._id, role: req.user.role }, process.env.JWT_SECRET);
-    res.redirect(`${process.env.FRONTEND_URL}/?token=${token}`);
+    const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:3000';
+    res.redirect(`${frontendUrl}/?token=${token}`);
   } catch (err) {
     console.error('OAuth callback error:', err);
-    res.redirect(`${process.env.FRONTEND_URL}/?error=auth_error`);
+    const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:3000';
+    res.redirect(`${frontendUrl}/?error=auth_error`);
   }
 });
 
