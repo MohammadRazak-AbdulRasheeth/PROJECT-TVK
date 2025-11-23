@@ -243,19 +243,32 @@ export const MembershipPage: React.FC = () => {
   const [showModal, setShowModal] = useState(false)
   const [showLoginModal, setShowLoginModal] = useState(false)
   const [searchParams] = useSearchParams()
-  const { isAuthenticated } = useAuth()
+  const { isAuthenticated, hasValidToken, user, isLoading } = useAuth()
+
+  // Debug logging
+  useEffect(() => {
+    const token = localStorage.getItem('token')
+    console.log('Auth Debug:', {
+      isAuthenticated,
+      hasValidToken: hasValidToken(),
+      user,
+      isLoading,
+      token: token ? 'Present' : 'None',
+      tokenLength: token?.length
+    })
+  }, [isAuthenticated, hasValidToken, user, isLoading])
 
   // Check if we should show subscription modal after login
   useEffect(() => {
     const showSubscription = searchParams.get('showSubscription')
-    if (showSubscription === 'true' && isAuthenticated) {
+    if (showSubscription === 'true' && (isAuthenticated || hasValidToken())) {
       setShowModal(true)
     }
-  }, [searchParams, isAuthenticated])
+  }, [searchParams, isAuthenticated, hasValidToken])
 
   const handleSubscribe = () => {
-    // Check if user is authenticated first
-    if (!isAuthenticated) {
+    // Check if user is authenticated first (either has user object or valid token)
+    if (!isAuthenticated && !hasValidToken()) {
       // Store the intent to show subscription modal after login
       localStorage.setItem('loginCallback', 'membership')
       setShowLoginModal(true)

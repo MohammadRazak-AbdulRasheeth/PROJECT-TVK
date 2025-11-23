@@ -22,6 +22,7 @@ interface AuthContextType {
   logout: () => void
   googleLogin: () => void
   checkAuthStatus: () => void
+  hasValidToken: () => boolean
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
@@ -48,10 +49,46 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
       const token = localStorage.getItem('token')
       if (token) {
-        const response = await authService.getProfile()
-        setUser(response.user)
+        try {
+          const response = await authService.getProfile()
+          setUser(response.user)
+          console.log('Auth check successful:', response.user)
+        } catch (error: any) {
+          console.log('Profile fetch failed:', error.response?.status)
+          // If token is invalid (401, 403), clear it and user state
+          if (error.response?.status === 401 || error.response?.status === 403) {
+            localStorage.removeItem('token')
+            setUser(null)
+          } else {
+            // For other errors, keep the token and try to extract user info from token
+            try {
+              // Decode JWT token to get basic user info (if available)
+              const payload = JSON.parse(atob(token.split('.')[1]))
+              console.log('Token payload:', payload)
+              
+              // Create basic user object from token if profile fetch fails
+              if (payload.id) {
+                setUser({
+                  id: payload.id,
+                  name: 'User', // Placeholder
+                  email: 'user@example.com', // Placeholder
+                  isVerified: false,
+                  createdAt: new Date().toISOString()
+                })
+              }
+            } catch (tokenError) {
+              console.log('Token decode failed:', tokenError)
+              localStorage.removeItem('token')
+              setUser(null)
+            }
+          }
+        }
+      } else {
+        console.log('No token found')
+        setUser(null)
       }
     } catch (error) {
+      console.log('Auth check error:', error)
       // Token is invalid, clear it
       localStorage.removeItem('token')
       setUser(null)
@@ -86,14 +123,37 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     authService.googleLogin()
   }
 
+  const hasValidToken = (): boolean => {
+    const token = localStorage.getItem('token')
+    if (!token) return false
+    
+    try {
+      // Check if JWT token is valid and not expired
+      const payload = JSON.parse(atob(token.split('.')[1]))
+      const currentTime = Date.now() / 1000
+      
+      // Check if token has expiration and if it's not expired
+      if (payload.exp && payload.exp < currentTime) {
+        localStorage.removeItem('token')
+        return false
+      }
+      
+      return true
+    } catch (error) {
+      localStorage.removeItem('token')
+      return false
+    }
+  }
+
   const value: AuthContextType = {
     user,
-    isAuthenticated: !!user,
+    isAuthenticated: !!user || hasValidToken(),
     isLoading,
     login,
     logout,
     googleLogin,
-    checkAuthStatus
+    checkAuthStatus,
+    hasValidToken
   }
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
