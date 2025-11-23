@@ -331,16 +331,19 @@ export const ContactPage: React.FC = () => {
             <SocialIconLink href="https://twitter.com/TVKCanada" target="_blank" rel="noopener noreferrer" title="Twitter">
               <FaXTwitter />
             </SocialIconLink>
-            <SocialIconLink href="https://instagram.com/TVKCanada" target="_blank" rel="noopener noreferrer" title="Instagram">
+            <SocialIconLink href="https://www.instagram.com/tvk.canada/" target="_blank" rel="noopener noreferrer" title="Instagram">
               <FaInstagram />
             </SocialIconLink>
-            <SocialIconLink href="https://facebook.com/TVKCanadaOfficial" target="_blank" rel="noopener noreferrer" title="Facebook">
+            <SocialIconLink href="https://www.threads.com/@tvk.canada" target="_blank" rel="noopener noreferrer" title="Threads">
+              <span style={{ fontSize: '18px', fontWeight: 'bold' }}>@</span>
+            </SocialIconLink>
+            <SocialIconLink href="https://www.facebook.com/profile.php?id=61572322798883" target="_blank" rel="noopener noreferrer" title="Facebook">
               <FaFacebook />
             </SocialIconLink>
-            <SocialIconLink href="https://tiktok.com/@TVKCanada" target="_blank" rel="noopener noreferrer" title="TikTok">
+            <SocialIconLink href="https://www.tiktok.com/@tvk.canada" target="_blank" rel="noopener noreferrer" title="TikTok">
               <FaTiktok />
             </SocialIconLink>
-            <SocialIconLink href="https://youtube.com/@TVKCanada" target="_blank" rel="noopener noreferrer" title="YouTube">
+            <SocialIconLink href="http://www.youtube.com/@TamilagaVettriKazhagamCanada" target="_blank" rel="noopener noreferrer" title="YouTube">
               <FaYoutube />
             </SocialIconLink>
           </Flex>

@@ -132,19 +132,19 @@ export const Footer: React.FC = () => {
         <FooterSection>
           <h4>Follow Us</h4>
           <SocialLinks>
-            <SocialLink href="https://www.instagram.com/tvkcanadaofficial/" target="_blank" rel="noopener noreferrer" title="Instagram" aria-label="Follow us on Instagram">
+            <SocialLink href="https://www.instagram.com/tvk.canada/" target="_blank" rel="noopener noreferrer" title="Instagram" aria-label="Follow us on Instagram">
               <FaInstagram />
             </SocialLink>
-            <SocialLink href="https://www.threads.net/@tvkcanadaofficial" target="_blank" rel="noopener noreferrer" title="Threads" aria-label="Follow us on Threads">
+            <SocialLink href="https://www.threads.com/@tvk.canada" target="_blank" rel="noopener noreferrer" title="Threads" aria-label="Follow us on Threads">
               <span style={{ fontSize: '18px', fontWeight: 'bold' }}>@</span>
             </SocialLink>
-            <SocialLink href="https://www.facebook.com/tvkcanadaofficial/" target="_blank" rel="noopener noreferrer" title="Facebook" aria-label="Follow us on Facebook">
+            <SocialLink href="https://www.facebook.com/profile.php?id=61572322798883" target="_blank" rel="noopener noreferrer" title="Facebook" aria-label="Follow us on Facebook">
               <FaFacebook />
             </SocialLink>
-            <SocialLink href="https://www.tiktok.com/@tvkcanada" target="_blank" rel="noopener noreferrer" title="TikTok" aria-label="Follow us on TikTok">
+            <SocialLink href="https://www.tiktok.com/@tvk.canada" target="_blank" rel="noopener noreferrer" title="TikTok" aria-label="Follow us on TikTok">
               <FaTiktok />
             </SocialLink>
-            <SocialLink href="https://www.youtube.com/@tvkcanada" target="_blank" rel="noopener noreferrer" title="YouTube" aria-label="Subscribe on YouTube">
+            <SocialLink href="http://www.youtube.com/@TamilagaVettriKazhagamCanada" target="_blank" rel="noopener noreferrer" title="YouTube" aria-label="Subscribe on YouTube">
               <FaYoutube />
             </SocialLink>
           </SocialLinks>

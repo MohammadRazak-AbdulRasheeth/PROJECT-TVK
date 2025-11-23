@@ -1,4 +1,5 @@
 import { jsx as _jsx, jsxs as _jsxs, Fragment as _Fragment } from "react/jsx-runtime";
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { theme } from '@styles/theme';
 import { Container, Section, Grid } from '@components/Layout';
@@ -201,6 +202,10 @@ const ValuesGrid = styled.div `
  * TVK Global Network Page Component
  */
 export const GlobalNetworkPage = () => {
+    const navigate = useNavigate();
+    const handleJoinClick = () => {
+        navigate('/membership');
+    };
     const globalGroups = [
         {
             id: 1,
@@ -344,5 +349,5 @@ export const GlobalNetworkPage = () => {
                             padding: theme.spacing.xl,
                             borderRadius: theme.borderRadius['2xl'],
                             textAlign: 'center',
-                        }, children: [_jsx("h2", { style: { marginBottom: theme.spacing.lg }, children: "TVK is Global. Be Part of It." }), _jsx("p", { style: { marginBottom: theme.spacing.lg, fontSize: '16px' }, children: "Join the largest fan network celebrating Thalapathy Vijay across the world." }), _jsx(Button, { variant: "secondary", children: "Join TVK Canada" })] }) }) })] }));
+                        }, children: [_jsx("h2", { style: { marginBottom: theme.spacing.lg }, children: "TVK is Global. Be Part of It." }), _jsx("p", { style: { marginBottom: theme.spacing.lg, fontSize: '16px' }, children: "Join the largest fan network celebrating Thalapathy Vijay across the world." }), _jsx(Button, { variant: "secondary", onClick: handleJoinClick, children: "Join TVK Canada" })] }) }) })] }));
 };

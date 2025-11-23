@@ -4,6 +4,7 @@
  */
 
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 import { theme } from '@styles/theme'
 import { Container, Section, Grid } from '@components/Layout'
@@ -210,6 +211,12 @@ const ValuesGrid = styled.div`
  * TVK Global Network Page Component
  */
 export const GlobalNetworkPage: React.FC = () => {
+  const navigate = useNavigate()
+
+  const handleJoinClick = () => {
+    navigate('/membership')
+  }
+
   const globalGroups = [
     {
       id: 1,
@@ -430,7 +437,7 @@ export const GlobalNetworkPage: React.FC = () => {
             <p style={{ marginBottom: theme.spacing.lg, fontSize: '16px' }}>
               Join the largest fan network celebrating Thalapathy Vijay across the world.
             </p>
-            <Button variant="secondary">Join TVK Canada</Button>
+            <Button variant="secondary" onClick={handleJoinClick}>Join TVK Canada</Button>
           </div>
         </Container>
       </Section>

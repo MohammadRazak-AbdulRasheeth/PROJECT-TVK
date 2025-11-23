@@ -3,6 +3,7 @@
  */
 
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 import { theme } from '@styles/theme'
 import { Container, Section, Grid, Flex } from '@components/Layout'
@@ -293,6 +294,16 @@ const EventCard = styled(HighlightCard)`
  * Home Page Component - Premium Design
  */
 export const HomePage: React.FC = () => {
+  const navigate = useNavigate()
+
+  const handleJoinClick = () => {
+    navigate('/membership')
+  }
+
+  const handleGlobalNetworkClick = () => {
+    navigate('/global-network')
+  }
+
   return (
     <>
       {/* Hero Section */}
@@ -307,7 +318,7 @@ export const HomePage: React.FC = () => {
             Celebrate culture and community.
           </HeroSubtitle>
           <HeroButtons>
-            <Button variant="secondary" size="lg">
+            <Button variant="secondary" size="lg" onClick={handleJoinClick}>
               Join TVK Canada
             </Button>
           </HeroButtons>
@@ -392,7 +403,7 @@ export const HomePage: React.FC = () => {
             TVK Community spans across continents. Connect with Vijay supporters and be part of a global movement.
           </p>
           <Flex justify="center">
-            <Button variant="primary" size="lg">
+            <Button variant="primary" size="lg" onClick={handleGlobalNetworkClick}>
               Explore Global Network
             </Button>
           </Flex>
@@ -436,7 +447,7 @@ export const HomePage: React.FC = () => {
             }}>
               Become part of Canada's premier Thalapathy Vijay fan community.
             </p>
-            <Button variant="secondary" size="lg">
+            <Button variant="secondary" size="lg" onClick={handleJoinClick}>
               Join Now
             </Button>
           </div>
