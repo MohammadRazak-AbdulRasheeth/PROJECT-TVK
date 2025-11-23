@@ -13,6 +13,8 @@ import { Footer } from '@components/Footer'
 import { HomePage } from '@pages/Home'
 import { AboutPage } from '@pages/About'
 import { MembershipPage } from '@pages/Membership'
+import { MembershipDashboard } from '@pages/MembershipDashboard'
+import { PaymentSuccessPage } from '@pages/PaymentSuccess'
 import { EventsPage } from '@pages/Events'
 import { GlobalNetworkPage } from '@pages/GlobalNetwork'
 import { GalleryPage } from '@pages/Gallery'
@@ -51,6 +53,8 @@ export const App: React.FC = () => {
                 <Route path="/" element={<HomePage />} />
                 <Route path="/about" element={<AboutPage />} />
                 <Route path="/membership" element={<MembershipPage />} />
+                <Route path="/my-membership" element={<MembershipDashboard />} />
+                <Route path="/payment-success" element={<PaymentSuccessPage />} />
                 <Route path="/events" element={<EventsPage />} />
                 <Route path="/global-network" element={<GlobalNetworkPage />} />
                 <Route path="/gallery" element={<GalleryPage />} />

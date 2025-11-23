@@ -7,7 +7,7 @@ import styled from 'styled-components'
 import { theme } from '@styles/theme'
 import { Container, Section, Grid, Flex } from '@components/Layout'
 import { Button } from '@components/Button'
-import { membershipService } from '../services/api'
+import { MembershipModal } from '@components/MembershipModal'
 
 const PricingCard = styled.div<{ featured?: boolean }>`
   background: ${(props) => (props.featured ? theme.colors.primary : theme.colors.surface)};
@@ -237,24 +237,10 @@ const FAQItem = styled.details`
  */
 export const MembershipPage: React.FC = () => {
   const [selectedPlan, setSelectedPlan] = useState<'monthly' | 'yearly' | 'student'>('yearly')
-  const [loading, setLoading] = useState(false)
+  const [showModal, setShowModal] = useState(false)
 
-  const handleSubscribe = async () => {
-    if (selectedPlan === 'student') {
-      alert('Student verification required. Please contact us at tvk.canada@gmail.com with your valid student ID and enrollment documents.')
-      return
-    }
-    
-    setLoading(true)
-    try {
-      const response = await membershipService.subscribe(selectedPlan)
-      window.location.href = response.url
-    } catch (error) {
-      console.error('Subscription failed:', error)
-      alert('Failed to start subscription. Please try again.')
-    } finally {
-      setLoading(false)
-    }
+  const handleSubscribe = () => {
+    setShowModal(true)
   }
 
   return (
@@ -346,8 +332,8 @@ export const MembershipPage: React.FC = () => {
           </Grid>
 
           <Flex justify="center" style={{ marginTop: theme.spacing.xl }}>
-            <Button variant="primary" size="lg" onClick={handleSubscribe} disabled={loading}>
-              {loading ? 'Processing...' : selectedPlan === 'student' ? 'Apply for Student Plan' : `Subscribe to ${selectedPlan === 'monthly' ? 'Monthly' : 'Yearly'} Plan`}
+            <Button variant="primary" size="lg" onClick={handleSubscribe}>
+              {selectedPlan === 'student' ? 'Apply for Student Plan' : `Subscribe to ${selectedPlan === 'monthly' ? 'Monthly' : 'Yearly'} Plan`}
             </Button>
           </Flex>
         </Container>
@@ -456,6 +442,13 @@ export const MembershipPage: React.FC = () => {
           </FAQContainer>
         </Container>
       </Section>
+
+      {/* Membership Modal */}
+      <MembershipModal 
+        isOpen={showModal}
+        onClose={() => setShowModal(false)}
+        selectedPlan={selectedPlan}
+      />
     </>
   )
 }

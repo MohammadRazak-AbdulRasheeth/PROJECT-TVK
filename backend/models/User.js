@@ -6,11 +6,12 @@ const userSchema = new mongoose.Schema({
   password: { type: String },
   googleId: { type: String },
   membership: {
-    type: { type: String, enum: ['monthly', 'yearly', 'free'] },
-    status: { type: String, enum: ['active', 'inactive', 'cancelled'], default: 'inactive' },
+    type: { type: String, enum: ['monthly', 'yearly', 'student', 'free'], default: 'free' },
+    status: { type: String, enum: ['active', 'inactive', 'cancelled', 'pending'], default: 'inactive' },
     startDate: { type: Date },
     endDate: { type: Date },
-    stripeCustomerId: { type: String }
+    stripeCustomerId: { type: String },
+    membershipId: { type: mongoose.Schema.Types.ObjectId, ref: 'Membership' }
   },
   profile: {
     avatar: { type: String },

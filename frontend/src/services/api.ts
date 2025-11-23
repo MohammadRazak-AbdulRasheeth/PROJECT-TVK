@@ -32,6 +32,25 @@ export const membershipService = {
   subscribe: async (planId: string) => {
     const response = await api.post('/memberships/subscribe', { planId })
     return response.data
+  },
+
+  createSubscription: async (formData: FormData) => {
+    const response = await api.post('/memberships/create-subscription', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    })
+    return response.data
+  },
+
+  getMembershipStatus: async () => {
+    const response = await api.get('/memberships/status')
+    return response.data
+  },
+
+  confirmPayment: async (sessionId: string) => {
+    const response = await api.post('/memberships/confirm-payment', { sessionId })
+    return response.data
   }
 }
 

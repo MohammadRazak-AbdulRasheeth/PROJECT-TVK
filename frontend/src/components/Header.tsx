@@ -534,7 +534,7 @@ export const Header: React.FC = () => {
                 />
                 <span>{user.name.split(' ')[0]}</span>
                 <DropdownMenu isOpen={dropdownOpen}>
-                  <DropdownItem onClick={() => { setDropdownOpen(false); navigate('/membership'); }}>
+                  <DropdownItem onClick={() => { setDropdownOpen(false); navigate('/my-membership'); }}>
                     My Membership
                   </DropdownItem>
                   <DropdownItem onClick={() => { setDropdownOpen(false); navigate('/events'); }}>
@@ -603,7 +603,7 @@ export const Header: React.FC = () => {
               variant="primary" 
               size="md" 
               fullWidth 
-              onClick={() => { closeMenu(); navigate('/membership'); }} 
+              onClick={() => { closeMenu(); navigate('/my-membership'); }} 
               style={{ 
                 marginBottom: theme.spacing.md,
                 fontSize: theme.typography.fontSize.base,
