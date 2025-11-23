@@ -13,6 +13,12 @@ export const AuthRedirectHandler: React.FC = () => {
   const { user, isLoading } = useAuth()
 
   useEffect(() => {
+    // Sanitize any accidental double slashes in path (e.g., https://site.com//)
+    if (window.location.pathname.includes('//')) {
+      const cleanPath = window.location.pathname.replace(/\/{2,}/g, '/');
+      window.history.replaceState({}, document.title, cleanPath + window.location.search);
+    }
+
     // Handle token from Google OAuth
     const token = searchParams.get('token')
     const error = searchParams.get('error')

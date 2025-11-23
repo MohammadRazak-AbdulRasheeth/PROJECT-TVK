@@ -69,20 +69,23 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
             localStorage.removeItem('token')
             setUser(null)
           } else {
-            // For other errors, keep the token and try to extract user info from token
+            // For other errors, attempt graceful degradation using token payload
             try {
-              // Decode JWT token to get basic user info (if available)
-              const payload = JSON.parse(atob(token.split('.')[1]))
-              console.log('Token payload:', payload)
+              const payloadRaw = token.split('.')[1]
+              const payloadJson = atob(payloadRaw.replace(/-/g, '+').replace(/_/g, '/'))
+              const payload = JSON.parse(payloadJson)
               
-              // Create basic user object from token if profile fetch fails
-              if (payload.id) {
+              const derivedName = payload.name || [payload.given_name, payload.family_name].filter(Boolean).join(' ') || 'Member'
+              const derivedEmail = payload.email || 'user@example.com'
+              
+              if (payload.id || payload.sub) {
                 setUser({
-                  id: payload.id,
-                  name: 'User', // Placeholder
-                  email: 'user@example.com', // Placeholder
-                  isVerified: false,
-                  createdAt: new Date().toISOString()
+                  id: payload.id || payload.sub,
+                  name: derivedName,
+                  email: derivedEmail,
+                  isVerified: !!payload.email_verified,
+                  createdAt: new Date().toISOString(),
+                  membership: { hasActiveMembership: false }
                 })
               }
             } catch (tokenError) {

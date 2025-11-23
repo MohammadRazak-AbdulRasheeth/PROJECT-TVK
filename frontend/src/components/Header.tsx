@@ -8,7 +8,6 @@ import styled from 'styled-components'
 import { theme } from '@styles/theme'
 import { images } from '@utils/images'
 import { Button } from './Button'
-import { authService } from '../services/api'
 import { useAuth } from '../context/AuthContext'
 
 const HeaderWrapper = styled.header`
@@ -391,7 +390,7 @@ export const Header: React.FC = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false)
   const dropdownRef = useRef<HTMLDivElement>(null)
   const navigate = useNavigate()
-  const { user, logout } = useAuth()
+  const { user, logout, isLoading, googleLogin } = useAuth()
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen)
@@ -402,7 +401,7 @@ export const Header: React.FC = () => {
   }
 
   const handleGoogleLogin = () => {
-    authService.googleLogin()
+    googleLogin()
   }
 
   const handleLogout = () => {
@@ -412,47 +411,7 @@ export const Header: React.FC = () => {
     console.log('Logout completed - all authentication tokens and data cleared')
   }
 
-  // Check for token in URL params (OAuth redirect)
-  useEffect(() => {
-    const urlParams = new URLSearchParams(window.location.search)
-    const token = urlParams.get('token')
-    
-    if (token) {
-      localStorage.setItem('token', token)
-      // Clean URL by removing the token parameter
-      try {
-        const url = new URL(window.location.href)
-        url.searchParams.delete('token')
-        const cleanUrl = url.toString()
-        window.history.replaceState({}, document.title, cleanUrl)
-      } catch (error) {
-        console.warn('Could not clean URL:', error)
-        // Fallback: just reload without token
-        setTimeout(() => {
-          window.location.href = window.location.origin + window.location.pathname
-        }, 100)
-      }
-      // Fetch user profile
-      fetchUserProfile()
-    } else {
-      // Check for existing token
-      const existingToken = localStorage.getItem('token')
-      if (existingToken) {
-        fetchUserProfile()
-      }
-    }
-  }, [])
-
-  const fetchUserProfile = async () => {
-    try {
-      const userData = await authService.getProfile()
-      // The user data is now handled by AuthContext, no need to set local state
-      console.log('User profile fetched:', userData)
-    } catch (error) {
-      console.error('Failed to fetch user profile:', error)
-      localStorage.removeItem('token')
-    }
-  }
+  // All token & profile handling moved to AuthContext for single source of truth
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -524,7 +483,17 @@ export const Header: React.FC = () => {
           </DesktopNav>
 
           <ButtonGroup>
-            {user ? (
+            {isLoading ? (
+              <div
+                style={{
+                  padding: theme.spacing.sm,
+                  color: theme.colors.text.inverse,
+                  fontSize: theme.typography.fontSize.sm,
+                  opacity: 0.8
+                }}
+                aria-busy="true"
+              >Loading...</div>
+            ) : user ? (
               <UserProfile 
                 ref={dropdownRef}
                 onClick={() => setDropdownOpen(!dropdownOpen)}
@@ -573,7 +542,16 @@ export const Header: React.FC = () => {
         <NavLink to="/gallery" onClick={closeMenu}>Gallery</NavLink>
         <NavLink to="/contact" onClick={closeMenu}>Contact</NavLink>
         
-        {user ? (
+        {isLoading ? (
+          <div style={{ 
+            marginTop: theme.spacing.lg,
+            padding: theme.spacing.lg,
+            background: 'rgba(255,255,255,0.1)',
+            borderRadius: theme.borderRadius.lg,
+            color: theme.colors.text.inverse,
+            fontSize: theme.typography.fontSize.base
+          }} aria-busy="true">Loading...</div>
+        ) : user ? (
           <div style={{ 
             marginTop: theme.spacing.lg, 
             padding: theme.spacing.lg, 
