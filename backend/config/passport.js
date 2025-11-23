@@ -10,10 +10,18 @@ passport.use(new GoogleStrategy({
   try {
     let user = await User.findOne({ googleId: profile.id });
     if (!user) {
+      // Parse name into first and last name
+      const fullName = profile.displayName || '';
+      const nameParts = fullName.split(' ');
+      const firstName = nameParts[0] || 'User';
+      const lastName = nameParts.slice(1).join(' ') || 'Name';
+      
       user = new User({
-        name: profile.displayName,
+        firstName,
+        lastName,
         email: profile.emails[0].value,
-        googleId: profile.id
+        googleId: profile.id,
+        isVerified: true // Google accounts are pre-verified
       });
       await user.save();
     }

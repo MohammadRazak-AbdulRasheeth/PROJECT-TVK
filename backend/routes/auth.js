@@ -64,6 +64,8 @@ router.get('/profile', auth, async (req, res) => {
     
     // Include membership quick access data for better UX
     const userData = user.toObject();
+    userData.name = `${user.firstName} ${user.lastName}`; // Add full name for frontend
+    
     if (user.currentMembership) {
       userData.membership = {
         type: user.membershipType || user.currentMembership.type,
