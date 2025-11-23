@@ -117,9 +117,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
               const payloadJson = atob(payloadRaw.replace(/-/g, '+').replace(/_/g, '/'))
               const payload = JSON.parse(payloadJson)
               
-              const derivedName = payload.name || [payload.given_name, payload.family_name].filter(Boolean).join(' ') || 'Member'
-              const derivedEmail = payload.email || 'user@example.com'
-              
               if (payload.id || payload.sub) {
                 const fallbackUser = normalizeUser(payload)
                 setUser(fallbackUser)

@@ -269,42 +269,7 @@ const CurrentPlanBadge = styled.div`
   }
 `
 
-const ActivatedBadge = styled.div`
-  position: absolute;
-  top: ${theme.spacing.sm};
-  right: ${theme.spacing.sm};
-  background: linear-gradient(135deg, ${theme.colors.secondary} 0%, #ffed4e 100%);
-  color: ${theme.colors.text.primary};
-  padding: ${theme.spacing.xs} ${theme.spacing.sm};
-  border-radius: ${theme.borderRadius.full};
-  font-size: ${theme.typography.fontSize.xs};
-  font-weight: ${theme.typography.fontWeight.bold};
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  box-shadow: ${theme.shadows.md};
-  z-index: 2;
-  animation: pulse 2s infinite;
 
-  @keyframes pulse {
-    0% {
-      transform: scale(1);
-      box-shadow: ${theme.shadows.md};
-    }
-    50% {
-      transform: scale(1.05);
-      box-shadow: ${theme.shadows.lg};
-    }
-    100% {
-      transform: scale(1);
-      box-shadow: ${theme.shadows.md};
-    }
-  }
-
-  @media (max-width: ${theme.breakpoints.mobile}) {
-    font-size: ${theme.typography.fontSize.xs};
-    padding: ${theme.spacing.xs} ${theme.spacing.xs};
-  }
-`
 
 /**
  * Membership Page Component
