@@ -1,4 +1,7 @@
-import { api, API_BASE_URL } from '../utils/helpers'
+import { api } from '../utils/helpers'
+
+// Get API base URL using Vite environment variable
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api'
 
 // Auth services
 export const authService = {
