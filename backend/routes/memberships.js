@@ -224,8 +224,8 @@ router.post('/simple-subscription', upload.fields([
       payment_method_types: ['card'],
       line_items: lineItems,
       mode: plan === 'yearly' ? 'payment' : 'subscription',
-      success_url: `${process.env.FRONTEND_URL || 'https://tvkcanada.netlify.app'}/payment-success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${process.env.FRONTEND_URL || 'https://tvkcanada.netlify.app'}/membership?canceled=true`,
+      success_url: `${(process.env.FRONTEND_URL || 'https://tvkcanada.netlify.app').replace(/\/$/, '')}/payment-success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${(process.env.FRONTEND_URL || 'https://tvkcanada.netlify.app').replace(/\/$/, '')}/membership?canceled=true`,
       customer_email: email,
       metadata: {
         membershipId: membership._id.toString(), // Critical: link to our DB record
@@ -381,8 +381,8 @@ router.post('/create-subscription', (req, res, next) => {
       payment_method_types: ['card'],
       line_items: lineItems,
       mode: plan === 'yearly' ? 'payment' : 'subscription',
-      success_url: `${process.env.FRONTEND_URL || 'http://localhost:3000'}/payment-success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${process.env.FRONTEND_URL || 'http://localhost:3000'}/membership?canceled=true`,
+      success_url: `${(process.env.FRONTEND_URL || 'http://localhost:3000').replace(/\/$/, '')}/payment-success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${(process.env.FRONTEND_URL || 'http://localhost:3000').replace(/\/$/, '')}/membership?canceled=true`,
       customer_email: email,
       metadata: {
         membershipId: membership._id.toString(),

@@ -221,6 +221,28 @@ export const MembershipDashboard: React.FC = () => {
     })
   }
 
+  const getDaysRemaining = (expiresAt: string) => {
+    const today = new Date()
+    const expiryDate = new Date(expiresAt)
+    const timeDiff = expiryDate.getTime() - today.getTime()
+    const daysDiff = Math.ceil(timeDiff / (1000 * 3600 * 24))
+    return daysDiff
+  }
+
+  const formatDaysRemaining = (expiresAt: string) => {
+    const days = getDaysRemaining(expiresAt)
+    if (days < 0) return 'Expired'
+    if (days === 0) return 'Expires today'
+    if (days === 1) return '1 day remaining'
+    if (days <= 30) return `${days} days remaining`
+    if (days <= 365) {
+      const months = Math.floor(days / 30)
+      return months === 1 ? '1 month remaining' : `${months} months remaining`
+    }
+    const years = Math.floor(days / 365)
+    return years === 1 ? '1 year remaining' : `${years} years remaining`
+  }
+
   const getMembershipPerks = (type: string) => {
     const basePerks = [
       { icon: '🎟️', title: 'Event Access', description: 'Priority access to all TVK events' },
@@ -344,7 +366,14 @@ export const MembershipDashboard: React.FC = () => {
             {membershipData.expiresAt && (
               <div>
                 <strong>Expires:</strong><br />
-                {formatDate(membershipData.expiresAt)}
+                {formatDate(membershipData.expiresAt)}<br />
+                <span style={{ 
+                  color: getDaysRemaining(membershipData.expiresAt) <= 30 ? theme.colors.warning : theme.colors.success,
+                  fontWeight: theme.typography.fontWeight.semibold,
+                  fontSize: theme.typography.fontSize.sm
+                }}>
+                  {formatDaysRemaining(membershipData.expiresAt)}
+                </span>
               </div>
             )}
             {membershipData.nextBillingDate && (
