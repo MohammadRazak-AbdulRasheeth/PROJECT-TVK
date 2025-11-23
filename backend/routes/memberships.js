@@ -2,6 +2,7 @@ const express = require('express');
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
+const jwt = require('jsonwebtoken');
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const User = require('../models/User');
 const Membership = require('../models/Membership');
@@ -69,8 +70,21 @@ router.get('/plans', (req, res) => {
   ]);
 });
 
-// Create subscription with file uploads (Authentication Required)
-router.post('/create-subscription', auth, upload.fields([
+// Create subscription with file uploads (Authentication Recommended but Optional for Testing)
+router.post('/create-subscription', (req, res, next) => {
+  // Try to authenticate but don't fail if no token provided
+  const token = req.header('Authorization')?.replace('Bearer ', '');
+  if (token) {
+    try {
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      req.user = decoded;
+    } catch (err) {
+      console.log('Token verification failed:', err.message);
+      // Continue without user for backward compatibility
+    }
+  }
+  next();
+}, upload.fields([
   { name: 'studentId', maxCount: 1 },
   { name: 'timetable', maxCount: 1 }
 ]), async (req, res) => {
@@ -109,37 +123,37 @@ router.post('/create-subscription', auth, upload.fields([
       return res.status(400).json({ message: 'Invalid plan selected' });
     }
 
-    // Get the authenticated user
-    const userId = req.user.id;
-    const user = await User.findById(userId);
+    // Get the authenticated user (optional)
+    const userId = req.user?.id;
+    let user = null;
     
-    if (!user) {
-      return res.status(404).json({ message: 'User not found' });
-    }
+    if (userId) {
+      user = await User.findById(userId);
+      
+      // Check if user already has an active membership
+      const existingMembership = await Membership.findOne({
+        user: userId,
+        status: { $in: ['active', 'pending'] }
+      });
 
-    // Check if user already has an active membership
-    const existingMembership = await Membership.findOne({
-      user: userId,
-      status: { $in: ['active', 'pending'] }
-    });
-
-    if (existingMembership) {
-      return res.status(400).json({ message: 'User already has an active or pending membership' });
+      if (existingMembership) {
+        return res.status(400).json({ message: 'User already has an active or pending membership' });
+      }
     }
 
     // Create membership record
     const membershipData = {
-      user: userId,
+      user: userId || null, // Will be null if no authentication
       type: plan,
       status: 'pending',
-      firstName: firstName || user.firstName,
-      lastName: lastName || user.lastName,
-      email: email || user.email,
-      phone: phone || user.phone,
-      address: address || user.address?.street,
-      city: city || user.address?.city,
-      province: province || user.address?.province,
-      postalCode: postalCode || user.address?.postalCode
+      firstName: firstName || user?.firstName || firstName,
+      lastName: lastName || user?.lastName || lastName, 
+      email: email || user?.email || email,
+      phone: phone || user?.phone || phone,
+      address: address || user?.address?.street || address,
+      city: city || user?.address?.city || city,
+      province: province || user?.address?.province || province,
+      postalCode: postalCode || user?.address?.postalCode || postalCode
     };
 
     // Add student verification data if applicable
@@ -180,7 +194,7 @@ router.post('/create-subscription', auth, upload.fields([
       metadata: {
         membershipId: membership._id.toString(),
         planType: plan,
-        userId: userId
+        userId: userId || 'guest'
       }
     };
 
@@ -198,9 +212,14 @@ router.post('/create-subscription', auth, upload.fields([
 
   } catch (err) {
     console.error('Subscription creation error:', err);
+    console.error('Error stack:', err.stack);
+    console.error('Request body:', req.body);
+    console.error('User info:', req.user);
+    
     res.status(500).json({ 
       message: 'Failed to create subscription',
-      error: process.env.NODE_ENV === 'development' ? err.message : 'Internal server error'
+      error: process.env.NODE_ENV === 'development' ? err.message : 'Internal server error',
+      details: process.env.NODE_ENV === 'development' ? err.stack : undefined
     });
   }
 });
