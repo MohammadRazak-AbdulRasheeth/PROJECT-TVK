@@ -18,8 +18,7 @@ export const authService = {
   },
   
   googleLogin: () => {
-    const baseUrl = API_BASE_URL.replace(/\/api$/, '') // Remove /api suffix
-    const googleUrl = `${baseUrl}/auth/google`
+    const googleUrl = `${API_BASE_URL}/auth/google`
     console.log('Redirecting to Google OAuth:', googleUrl)
     window.location.href = googleUrl
   }

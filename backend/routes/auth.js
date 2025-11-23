@@ -7,6 +7,22 @@ const { auth } = require('../middleware/auth');
 
 const router = express.Router();
 
+// Health check for auth routes
+router.get('/health', (req, res) => {
+  res.status(200).json({
+    status: 'OK',
+    message: 'Auth routes are working',
+    availableRoutes: [
+      'POST /api/auth/register',
+      'POST /api/auth/login', 
+      'GET /api/auth/profile',
+      'GET /api/auth/google',
+      'GET /api/auth/google/callback'
+    ],
+    timestamp: new Date().toISOString()
+  })
+})
+
 // Register
 router.post('/register', async (req, res) => {
   try {

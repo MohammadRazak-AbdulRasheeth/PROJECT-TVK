@@ -74,6 +74,24 @@ mongoose.connect(process.env.MONGODB_URI)
     process.exit(1);
   });
 
+// Health check endpoint
+app.get('/health', (req, res) => {
+  res.status(200).json({
+    status: 'OK',
+    message: 'TVK Canada Backend Server is running',
+    timestamp: new Date().toISOString(),
+    environment: process.env.NODE_ENV || 'development',
+    endpoints: {
+      auth: '/api/auth',
+      memberships: '/api/memberships',
+      events: '/api/events',
+      gallery: '/api/gallery',
+      contact: '/api/contact',
+      globalNetwork: '/api/global-network'
+    }
+  })
+})
+
 // Routes
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/users', require('./routes/users'));
