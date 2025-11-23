@@ -339,7 +339,7 @@ export const HomePage: React.FC = () => {
               <Badge>Member Benefits</Badge>
               <h3>Member Exclusive Benefits</h3>
               <p>
-                Discounts, community access, priority events, and special recognition within our growing network.
+                Access to exclusive events, member-only discounts, and community forum access with special recognition within our growing network.
               </p>
             </HighlightCard>
           </Grid>
@@ -400,14 +400,40 @@ export const HomePage: React.FC = () => {
       </Section>
 
       {/* CTA Section */}
-      <Section
-        padding={`${theme.spacing.xxxl} 0`}
-        background={`linear-gradient(135deg, ${theme.colors.primary} 0%, #8b1428 100%)`}
-      >
+      <div style={{
+        padding: `${theme.spacing.xxxl} 0`,
+        background: `linear-gradient(135deg, ${theme.colors.primary} 0%, #8b1428 100%)`,
+        minHeight: '300px',
+        display: 'flex',
+        alignItems: 'center'
+      }}>
         <Container>
-          <div style={{ textAlign: 'center', color: theme.colors.text.inverse }}>
-            <h2 style={{ fontSize: theme.typography.fontSize['4xl'], marginBottom: theme.spacing.lg }}>Ready to Join?</h2>
-            <p style={{ fontSize: '18px', marginBottom: theme.spacing.xl, maxWidth: '600px', margin: '0 auto 2rem' }}>
+          <div style={{ 
+            textAlign: 'center', 
+            color: '#FFFFFF',
+            position: 'relative',
+            zIndex: 1
+          }}>
+            <h2 style={{ 
+              fontSize: theme.typography.fontSize['4xl'], 
+              marginBottom: theme.spacing.lg,
+              color: '#FFFFFF',
+              fontWeight: theme.typography.fontWeight.bold,
+              textShadow: '2px 2px 4px rgba(0,0,0,0.5)',
+              margin: `0 0 ${theme.spacing.lg} 0`
+            }}>
+              Ready to Join?
+            </h2>
+            <p style={{ 
+              fontSize: '18px', 
+              marginBottom: theme.spacing.xl, 
+              maxWidth: '600px', 
+              margin: '0 auto 2rem',
+              color: '#FFFFFF',
+              fontWeight: theme.typography.fontWeight.medium,
+              textShadow: '1px 1px 2px rgba(0,0,0,0.5)',
+              lineHeight: '1.6'
+            }}>
               Become part of Canada's premier Thalapathy Vijay fan community.
             </p>
             <Button variant="secondary" size="lg">
@@ -415,7 +441,7 @@ export const HomePage: React.FC = () => {
             </Button>
           </div>
         </Container>
-      </Section>
+      </div>
     </>
   )
 }

@@ -5,7 +5,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { theme } from '@styles/theme'
-import { FaXTwitter, FaInstagram, FaFacebook, FaTiktok, FaYoutube } from 'react-icons/fa6'
+import { FaInstagram, FaFacebook, FaTiktok, FaYoutube } from 'react-icons/fa6'
 
 const FooterWrapper = styled.footer`
   background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
@@ -132,19 +132,19 @@ export const Footer: React.FC = () => {
         <FooterSection>
           <h4>Follow Us</h4>
           <SocialLinks>
-            <SocialLink href="https://twitter.com/TVKCanada" target="_blank" rel="noopener noreferrer" title="Twitter" aria-label="Follow us on Twitter">
-              <FaXTwitter />
-            </SocialLink>
-            <SocialLink href="https://instagram.com/TVKCanada" target="_blank" rel="noopener noreferrer" title="Instagram" aria-label="Follow us on Instagram">
+            <SocialLink href="https://www.instagram.com/tvkcanadaofficial/" target="_blank" rel="noopener noreferrer" title="Instagram" aria-label="Follow us on Instagram">
               <FaInstagram />
             </SocialLink>
-            <SocialLink href="https://facebook.com/TVKCanadaOfficial" target="_blank" rel="noopener noreferrer" title="Facebook" aria-label="Follow us on Facebook">
+            <SocialLink href="https://www.threads.net/@tvkcanadaofficial" target="_blank" rel="noopener noreferrer" title="Threads" aria-label="Follow us on Threads">
+              <span style={{ fontSize: '18px', fontWeight: 'bold' }}>@</span>
+            </SocialLink>
+            <SocialLink href="https://www.facebook.com/tvkcanadaofficial/" target="_blank" rel="noopener noreferrer" title="Facebook" aria-label="Follow us on Facebook">
               <FaFacebook />
             </SocialLink>
-            <SocialLink href="https://tiktok.com/@TVKCanada" target="_blank" rel="noopener noreferrer" title="TikTok" aria-label="Follow us on TikTok">
+            <SocialLink href="https://www.tiktok.com/@tvkcanada" target="_blank" rel="noopener noreferrer" title="TikTok" aria-label="Follow us on TikTok">
               <FaTiktok />
             </SocialLink>
-            <SocialLink href="https://youtube.com/@TVKCanada" target="_blank" rel="noopener noreferrer" title="YouTube" aria-label="Subscribe on YouTube">
+            <SocialLink href="https://www.youtube.com/@tvkcanada" target="_blank" rel="noopener noreferrer" title="YouTube" aria-label="Subscribe on YouTube">
               <FaYoutube />
             </SocialLink>
           </SocialLinks>

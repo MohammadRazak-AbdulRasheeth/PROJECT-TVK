@@ -236,10 +236,15 @@ const FAQItem = styled.details`
  * Membership Page Component
  */
 export const MembershipPage: React.FC = () => {
-  const [selectedPlan, setSelectedPlan] = useState<'monthly' | 'yearly'>('yearly')
+  const [selectedPlan, setSelectedPlan] = useState<'monthly' | 'yearly' | 'student'>('yearly')
   const [loading, setLoading] = useState(false)
 
   const handleSubscribe = async () => {
+    if (selectedPlan === 'student') {
+      alert('Student verification required. Please contact us at tvk.canada@gmail.com with your valid student ID and enrollment documents.')
+      return
+    }
+    
     setLoading(true)
     try {
       const response = await membershipService.subscribe(selectedPlan)
@@ -273,7 +278,7 @@ export const MembershipPage: React.FC = () => {
             Membership Plans
           </h2>
 
-          <Grid columns={2} gap={theme.spacing.xl}>
+          <Grid columns={3} gap={theme.spacing.xl}>
             <PricingCard featured={selectedPlan === 'monthly'}>
               <h3>Monthly</h3>
               <div className="price">
@@ -316,11 +321,33 @@ export const MembershipPage: React.FC = () => {
                 <li>Annual celebration invitation</li>
               </ul>
             </PricingCard>
+
+            <PricingCard featured={selectedPlan === 'student'}>
+              <h3>Student</h3>
+              <div className="price">
+                $5<span>/month</span>
+              </div>
+              <Button
+                variant={selectedPlan === 'student' ? 'secondary' : 'outline'}
+                fullWidth
+                onClick={() => setSelectedPlan('student')}
+              >
+                {selectedPlan === 'student' ? 'Selected' : 'Choose Plan'}
+              </Button>
+              <ul>
+                <li>Student ID verification required</li>
+                <li>Access to student events</li>
+                <li>Student-only discounts</li>
+                <li>Community forum access</li>
+                <li>Movie night access</li>
+                <li>Study group invitations</li>
+              </ul>
+            </PricingCard>
           </Grid>
 
           <Flex justify="center" style={{ marginTop: theme.spacing.xl }}>
             <Button variant="primary" size="lg" onClick={handleSubscribe} disabled={loading}>
-              {loading ? 'Processing...' : `Subscribe to ${selectedPlan === 'monthly' ? 'Monthly' : 'Yearly'} Plan`}
+              {loading ? 'Processing...' : selectedPlan === 'student' ? 'Apply for Student Plan' : `Subscribe to ${selectedPlan === 'monthly' ? 'Monthly' : 'Yearly'} Plan`}
             </Button>
           </Flex>
         </Container>
@@ -415,6 +442,10 @@ export const MembershipPage: React.FC = () => {
               {
                 q: '10. How will I receive event updates?',
                 a: 'Members will get priority email notifications, text alerts, and access to exclusive member communication channels.',
+              },
+              {
+                q: '11. How do I apply for Student Membership?',
+                a: 'Student membership is available for $5/month with valid student ID verification. Contact us with your enrollment documents, student ID, and proof of current enrollment status. Student members get access to student-only events, discounts, and study group invitations.',
               },
             ].map((item, idx) => (
               <FAQItem key={idx}>
