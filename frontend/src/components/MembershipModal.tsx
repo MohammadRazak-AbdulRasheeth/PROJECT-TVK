@@ -254,14 +254,30 @@ export const MembershipModal: React.FC<MembershipModalProps> = ({ isOpen, onClos
         if (formData.timetable) formDataToSubmit.append('timetable', formData.timetable)
       }
 
+      console.log('Submitting subscription:', selectedPlan)
+      console.log('Form data preview:', {
+        plan: selectedPlan,
+        firstName: formData.firstName,
+        email: formData.email,
+        hasStudentId: !!formData.studentId,
+        hasTimetable: !!formData.timetable
+      })
+
       const response = await membershipService.createSubscription(formDataToSubmit)
+      
+      console.log('Subscription response:', response)
       
       // Redirect to Stripe checkout
       if (response.checkoutUrl) {
+        console.log('Redirecting to Stripe:', response.checkoutUrl)
         window.location.href = response.checkoutUrl
+      } else {
+        setError('No checkout URL received from server')
       }
     } catch (err: any) {
-      setError(err.response?.data?.message || 'Failed to create subscription. Please try again.')
+      console.error('Subscription error:', err)
+      console.error('Error response:', err.response?.data)
+      setError(err.response?.data?.message || err.message || 'Failed to create subscription. Please try again.')
     } finally {
       setLoading(false)
     }

@@ -10,6 +10,28 @@ const { auth, adminAuth } = require('../middleware/auth');
 
 const router = express.Router();
 
+// Test endpoint (no auth required)
+router.post('/test-subscription', async (req, res) => {
+  try {
+    console.log('Test subscription request received');
+    console.log('Request body:', req.body);
+    console.log('Environment check:', {
+      NODE_ENV: process.env.NODE_ENV,
+      STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY ? 'Present' : 'Missing',
+      MONGODB_URI: process.env.MONGODB_URI ? 'Present' : 'Missing'
+    });
+
+    res.json({ 
+      success: true, 
+      message: 'Test endpoint working',
+      timestamp: new Date().toISOString()
+    });
+  } catch (err) {
+    console.error('Test endpoint error:', err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // Configure multer for file uploads
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -68,6 +90,80 @@ router.get('/plans', (req, res) => {
       features: ['Student ID verification required', 'Access to student events', 'Student-only discounts', 'Community forum access', 'Movie night access', 'Study group invitations']
     }
   ]);
+});
+
+// Simple subscription endpoint (minimal auth, for testing)
+router.post('/simple-subscription', async (req, res) => {
+  try {
+    console.log('Simple subscription request received');
+    console.log('Request body:', req.body);
+    
+    const { plan, firstName, lastName, email, phone } = req.body;
+
+    // Validate required fields
+    if (!plan || !firstName || !lastName || !email || !phone) {
+      return res.status(400).json({ message: 'Missing required fields' });
+    }
+
+    // Get plan pricing
+    const planPrices = { monthly: 1000, yearly: 10000, student: 500 };
+    const price = planPrices[plan];
+    
+    if (!price) {
+      return res.status(400).json({ message: 'Invalid plan selected' });
+    }
+
+    console.log('Creating Stripe session for plan:', plan, 'price:', price);
+
+    // Create basic Stripe checkout session
+    const lineItems = [{
+      price_data: {
+        currency: 'cad',
+        product_data: {
+          name: `TVK Canada ${plan.charAt(0).toUpperCase() + plan.slice(1)} Membership`,
+          description: `${plan} membership with full benefits`
+        },
+        unit_amount: price,
+        recurring: plan !== 'yearly' ? { interval: 'month' } : null
+      },
+      quantity: 1,
+    }];
+
+    const sessionConfig = {
+      payment_method_types: ['card'],
+      line_items: lineItems,
+      mode: plan === 'yearly' ? 'payment' : 'subscription',
+      success_url: `${process.env.FRONTEND_URL || 'https://tvkcanada.netlify.app'}/payment-success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${process.env.FRONTEND_URL || 'https://tvkcanada.netlify.app'}/membership?canceled=true`,
+      customer_email: email,
+      metadata: {
+        planType: plan,
+        customerName: `${firstName} ${lastName}`,
+        phone: phone
+      }
+    };
+
+    console.log('Stripe session config:', sessionConfig);
+
+    const session = await stripe.checkout.sessions.create(sessionConfig);
+
+    console.log('Stripe session created:', session.id);
+
+    res.json({ 
+      checkoutUrl: session.url,
+      sessionId: session.id
+    });
+
+  } catch (err) {
+    console.error('Simple subscription error:', err);
+    console.error('Error stack:', err.stack);
+    
+    res.status(500).json({ 
+      message: 'Failed to create subscription',
+      error: err.message,
+      details: process.env.NODE_ENV === 'development' ? err.stack : undefined
+    });
+  }
 });
 
 // Create subscription with file uploads (Authentication Recommended but Optional for Testing)

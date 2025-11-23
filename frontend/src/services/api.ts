@@ -35,7 +35,7 @@ export const membershipService = {
   },
 
   createSubscription: async (formData: FormData) => {
-    const response = await api.post('/memberships/create-subscription', formData, {
+    const response = await api.post('/memberships/simple-subscription', formData, {
       headers: {
         'Content-Type': 'multipart/form-data'
       }
