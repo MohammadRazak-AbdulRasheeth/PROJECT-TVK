@@ -80,7 +80,11 @@ router.get('/profile', auth, async (req, res) => {
     
     // Include membership quick access data for better UX
     const userData = user.toObject();
-    userData.name = `${user.firstName} ${user.lastName}`; // Add full name for frontend
+    // Construct full name safely, fallback to email or 'Member'
+    const firstName = user.firstName || '';
+    const lastName = user.lastName || '';
+    const fullName = `${firstName} ${lastName}`.trim();
+    userData.name = fullName || user.email?.split('@')[0] || 'Member';
     
     if (user.currentMembership) {
       userData.membership = {
