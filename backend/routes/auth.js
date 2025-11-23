@@ -55,9 +55,29 @@ router.get('/google/callback', passport.authenticate('google', {
 // Profile
 router.get('/profile', auth, async (req, res) => {
   try {
-    const user = await User.findById(req.user.id).select('-password');
-    res.json(user);
+    const user = await User.findById(req.user.id)
+      .select('-password')
+      .populate('currentMembership', 'type status membershipNumber expiresAt activatedAt');
+    
+    // Include membership quick access data for better UX
+    const userData = user.toObject();
+    if (user.currentMembership) {
+      userData.membership = {
+        type: user.membershipType || user.currentMembership.type,
+        status: user.membershipStatus || user.currentMembership.status,
+        membershipNumber: user.membershipNumber || user.currentMembership.membershipNumber,
+        expiresAt: user.membershipExpiresAt || user.currentMembership.expiresAt,
+        hasActiveMembership: user.membershipStatus === 'active'
+      };
+    } else {
+      userData.membership = {
+        hasActiveMembership: false
+      };
+    }
+    
+    res.json(userData);
   } catch (err) {
+    console.error('Profile fetch error:', err);
     res.status(500).json({ message: err.message });
   }
 });

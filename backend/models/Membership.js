@@ -4,7 +4,7 @@ const membershipSchema = new mongoose.Schema({
   user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }, // Made optional for guest purchases
   type: { type: String, enum: ['monthly', 'yearly', 'student'], required: true },
   status: { type: String, enum: ['pending', 'active', 'expired', 'cancelled'], default: 'pending' },
-  membershipNumber: { type: String, unique: true },
+  membershipNumber: { type: String, unique: true, sparse: true }, // sparse: true allows multiple null values
   
   // Personal Details
   firstName: { type: String, required: true },
@@ -48,10 +48,22 @@ const membershipSchema = new mongoose.Schema({
 
 // Generate membership number before saving
 membershipSchema.pre('save', async function(next) {
-  if (!this.membershipNumber && this.status === 'active') {
-    const count = await mongoose.model('Membership').countDocuments({ status: 'active' });
+  // Generate temporary pending number for new memberships to avoid null conflicts
+  if (!this.membershipNumber && this.isNew) {
+    const timestamp = Date.now().toString().slice(-8); // Last 8 digits of timestamp
+    const random = Math.floor(Math.random() * 100).toString().padStart(2, '0');
+    this.membershipNumber = `PENDING-${timestamp}-${random}`;
+  }
+  
+  // Generate official membership number when activated
+  if (this.status === 'active' && this.membershipNumber?.startsWith('PENDING-')) {
+    const count = await mongoose.model('Membership').countDocuments({ 
+      status: 'active',
+      membershipNumber: { $regex: /^TVK\d{6}$/ } // Only count official TVK numbers
+    });
     this.membershipNumber = `TVK${String(count + 1).padStart(6, '0')}`;
   }
+  
   this.updatedAt = new Date();
   next();
 });

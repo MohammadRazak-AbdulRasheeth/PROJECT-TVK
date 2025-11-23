@@ -27,6 +27,20 @@ const userSchema = new mongoose.Schema({
     ref: 'Membership' 
   },
 
+  // Quick access membership fields (duplicated for performance)
+  membershipStatus: { 
+    type: String, 
+    enum: ['active', 'pending', 'expired', 'cancelled'],
+    default: null 
+  },
+  membershipType: { 
+    type: String, 
+    enum: ['monthly', 'yearly', 'student'],
+    default: null 
+  },
+  membershipNumber: { type: String, default: null },
+  membershipExpiresAt: { type: Date, default: null },
+
   // Profile information
   profile: {
     avatar: { type: String },

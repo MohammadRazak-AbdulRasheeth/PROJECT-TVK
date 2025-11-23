@@ -499,10 +499,15 @@ router.post('/confirm-payment', async (req, res) => {
       const userUpdate = {
         currentMembership: membership._id,
         stripeCustomerId: membership.stripeCustomerId,
+        // Add membership status directly to user for quick access
+        membershipStatus: membership.status,
+        membershipType: membership.type,
+        membershipNumber: membership.membershipNumber,
+        membershipExpiresAt: membership.expiresAt,
         updatedAt: new Date()
       };
       await User.findByIdAndUpdate(membership.user, userUpdate);
-      console.log('User record updated with membership link');
+      console.log('User record updated with membership details:', userUpdate);
     }
 
     // Prepare response with complete membership data
@@ -568,25 +573,53 @@ router.post('/confirm-payment', async (req, res) => {
 // Get membership status (requires auth)
 router.get('/status', auth, async (req, res) => {
   try {
-    const user = await User.findById(req.user.id).populate('membership.membershipId');
+    // First try to get from user's quick access fields
+    const user = await User.findById(req.user.id);
     
-    if (!user.membership.membershipId) {
+    if (!user.currentMembership) {
       return res.json({ message: 'No active membership found' });
     }
 
-    const membership = user.membership.membershipId;
+    // Get full membership details
+    const membership = await Membership.findById(user.currentMembership);
     
+    if (!membership) {
+      // Clean up stale reference
+      await User.findByIdAndUpdate(req.user.id, {
+        currentMembership: null,
+        membershipStatus: null,
+        membershipType: null,
+        membershipNumber: null,
+        membershipExpiresAt: null
+      });
+      return res.json({ message: 'No active membership found' });
+    }
+
+    // Return comprehensive membership data
     res.json({
       id: membership._id,
       type: membership.type,
       status: membership.status,
       membershipNumber: membership.membershipNumber,
+      firstName: membership.firstName,
+      lastName: membership.lastName,
+      email: membership.email,
+      phone: membership.phone,
+      address: {
+        street: membership.address,
+        city: membership.city,
+        province: membership.province,
+        postalCode: membership.postalCode
+      },
       activatedAt: membership.activatedAt,
       expiresAt: membership.expiresAt,
       nextBillingDate: membership.nextBillingDate,
       digitalCardUrl: membership.digitalCardUrl,
       verificationStatus: membership.studentVerification?.verificationStatus,
-      rejectionReason: membership.studentVerification?.rejectionReason
+      rejectionReason: membership.studentVerification?.rejectionReason,
+      // Include user's quick access data for verification
+      userMembershipStatus: user.membershipStatus,
+      userMembershipType: user.membershipType
     });
 
   } catch (err) {
