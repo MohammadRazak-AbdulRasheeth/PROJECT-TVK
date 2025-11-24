@@ -156,6 +156,9 @@ export const Footer: React.FC = () => {
           © {new Date().getFullYear()} TVK Canada - The Voice of Vijay Fans in Canada. All rights
           reserved.
         </p>
+        <p style={{ marginTop: '8px', fontSize: '12px' }}>
+          Developed by <strong style={{ color: '#FFD700' }}>Varnyx Tech</strong> • Empowering communities through technology
+        </p>
       </FooterBottom>
     </FooterWrapper>
   )
