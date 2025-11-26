@@ -101,6 +101,7 @@ app.use('/api/events', require('./routes/events'));
 app.use('/api/gallery', require('./routes/gallery'));
 app.use('/api/contact', require('./routes/contact'));
 app.use('/api/global-network', require('./routes/globalNetwork'));
+app.use('/api', require('./routes/joinit-webhook'));
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

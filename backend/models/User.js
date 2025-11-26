@@ -64,6 +64,34 @@ const userSchema = new mongoose.Schema({
   // Stripe integration
   stripeCustomerId: { type: String },
   
+  // Join It integration
+  membership: {
+    joinItId: { type: String }, // Join It membership ID
+    type: { 
+      type: String, 
+      enum: ['monthly', 'yearly', 'student'],
+      default: null 
+    },
+    status: { 
+      type: String, 
+      enum: ['active', 'inactive', 'expired', 'cancelled'],
+      default: null 
+    },
+    joinedDate: { type: Date },
+    expirationDate: { type: Date },
+    hasActiveMembership: { type: Boolean, default: false }
+  },
+
+  // Payment history from Join It
+  payments: [{
+    joinItPaymentId: { type: String },
+    amount: { type: Number },
+    currency: { type: String, default: 'CAD' },
+    status: { type: String },
+    paymentDate: { type: Date },
+    description: { type: String }
+  }],
+  
   // Account status
   isActive: { type: Boolean, default: true },
   lastLoginAt: { type: Date },
