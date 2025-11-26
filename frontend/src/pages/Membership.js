@@ -3,13 +3,10 @@ import { jsx as _jsx, jsxs as _jsxs, Fragment as _Fragment } from "react/jsx-run
  * Membership Page
  */
 import { useState, useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { theme } from '@styles/theme';
 import { Container, Section, Grid, Flex } from '@components/Layout';
 import { Button } from '@components/Button';
-import { MembershipModal } from '@components/MembershipModal';
-import { LoginModal } from '@components/LoginModal';
 import { useAuth } from '../context/AuthContext';
 import { membershipService } from '../services/api';
 const PricingCard = styled.div `
@@ -229,6 +226,43 @@ const FAQItem = styled.details `
     color: ${theme.colors.text.secondary};
   }
 `;
+const JoinItWidget = styled.div `
+  background: ${theme.colors.surface};
+  border-radius: ${theme.borderRadius['2xl']};
+  padding: ${theme.spacing.xl};
+  margin: ${theme.spacing.xl} 0;
+  box-shadow: ${theme.shadows.lg};
+  border: 2px solid ${theme.colors.secondary};
+
+  h3 {
+    text-align: center;
+    margin-bottom: ${theme.spacing.lg};
+    color: ${theme.colors.primary};
+  }
+
+  #joinit-widget-H4x4Dy5Mnr5eCYrSg {
+    min-height: 500px;
+    border-radius: ${theme.borderRadius.lg};
+    overflow: hidden;
+
+    iframe {
+      border-radius: ${theme.borderRadius.lg};
+    }
+  }
+
+  @media (max-width: ${theme.breakpoints.tablet}) {
+    padding: ${theme.spacing.lg};
+    
+    #joinit-widget-H4x4Dy5Mnr5eCYrSg {
+      min-height: 400px;
+    }
+  }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    padding: ${theme.spacing.md};
+    margin: ${theme.spacing.lg} 0;
+  }
+`;
 const CurrentPlanBadge = styled.div `
   position: absolute;
   top: ${theme.spacing.sm};
@@ -266,9 +300,6 @@ const CurrentPlanBadge = styled.div `
  */
 export const MembershipPage = () => {
     const [selectedPlan, setSelectedPlan] = useState('yearly');
-    const [showModal, setShowModal] = useState(false);
-    const [showLoginModal, setShowLoginModal] = useState(false);
-    const [searchParams] = useSearchParams();
     const [userMembership, setUserMembership] = useState(null);
     const { isAuthenticated, hasValidToken, user, isLoading } = useAuth();
     // Debug logging
@@ -309,29 +340,36 @@ export const MembershipPage = () => {
         };
         fetchMembershipStatus();
     }, [user, isAuthenticated, hasValidToken]);
-    // Check if we should show subscription modal after login
+    // Load Join It widget script
     useEffect(() => {
-        const showSubscription = searchParams.get('showSubscription');
-        if (showSubscription === 'true' && (isAuthenticated || hasValidToken())) {
-            setShowModal(true);
-        }
-    }, [searchParams, isAuthenticated, hasValidToken]);
-    const handleSubscribe = () => {
-        // Check if user is authenticated first (either has user object or valid token)
-        if (!isAuthenticated && !hasValidToken()) {
-            // Store the intent to show subscription modal after login
-            localStorage.setItem('loginCallback', 'membership');
-            setShowLoginModal(true);
-            return;
-        }
-        // User is authenticated, proceed to subscription
-        setShowModal(true);
-    };
-    const handleLoginSuccess = () => {
-        // After successful login, close login modal and open subscription modal
-        setShowLoginModal(false);
-        setShowModal(true);
-    };
+        const loadJoinItScript = () => {
+            // Check if script already exists
+            if (document.querySelector('script[src*="joinit.com/embed/widget"]')) {
+                return;
+            }
+            const script = document.createElement('script');
+            script.src = 'https://app.joinit.com/embed/widget/H4x4Dy5Mnr5eCYrSg/embedCode';
+            script.async = true;
+            const firstScript = document.getElementsByTagName('script')[0];
+            if (firstScript && firstScript.parentNode) {
+                firstScript.parentNode.insertBefore(script, firstScript);
+            }
+            // Add message listener for Join It widget
+            const handleMessage = (event) => {
+                if (event.data === 'request-url') {
+                    if (event.source) {
+                        event.source.postMessage(window.location.href, { targetOrigin: event.origin });
+                    }
+                }
+            };
+            window.addEventListener('message', handleMessage, false);
+            return () => {
+                window.removeEventListener('message', handleMessage, false);
+            };
+        };
+        const cleanup = loadJoinItScript();
+        return cleanup;
+    }, []);
     // Helper function to check if a plan is currently active
     const isPlanActivated = (planType) => {
         if (!userMembership || !userMembership.hasActiveMembership)
@@ -358,7 +396,7 @@ export const MembershipPage = () => {
                                                 background: isPlanActivated('student') ? `linear-gradient(135deg, ${theme.colors.secondary} 0%, #ffed4e 100%)` : undefined,
                                                 color: isPlanActivated('student') ? theme.colors.text.primary : undefined,
                                                 cursor: isPlanActivated('student') ? 'default' : 'pointer'
-                                            }, children: isPlanActivated('student') ? '✓ Active Plan' : selectedPlan === 'student' ? 'Selected' : 'Choose Plan' }), _jsxs("ul", { children: [_jsx("li", { children: "Student ID verification required" }), _jsx("li", { children: "Access to student events" }), _jsx("li", { children: "Student-only discounts" }), _jsx("li", { children: "Community forum access" }), _jsx("li", { children: "Movie night access" }), _jsx("li", { children: "Study group invitations" })] })] })] }), _jsx(Flex, { justify: "center", style: { marginTop: theme.spacing.xl }, children: userMembership?.hasActiveMembership ? (_jsxs(Button, { variant: "secondary", size: "lg", disabled: true, children: ["Current Plan: ", userMembership.type?.charAt(0).toUpperCase() + userMembership.type?.slice(1), " Membership"] })) : (_jsx(Button, { variant: "primary", size: "lg", onClick: handleSubscribe, children: selectedPlan === 'student' ? 'Apply for Student Plan' : `Subscribe to ${selectedPlan === 'monthly' ? 'Monthly' : 'Yearly'} Plan` })) })] }) }), _jsx(Section, { padding: `${theme.spacing.xxxl} 0`, background: theme.colors.surface, children: _jsxs(Container, { children: [_jsx("h2", { style: { textAlign: 'center', marginBottom: theme.spacing.xxl }, children: "How It Works" }), _jsxs(StepperContainer, { children: [_jsxs(StepItem, { active: true, children: [_jsx("div", { className: "step-circle", children: "1" }), _jsx("h4", { children: "Sign Up Online" }), _jsx("p", { children: "Create your account once registration opens" })] }), _jsxs(StepItem, { active: true, children: [_jsx("div", { className: "step-circle", children: "2" }), _jsx("h4", { children: "Choose Plan" }), _jsx("p", { children: "Select Monthly or Yearly membership" })] }), _jsxs(StepItem, { active: true, children: [_jsx("div", { className: "step-circle", children: "3" }), _jsx("h4", { children: "Receive Your Card" }), _jsx("p", { children: "Physical card delivered to your address (2\u20134 weeks)" })] }), _jsxs(StepItem, { children: [_jsx("div", { className: "step-circle", children: "4" }), _jsx("h4", { children: "Enjoy Member Perks" }), _jsx("p", { children: "At events and partner businesses" })] }), _jsxs(StepItem, { children: [_jsx("div", { className: "step-circle", children: "5" }), _jsx("h4", { children: "Stay Connected" }), _jsx("p", { children: "Receive exclusive updates and announcements" })] })] }), _jsx(Flex, { justify: "center", style: { marginTop: theme.spacing.xl }, children: _jsx(Button, { variant: "primary", size: "lg", children: "Get Started Now" }) })] }) }), _jsx(Section, { padding: `${theme.spacing.xxxl} 0`, children: _jsxs(Container, { children: [_jsx("h2", { style: { marginBottom: theme.spacing.xxl }, children: "Frequently Asked Questions" }), _jsx(FAQContainer, { children: [
+                                            }, children: isPlanActivated('student') ? '✓ Active Plan' : selectedPlan === 'student' ? 'Selected' : 'Choose Plan' }), _jsxs("ul", { children: [_jsx("li", { children: "Student ID verification required" }), _jsx("li", { children: "Access to student events" }), _jsx("li", { children: "Student-only discounts" }), _jsx("li", { children: "Community forum access" }), _jsx("li", { children: "Movie night access" }), _jsx("li", { children: "Study group invitations" })] })] })] }), _jsxs(JoinItWidget, { children: [_jsx("h3", { children: "Complete Your Membership Registration" }), _jsx("div", { id: "joinit-widget-H4x4Dy5Mnr5eCYrSg", children: _jsxs("noscript", { children: ["View ", _jsx("a", { href: "https://app.joinit.com/o/tvkcanada", children: "Membership Website" }), " powered by ", _jsx("a", { href: "https://joinit.com", children: "Membership Software by Join It" })] }) })] })] }) }), _jsx(Section, { padding: `${theme.spacing.xxxl} 0`, background: theme.colors.surface, children: _jsxs(Container, { children: [_jsx("h2", { style: { textAlign: 'center', marginBottom: theme.spacing.xxl }, children: "How It Works" }), _jsxs(StepperContainer, { children: [_jsxs(StepItem, { active: true, children: [_jsx("div", { className: "step-circle", children: "1" }), _jsx("h4", { children: "Sign Up Online" }), _jsx("p", { children: "Create your account once registration opens" })] }), _jsxs(StepItem, { active: true, children: [_jsx("div", { className: "step-circle", children: "2" }), _jsx("h4", { children: "Choose Plan" }), _jsx("p", { children: "Select Monthly or Yearly membership" })] }), _jsxs(StepItem, { active: true, children: [_jsx("div", { className: "step-circle", children: "3" }), _jsx("h4", { children: "Receive Your Card" }), _jsx("p", { children: "Physical card delivered to your address (2\u20134 weeks)" })] }), _jsxs(StepItem, { children: [_jsx("div", { className: "step-circle", children: "4" }), _jsx("h4", { children: "Enjoy Member Perks" }), _jsx("p", { children: "At events and partner businesses" })] }), _jsxs(StepItem, { children: [_jsx("div", { className: "step-circle", children: "5" }), _jsx("h4", { children: "Stay Connected" }), _jsx("p", { children: "Receive exclusive updates and announcements" })] })] }), _jsx(Flex, { justify: "center", style: { marginTop: theme.spacing.xl }, children: _jsx(Button, { variant: "primary", size: "lg", children: "Get Started Now" }) })] }) }), _jsx(Section, { padding: `${theme.spacing.xxxl} 0`, children: _jsxs(Container, { children: [_jsx("h2", { style: { marginBottom: theme.spacing.xxl }, children: "Frequently Asked Questions" }), _jsx(FAQContainer, { children: [
                                 {
                                     q: '1. When does membership launch?',
                                     a: 'Membership will officially open soon. Announcements will be posted on our website and social media.',
@@ -403,5 +441,5 @@ export const MembershipPage = () => {
                                     q: '11. How do I apply for Student Membership?',
                                     a: 'Student membership is available for $5/month with valid student ID verification. Contact us with your enrollment documents, student ID, and proof of current enrollment status. Student members get access to student-only events, discounts, and study group invitations.',
                                 },
-                            ].map((item, idx) => (_jsxs(FAQItem, { children: [_jsx("summary", { children: item.q }), _jsx("p", { children: item.a })] }, idx))) })] }) }), _jsx(MembershipModal, { isOpen: showModal, onClose: () => setShowModal(false), selectedPlan: selectedPlan }), _jsx(LoginModal, { isOpen: showLoginModal, onClose: () => setShowLoginModal(false), onSuccess: handleLoginSuccess })] }));
+                            ].map((item, idx) => (_jsxs(FAQItem, { children: [_jsx("summary", { children: item.q }), _jsx("p", { children: item.a })] }, idx))) })] }) })] }));
 };

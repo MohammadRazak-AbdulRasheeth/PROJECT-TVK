@@ -3,13 +3,10 @@
  */
 
 import React, { useState, useEffect } from 'react'
-import { useSearchParams } from 'react-router-dom'
 import styled from 'styled-components'
 import { theme } from '@styles/theme'
 import { Container, Section, Grid, Flex } from '@components/Layout'
 import { Button } from '@components/Button'
-import { MembershipModal } from '@components/MembershipModal'
-import { LoginModal } from '@components/LoginModal'
 import { useAuth } from '../context/AuthContext'
 import { membershipService } from '../services/api'
 
@@ -236,6 +233,44 @@ const FAQItem = styled.details`
   }
 `
 
+const JoinItWidget = styled.div`
+  background: ${theme.colors.surface};
+  border-radius: ${theme.borderRadius['2xl']};
+  padding: ${theme.spacing.xl};
+  margin: ${theme.spacing.xl} 0;
+  box-shadow: ${theme.shadows.lg};
+  border: 2px solid ${theme.colors.secondary};
+
+  h3 {
+    text-align: center;
+    margin-bottom: ${theme.spacing.lg};
+    color: ${theme.colors.primary};
+  }
+
+  #joinit-widget-H4x4Dy5Mnr5eCYrSg {
+    min-height: 500px;
+    border-radius: ${theme.borderRadius.lg};
+    overflow: hidden;
+
+    iframe {
+      border-radius: ${theme.borderRadius.lg};
+    }
+  }
+
+  @media (max-width: ${theme.breakpoints.tablet}) {
+    padding: ${theme.spacing.lg};
+    
+    #joinit-widget-H4x4Dy5Mnr5eCYrSg {
+      min-height: 400px;
+    }
+  }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    padding: ${theme.spacing.md};
+    margin: ${theme.spacing.lg} 0;
+  }
+`
+
 const CurrentPlanBadge = styled.div`
   position: absolute;
   top: ${theme.spacing.sm};
@@ -276,9 +311,6 @@ const CurrentPlanBadge = styled.div`
  */
 export const MembershipPage: React.FC = () => {
   const [selectedPlan, setSelectedPlan] = useState<'monthly' | 'yearly' | 'student'>('yearly')
-  const [showModal, setShowModal] = useState(false)
-  const [showLoginModal, setShowLoginModal] = useState(false)
-  const [searchParams] = useSearchParams()
   const [userMembership, setUserMembership] = useState<any>(null)
   const { isAuthenticated, hasValidToken, user, isLoading } = useAuth()
 
@@ -320,32 +352,42 @@ export const MembershipPage: React.FC = () => {
     fetchMembershipStatus()
   }, [user, isAuthenticated, hasValidToken])
 
-  // Check if we should show subscription modal after login
+  // Load Join It widget script
   useEffect(() => {
-    const showSubscription = searchParams.get('showSubscription')
-    if (showSubscription === 'true' && (isAuthenticated || hasValidToken())) {
-      setShowModal(true)
-    }
-  }, [searchParams, isAuthenticated, hasValidToken])
+    const loadJoinItScript = () => {
+      // Check if script already exists
+      if (document.querySelector('script[src*="joinit.com/embed/widget"]')) {
+        return
+      }
 
-  const handleSubscribe = () => {
-    // Check if user is authenticated first (either has user object or valid token)
-    if (!isAuthenticated && !hasValidToken()) {
-      // Store the intent to show subscription modal after login
-      localStorage.setItem('loginCallback', 'membership')
-      setShowLoginModal(true)
-      return
-    }
-    
-    // User is authenticated, proceed to subscription
-    setShowModal(true)
-  }
+      const script = document.createElement('script')
+      script.src = 'https://app.joinit.com/embed/widget/H4x4Dy5Mnr5eCYrSg/embedCode'
+      script.async = true
+      
+      const firstScript = document.getElementsByTagName('script')[0]
+      if (firstScript && firstScript.parentNode) {
+        firstScript.parentNode.insertBefore(script, firstScript)
+      }
 
-  const handleLoginSuccess = () => {
-    // After successful login, close login modal and open subscription modal
-    setShowLoginModal(false)
-    setShowModal(true)
-  }
+      // Add message listener for Join It widget
+      const handleMessage = (event: MessageEvent) => {
+        if (event.data === 'request-url') {
+          if (event.source) {
+            (event.source as Window).postMessage(window.location.href, { targetOrigin: event.origin })
+          }
+        }
+      }
+
+      window.addEventListener('message', handleMessage, false)
+
+      return () => {
+        window.removeEventListener('message', handleMessage, false)
+      }
+    }
+
+    const cleanup = loadJoinItScript()
+    return cleanup
+  }, [])
 
   // Helper function to check if a plan is currently active
   const isPlanActivated = (planType: 'monthly' | 'yearly' | 'student'): boolean => {
@@ -469,18 +511,16 @@ export const MembershipPage: React.FC = () => {
             </PricingCard>
           </Grid>
 
-          <Flex justify="center" style={{ marginTop: theme.spacing.xl }}>
-            {/* Show different button text based on membership status */}
-            {userMembership?.hasActiveMembership ? (
-              <Button variant="secondary" size="lg" disabled>
-                Current Plan: {userMembership.type?.charAt(0).toUpperCase() + userMembership.type?.slice(1)} Membership
-              </Button>
-            ) : (
-              <Button variant="primary" size="lg" onClick={handleSubscribe}>
-                {selectedPlan === 'student' ? 'Apply for Student Plan' : `Subscribe to ${selectedPlan === 'monthly' ? 'Monthly' : 'Yearly'} Plan`}
-              </Button>
-            )}
-          </Flex>
+          {/* Join It Membership Widget */}
+          <JoinItWidget>
+            <h3>Complete Your Membership Registration</h3>
+            <div id="joinit-widget-H4x4Dy5Mnr5eCYrSg">
+              <noscript>
+                {/* This code is required to support all browsers */}
+                View <a href="https://app.joinit.com/o/tvkcanada">Membership Website</a> powered by <a href="https://joinit.com">Membership Software by Join It</a>
+              </noscript>
+            </div>
+          </JoinItWidget>
         </Container>
       </Section>
 
@@ -588,19 +628,6 @@ export const MembershipPage: React.FC = () => {
         </Container>
       </Section>
 
-      {/* Membership Modal */}
-      <MembershipModal 
-        isOpen={showModal}
-        onClose={() => setShowModal(false)}
-        selectedPlan={selectedPlan}
-      />
-
-      {/* Login Modal */}
-      <LoginModal 
-        isOpen={showLoginModal}
-        onClose={() => setShowLoginModal(false)}
-        onSuccess={handleLoginSuccess}
-      />
     </>
   )
 }
