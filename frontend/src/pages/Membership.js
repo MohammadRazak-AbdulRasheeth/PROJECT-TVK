@@ -226,12 +226,33 @@ const FAQItem = styled.details `
     color: ${theme.colors.text.secondary};
   }
 `;
-const JoinItWidget = styled.div `
+const JoinModal = styled.div `
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  display: ${props => props.isOpen ? 'flex' : 'none'};
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: ${theme.spacing.lg};
+
+  @media (max-width: ${theme.breakpoints.tablet}) {
+    padding: ${theme.spacing.md};
+  }
+`;
+const JoinModalContent = styled.div `
   background: ${theme.colors.surface};
   border-radius: ${theme.borderRadius['2xl']};
   padding: ${theme.spacing.xl};
-  margin: ${theme.spacing.xl} 0;
-  box-shadow: ${theme.shadows.lg};
+  width: 100%;
+  max-width: 800px;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  box-shadow: ${theme.shadows.xl};
   border: 2px solid ${theme.colors.secondary};
 
   h3 {
@@ -252,6 +273,7 @@ const JoinItWidget = styled.div `
 
   @media (max-width: ${theme.breakpoints.tablet}) {
     padding: ${theme.spacing.lg};
+    max-height: 85vh;
     
     #joinit-widget-H4x4Dy5Mnr5eCYrSg {
       min-height: 400px;
@@ -260,7 +282,36 @@ const JoinItWidget = styled.div `
 
   @media (max-width: ${theme.breakpoints.mobile}) {
     padding: ${theme.spacing.md};
-    margin: ${theme.spacing.lg} 0;
+    margin: ${theme.spacing.sm};
+    max-height: 80vh;
+  }
+`;
+const CloseButton = styled.button `
+  position: absolute;
+  top: ${theme.spacing.md};
+  right: ${theme.spacing.md};
+  background: ${theme.colors.primary};
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 20px;
+  font-weight: bold;
+  transition: all ${theme.transitions.base};
+  z-index: 1001;
+
+  &:hover {
+    background: ${theme.colors.secondary};
+    transform: scale(1.1);
+  }
+
+  &:active {
+    transform: scale(0.95);
   }
 `;
 const CurrentPlanBadge = styled.div `
@@ -301,6 +352,7 @@ const CurrentPlanBadge = styled.div `
 export const MembershipPage = () => {
     const [selectedPlan, setSelectedPlan] = useState('yearly');
     const [userMembership, setUserMembership] = useState(null);
+    const [showJoinModal, setShowJoinModal] = useState(false);
     const { isAuthenticated, hasValidToken, user, isLoading } = useAuth();
     // Debug logging
     useEffect(() => {
@@ -340,36 +392,58 @@ export const MembershipPage = () => {
         };
         fetchMembershipStatus();
     }, [user, isAuthenticated, hasValidToken]);
-    // Load Join It widget script
+    // Load Join It widget script when modal opens
     useEffect(() => {
-        const loadJoinItScript = () => {
-            // Check if script already exists
-            if (document.querySelector('script[src*="joinit.com/embed/widget"]')) {
-                return;
-            }
-            const script = document.createElement('script');
-            script.src = 'https://app.joinit.com/embed/widget/H4x4Dy5Mnr5eCYrSg/embedCode';
-            script.async = true;
-            const firstScript = document.getElementsByTagName('script')[0];
-            if (firstScript && firstScript.parentNode) {
-                firstScript.parentNode.insertBefore(script, firstScript);
-            }
-            // Add message listener for Join It widget
-            const handleMessage = (event) => {
-                if (event.data === 'request-url') {
-                    if (event.source) {
-                        event.source.postMessage(window.location.href, { targetOrigin: event.origin });
-                    }
+        if (showJoinModal) {
+            const loadJoinItScript = () => {
+                // Check if script already exists
+                if (document.querySelector('script[src*="joinit.com/embed/widget"]')) {
+                    return;
                 }
+                const script = document.createElement('script');
+                script.src = 'https://app.joinit.com/embed/widget/H4x4Dy5Mnr5eCYrSg/embedCode';
+                script.async = true;
+                const firstScript = document.getElementsByTagName('script')[0];
+                if (firstScript && firstScript.parentNode) {
+                    firstScript.parentNode.insertBefore(script, firstScript);
+                }
+                // Add message listener for Join It widget
+                const handleMessage = (event) => {
+                    if (event.data === 'request-url') {
+                        if (event.source) {
+                            event.source.postMessage(window.location.href, { targetOrigin: event.origin });
+                        }
+                    }
+                };
+                window.addEventListener('message', handleMessage, false);
+                return () => {
+                    window.removeEventListener('message', handleMessage, false);
+                };
             };
-            window.addEventListener('message', handleMessage, false);
-            return () => {
-                window.removeEventListener('message', handleMessage, false);
-            };
+            const cleanup = loadJoinItScript();
+            return cleanup;
+        }
+    }, [showJoinModal]);
+    // Handle ESC key to close modal
+    useEffect(() => {
+        const handleEscKey = (event) => {
+            if (event.key === 'Escape' && showJoinModal) {
+                setShowJoinModal(false);
+            }
         };
-        const cleanup = loadJoinItScript();
-        return cleanup;
-    }, []);
+        if (showJoinModal) {
+            document.addEventListener('keydown', handleEscKey);
+            // Prevent body scroll when modal is open
+            document.body.style.overflow = 'hidden';
+        }
+        else {
+            document.body.style.overflow = 'unset';
+        }
+        return () => {
+            document.removeEventListener('keydown', handleEscKey);
+            document.body.style.overflow = 'unset';
+        };
+    }, [showJoinModal]);
     // Helper function to check if a plan is currently active
     const isPlanActivated = (planType) => {
         if (!userMembership || !userMembership.hasActiveMembership)
@@ -396,7 +470,13 @@ export const MembershipPage = () => {
                                                 background: isPlanActivated('student') ? `linear-gradient(135deg, ${theme.colors.secondary} 0%, #ffed4e 100%)` : undefined,
                                                 color: isPlanActivated('student') ? theme.colors.text.primary : undefined,
                                                 cursor: isPlanActivated('student') ? 'default' : 'pointer'
-                                            }, children: isPlanActivated('student') ? '✓ Active Plan' : selectedPlan === 'student' ? 'Selected' : 'Choose Plan' }), _jsxs("ul", { children: [_jsx("li", { children: "Student ID verification required" }), _jsx("li", { children: "Access to student events" }), _jsx("li", { children: "Student-only discounts" }), _jsx("li", { children: "Community forum access" }), _jsx("li", { children: "Movie night access" }), _jsx("li", { children: "Study group invitations" })] })] })] }), _jsxs(JoinItWidget, { children: [_jsx("h3", { children: "Complete Your Membership Registration" }), _jsx("div", { id: "joinit-widget-H4x4Dy5Mnr5eCYrSg", children: _jsxs("noscript", { children: ["View ", _jsx("a", { href: "https://app.joinit.com/o/tvkcanada", children: "Membership Website" }), " powered by ", _jsx("a", { href: "https://joinit.com", children: "Membership Software by Join It" })] }) })] })] }) }), _jsx(Section, { padding: `${theme.spacing.xxxl} 0`, background: theme.colors.surface, children: _jsxs(Container, { children: [_jsx("h2", { style: { textAlign: 'center', marginBottom: theme.spacing.xxl }, children: "How It Works" }), _jsxs(StepperContainer, { children: [_jsxs(StepItem, { active: true, children: [_jsx("div", { className: "step-circle", children: "1" }), _jsx("h4", { children: "Sign Up Online" }), _jsx("p", { children: "Create your account once registration opens" })] }), _jsxs(StepItem, { active: true, children: [_jsx("div", { className: "step-circle", children: "2" }), _jsx("h4", { children: "Choose Plan" }), _jsx("p", { children: "Select Monthly or Yearly membership" })] }), _jsxs(StepItem, { active: true, children: [_jsx("div", { className: "step-circle", children: "3" }), _jsx("h4", { children: "Receive Your Card" }), _jsx("p", { children: "Physical card delivered to your address (2\u20134 weeks)" })] }), _jsxs(StepItem, { children: [_jsx("div", { className: "step-circle", children: "4" }), _jsx("h4", { children: "Enjoy Member Perks" }), _jsx("p", { children: "At events and partner businesses" })] }), _jsxs(StepItem, { children: [_jsx("div", { className: "step-circle", children: "5" }), _jsx("h4", { children: "Stay Connected" }), _jsx("p", { children: "Receive exclusive updates and announcements" })] })] }), _jsx(Flex, { justify: "center", style: { marginTop: theme.spacing.xl }, children: _jsx(Button, { variant: "primary", size: "lg", children: "Get Started Now" }) })] }) }), _jsx(Section, { padding: `${theme.spacing.xxxl} 0`, children: _jsxs(Container, { children: [_jsx("h2", { style: { marginBottom: theme.spacing.xxl }, children: "Frequently Asked Questions" }), _jsx(FAQContainer, { children: [
+                                            }, children: isPlanActivated('student') ? '✓ Active Plan' : selectedPlan === 'student' ? 'Selected' : 'Choose Plan' }), _jsxs("ul", { children: [_jsx("li", { children: "Student ID verification required" }), _jsx("li", { children: "Access to student events" }), _jsx("li", { children: "Student-only discounts" }), _jsx("li", { children: "Community forum access" }), _jsx("li", { children: "Movie night access" }), _jsx("li", { children: "Study group invitations" })] })] })] }), _jsx(Flex, { justify: "center", style: { marginTop: theme.spacing.xl }, children: userMembership?.hasActiveMembership ? (_jsxs(Button, { variant: "secondary", size: "lg", disabled: true, children: ["Current Plan: ", userMembership.type?.charAt(0).toUpperCase() + userMembership.type?.slice(1), " Membership"] })) : (_jsx(Button, { variant: "primary", size: "lg", onClick: () => setShowJoinModal(true), style: {
+                                    background: `linear-gradient(135deg, ${theme.colors.primary} 0%, ${theme.colors.accent} 100%)`,
+                                    fontSize: '18px',
+                                    padding: `${theme.spacing.lg} ${theme.spacing.xxl}`,
+                                    boxShadow: theme.shadows.lg,
+                                    border: `2px solid ${theme.colors.secondary}`
+                                }, children: "\uD83D\uDE80 Join Now - Start Your Membership!" })) })] }) }), _jsx(Section, { padding: `${theme.spacing.xxxl} 0`, background: theme.colors.surface, children: _jsxs(Container, { children: [_jsx("h2", { style: { textAlign: 'center', marginBottom: theme.spacing.xxl }, children: "How It Works" }), _jsxs(StepperContainer, { children: [_jsxs(StepItem, { active: true, children: [_jsx("div", { className: "step-circle", children: "1" }), _jsx("h4", { children: "Sign Up Online" }), _jsx("p", { children: "Create your account once registration opens" })] }), _jsxs(StepItem, { active: true, children: [_jsx("div", { className: "step-circle", children: "2" }), _jsx("h4", { children: "Choose Plan" }), _jsx("p", { children: "Select Monthly or Yearly membership" })] }), _jsxs(StepItem, { active: true, children: [_jsx("div", { className: "step-circle", children: "3" }), _jsx("h4", { children: "Receive Your Card" }), _jsx("p", { children: "Physical card delivered to your address (2\u20134 weeks)" })] }), _jsxs(StepItem, { children: [_jsx("div", { className: "step-circle", children: "4" }), _jsx("h4", { children: "Enjoy Member Perks" }), _jsx("p", { children: "At events and partner businesses" })] }), _jsxs(StepItem, { children: [_jsx("div", { className: "step-circle", children: "5" }), _jsx("h4", { children: "Stay Connected" }), _jsx("p", { children: "Receive exclusive updates and announcements" })] })] }), _jsx(Flex, { justify: "center", style: { marginTop: theme.spacing.xl }, children: _jsx(Button, { variant: "primary", size: "lg", children: "Get Started Now" }) })] }) }), _jsx(Section, { padding: `${theme.spacing.xxxl} 0`, children: _jsxs(Container, { children: [_jsx("h2", { style: { marginBottom: theme.spacing.xxl }, children: "Frequently Asked Questions" }), _jsx(FAQContainer, { children: [
                                 {
                                     q: '1. When does membership launch?',
                                     a: 'Membership will officially open soon. Announcements will be posted on our website and social media.',
@@ -441,5 +521,5 @@ export const MembershipPage = () => {
                                     q: '11. How do I apply for Student Membership?',
                                     a: 'Student membership is available for $5/month with valid student ID verification. Contact us with your enrollment documents, student ID, and proof of current enrollment status. Student members get access to student-only events, discounts, and study group invitations.',
                                 },
-                            ].map((item, idx) => (_jsxs(FAQItem, { children: [_jsx("summary", { children: item.q }), _jsx("p", { children: item.a })] }, idx))) })] }) })] }));
+                            ].map((item, idx) => (_jsxs(FAQItem, { children: [_jsx("summary", { children: item.q }), _jsx("p", { children: item.a })] }, idx))) })] }) }), _jsx(JoinModal, { isOpen: showJoinModal, children: _jsxs(JoinModalContent, { children: [_jsx(CloseButton, { onClick: () => setShowJoinModal(false), "aria-label": "Close modal", children: "\u00D7" }), _jsx("h3", { children: "Complete Your Membership Registration" }), _jsx("div", { id: "joinit-widget-H4x4Dy5Mnr5eCYrSg", children: _jsxs("noscript", { children: ["View ", _jsx("a", { href: "https://app.joinit.com/o/tvkcanada", children: "Membership Website" }), " powered by ", _jsx("a", { href: "https://joinit.com", children: "Membership Software by Join It" })] }) })] }) })] }));
 };

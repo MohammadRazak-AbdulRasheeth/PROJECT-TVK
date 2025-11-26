@@ -233,12 +233,34 @@ const FAQItem = styled.details`
   }
 `
 
-const JoinItWidget = styled.div`
+const JoinModal = styled.div<{ isOpen: boolean }>`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  display: ${props => props.isOpen ? 'flex' : 'none'};
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: ${theme.spacing.lg};
+
+  @media (max-width: ${theme.breakpoints.tablet}) {
+    padding: ${theme.spacing.md};
+  }
+`
+
+const JoinModalContent = styled.div`
   background: ${theme.colors.surface};
   border-radius: ${theme.borderRadius['2xl']};
   padding: ${theme.spacing.xl};
-  margin: ${theme.spacing.xl} 0;
-  box-shadow: ${theme.shadows.lg};
+  width: 100%;
+  max-width: 800px;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  box-shadow: ${theme.shadows.xl};
   border: 2px solid ${theme.colors.secondary};
 
   h3 {
@@ -259,6 +281,7 @@ const JoinItWidget = styled.div`
 
   @media (max-width: ${theme.breakpoints.tablet}) {
     padding: ${theme.spacing.lg};
+    max-height: 85vh;
     
     #joinit-widget-H4x4Dy5Mnr5eCYrSg {
       min-height: 400px;
@@ -267,7 +290,37 @@ const JoinItWidget = styled.div`
 
   @media (max-width: ${theme.breakpoints.mobile}) {
     padding: ${theme.spacing.md};
-    margin: ${theme.spacing.lg} 0;
+    margin: ${theme.spacing.sm};
+    max-height: 80vh;
+  }
+`
+
+const CloseButton = styled.button`
+  position: absolute;
+  top: ${theme.spacing.md};
+  right: ${theme.spacing.md};
+  background: ${theme.colors.primary};
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 20px;
+  font-weight: bold;
+  transition: all ${theme.transitions.base};
+  z-index: 1001;
+
+  &:hover {
+    background: ${theme.colors.secondary};
+    transform: scale(1.1);
+  }
+
+  &:active {
+    transform: scale(0.95);
   }
 `
 
@@ -312,6 +365,7 @@ const CurrentPlanBadge = styled.div`
 export const MembershipPage: React.FC = () => {
   const [selectedPlan, setSelectedPlan] = useState<'monthly' | 'yearly' | 'student'>('yearly')
   const [userMembership, setUserMembership] = useState<any>(null)
+  const [showJoinModal, setShowJoinModal] = useState(false)
   const { isAuthenticated, hasValidToken, user, isLoading } = useAuth()
 
   // Debug logging
@@ -352,42 +406,66 @@ export const MembershipPage: React.FC = () => {
     fetchMembershipStatus()
   }, [user, isAuthenticated, hasValidToken])
 
-  // Load Join It widget script
+  // Load Join It widget script when modal opens
   useEffect(() => {
-    const loadJoinItScript = () => {
-      // Check if script already exists
-      if (document.querySelector('script[src*="joinit.com/embed/widget"]')) {
-        return
-      }
+    if (showJoinModal) {
+      const loadJoinItScript = () => {
+        // Check if script already exists
+        if (document.querySelector('script[src*="joinit.com/embed/widget"]')) {
+          return
+        }
 
-      const script = document.createElement('script')
-      script.src = 'https://app.joinit.com/embed/widget/H4x4Dy5Mnr5eCYrSg/embedCode'
-      script.async = true
-      
-      const firstScript = document.getElementsByTagName('script')[0]
-      if (firstScript && firstScript.parentNode) {
-        firstScript.parentNode.insertBefore(script, firstScript)
-      }
+        const script = document.createElement('script')
+        script.src = 'https://app.joinit.com/embed/widget/H4x4Dy5Mnr5eCYrSg/embedCode'
+        script.async = true
+        
+        const firstScript = document.getElementsByTagName('script')[0]
+        if (firstScript && firstScript.parentNode) {
+          firstScript.parentNode.insertBefore(script, firstScript)
+        }
 
-      // Add message listener for Join It widget
-      const handleMessage = (event: MessageEvent) => {
-        if (event.data === 'request-url') {
-          if (event.source) {
-            (event.source as Window).postMessage(window.location.href, { targetOrigin: event.origin })
+        // Add message listener for Join It widget
+        const handleMessage = (event: MessageEvent) => {
+          if (event.data === 'request-url') {
+            if (event.source) {
+              (event.source as Window).postMessage(window.location.href, { targetOrigin: event.origin })
+            }
           }
+        }
+
+        window.addEventListener('message', handleMessage, false)
+
+        return () => {
+          window.removeEventListener('message', handleMessage, false)
         }
       }
 
-      window.addEventListener('message', handleMessage, false)
+      const cleanup = loadJoinItScript()
+      return cleanup
+    }
+  }, [showJoinModal])
 
-      return () => {
-        window.removeEventListener('message', handleMessage, false)
+  // Handle ESC key to close modal
+  useEffect(() => {
+    const handleEscKey = (event: KeyboardEvent) => {
+      if (event.key === 'Escape' && showJoinModal) {
+        setShowJoinModal(false)
       }
     }
 
-    const cleanup = loadJoinItScript()
-    return cleanup
-  }, [])
+    if (showJoinModal) {
+      document.addEventListener('keydown', handleEscKey)
+      // Prevent body scroll when modal is open
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = 'unset'
+    }
+
+    return () => {
+      document.removeEventListener('keydown', handleEscKey)
+      document.body.style.overflow = 'unset'
+    }
+  }, [showJoinModal])
 
   // Helper function to check if a plan is currently active
   const isPlanActivated = (planType: 'monthly' | 'yearly' | 'student'): boolean => {
@@ -511,16 +589,29 @@ export const MembershipPage: React.FC = () => {
             </PricingCard>
           </Grid>
 
-          {/* Join It Membership Widget */}
-          <JoinItWidget>
-            <h3>Complete Your Membership Registration</h3>
-            <div id="joinit-widget-H4x4Dy5Mnr5eCYrSg">
-              <noscript>
-                {/* This code is required to support all browsers */}
-                View <a href="https://app.joinit.com/o/tvkcanada">Membership Website</a> powered by <a href="https://joinit.com">Membership Software by Join It</a>
-              </noscript>
-            </div>
-          </JoinItWidget>
+          <Flex justify="center" style={{ marginTop: theme.spacing.xl }}>
+            {/* Show different button text based on membership status */}
+            {userMembership?.hasActiveMembership ? (
+              <Button variant="secondary" size="lg" disabled>
+                Current Plan: {userMembership.type?.charAt(0).toUpperCase() + userMembership.type?.slice(1)} Membership
+              </Button>
+            ) : (
+              <Button 
+                variant="primary" 
+                size="lg" 
+                onClick={() => setShowJoinModal(true)}
+                style={{
+                  background: `linear-gradient(135deg, ${theme.colors.primary} 0%, ${theme.colors.accent} 100%)`,
+                  fontSize: '18px',
+                  padding: `${theme.spacing.lg} ${theme.spacing.xxl}`,
+                  boxShadow: theme.shadows.lg,
+                  border: `2px solid ${theme.colors.secondary}`
+                }}
+              >
+                🚀 Join Now - Start Your Membership!
+              </Button>
+            )}
+          </Flex>
         </Container>
       </Section>
 
@@ -627,6 +718,22 @@ export const MembershipPage: React.FC = () => {
           </FAQContainer>
         </Container>
       </Section>
+
+      {/* Join It Modal */}
+      <JoinModal isOpen={showJoinModal}>
+        <JoinModalContent>
+          <CloseButton onClick={() => setShowJoinModal(false)} aria-label="Close modal">
+            ×
+          </CloseButton>
+          <h3>Complete Your Membership Registration</h3>
+          <div id="joinit-widget-H4x4Dy5Mnr5eCYrSg">
+            <noscript>
+              {/* This code is required to support all browsers */}
+              View <a href="https://app.joinit.com/o/tvkcanada">Membership Website</a> powered by <a href="https://joinit.com">Membership Software by Join It</a>
+            </noscript>
+          </div>
+        </JoinModalContent>
+      </JoinModal>
 
     </>
   )
