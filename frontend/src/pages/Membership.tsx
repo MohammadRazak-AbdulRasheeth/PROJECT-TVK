@@ -357,6 +357,131 @@ const CurrentPlanBadge = styled.div`
   }
 `
 
+const JoinButton = styled(Button)`
+  background: linear-gradient(135deg, ${theme.colors.primary} 0%, ${theme.colors.accent || '#8b1428'} 100%);
+  border: 2px solid ${theme.colors.secondary};
+  box-shadow: ${theme.shadows.lg};
+  font-weight: ${theme.typography.fontWeight.bold};
+  text-transform: none;
+  letter-spacing: 0.5px;
+  transition: all ${theme.transitions.base};
+  position: relative;
+  overflow: hidden;
+  white-space: nowrap;
+  
+  /* Desktop styles */
+  font-size: ${theme.typography.fontSize.lg};
+  padding: ${theme.spacing.lg} ${theme.spacing.xxl};
+  min-height: 56px;
+  min-width: 320px;
+  
+  /* Hover effect */
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transition: left 0.6s ease;
+  }
+
+  &:hover {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: ${theme.shadows.xl};
+    background: linear-gradient(135deg, ${theme.colors.accent || '#8b1428'} 0%, ${theme.colors.primary} 100%);
+    
+    &::before {
+      left: 100%;
+    }
+  }
+
+  &:active {
+    transform: translateY(-1px) scale(1.01);
+  }
+
+  /* Tablet styles */
+  @media (max-width: ${theme.breakpoints.desktop}) {
+    font-size: ${theme.typography.fontSize.base};
+    padding: ${theme.spacing.md} ${theme.spacing.xl};
+    min-height: 52px;
+    min-width: 280px;
+  }
+
+  /* Mobile styles */
+  @media (max-width: ${theme.breakpoints.tablet}) {
+    font-size: ${theme.typography.fontSize.base};
+    padding: ${theme.spacing.md} ${theme.spacing.lg};
+    min-height: 48px;
+    min-width: 250px;
+    width: 100%;
+    max-width: 320px;
+    margin: 0 auto;
+    
+    /* Adjust text for smaller screens */
+    font-size: ${theme.typography.fontSize.sm};
+  }
+
+  /* Small mobile styles */
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    font-size: ${theme.typography.fontSize.sm};
+    padding: ${theme.spacing.sm} ${theme.spacing.md};
+    min-height: 44px;
+    min-width: 200px;
+    letter-spacing: 0.25px;
+    
+    /* Even more compact text for very small screens */
+    &::after {
+      content: '🚀 Join Now!';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 100%;
+      display: none;
+    }
+  }
+
+  /* Extra small screens - show shortened text */
+  @media (max-width: 320px) {
+    span {
+      display: none;
+    }
+    
+    &::after {
+      display: block;
+    }
+  }
+
+  /* Ensure proper sizing on touch devices */
+  @media (hover: none) and (pointer: coarse) {
+    min-height: 48px;
+    padding: ${theme.spacing.md} ${theme.spacing.lg};
+    
+    &:active {
+      transform: scale(0.97);
+      transition: transform 0.1s ease;
+    }
+  }
+`
+
+const ButtonContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 ${theme.spacing.md};
+  width: 100%;
+  
+  @media (max-width: ${theme.breakpoints.tablet}) {
+    padding: 0 ${theme.spacing.sm};
+  }
+  
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    padding: 0 ${theme.spacing.xs};
+  }
+`
+
 
 
 /**
@@ -589,29 +714,22 @@ export const MembershipPage: React.FC = () => {
             </PricingCard>
           </Grid>
 
-          <Flex justify="center" style={{ marginTop: theme.spacing.xl }}>
+          <ButtonContainer style={{ marginTop: theme.spacing.xl }}>
             {/* Show different button text based on membership status */}
             {userMembership?.hasActiveMembership ? (
               <Button variant="secondary" size="lg" disabled>
                 Current Plan: {userMembership.type?.charAt(0).toUpperCase() + userMembership.type?.slice(1)} Membership
               </Button>
             ) : (
-              <Button 
+              <JoinButton 
                 variant="primary" 
                 size="lg" 
                 onClick={() => setShowJoinModal(true)}
-                style={{
-                  background: `linear-gradient(135deg, ${theme.colors.primary} 0%, ${theme.colors.accent} 100%)`,
-                  fontSize: '18px',
-                  padding: `${theme.spacing.lg} ${theme.spacing.xxl}`,
-                  boxShadow: theme.shadows.lg,
-                  border: `2px solid ${theme.colors.secondary}`
-                }}
               >
-                🚀 Join Now - Start Your Membership!
-              </Button>
+                <span> Join Now - Start Your Membership!</span>
+              </JoinButton>
             )}
-          </Flex>
+          </ButtonContainer>
         </Container>
       </Section>
 
