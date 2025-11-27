@@ -480,6 +480,7 @@ const ButtonContainer = styled.div`
   @media (max-width: ${theme.breakpoints.mobile}) {
     padding: 0 ${theme.spacing.xs};
   }
+  
 `
 
 
@@ -552,14 +553,25 @@ export const MembershipPage: React.FC = () => {
         // Add message listener for Join It widget
         const handleMessage = (event: MessageEvent) => {
           if (event.data === 'request-url') {
-            if (event.source) {
-              (event.source as Window).postMessage(window.location.href, { targetOrigin: event.origin })
+            // Reply with the current location — use event.origin as the target origin (matches original embed script)
+            if (event.source && event.origin) {
+              try {
+                ;(event.source as Window).postMessage(window.location.href, event.origin)
+              } catch (err) {
+                // Fallback: try a plain postMessage (some environments may throw)
+                try {
+                  (event.source as Window).postMessage(window.location.href, '*')
+                } catch (e) {
+                  console.warn('Failed to post message to JoinIt widget:', e)
+                }
+              }
             }
           }
         }
 
         window.addEventListener('message', handleMessage, false)
 
+        // Return cleanup function
         return () => {
           window.removeEventListener('message', handleMessage, false)
         }
@@ -845,7 +857,6 @@ export const MembershipPage: React.FC = () => {
           <h3>Complete Your Membership Registration</h3>
           <div id="joinit-widget-H4x4Dy5Mnr5eCYrSg">
             <noscript>
-              {/* This code is required to support all browsers */}
               View <a href="https://app.joinit.com/o/tvkcanada">Membership Website</a> powered by <a href="https://joinit.com">Membership Software by Join It</a>
             </noscript>
           </div>
