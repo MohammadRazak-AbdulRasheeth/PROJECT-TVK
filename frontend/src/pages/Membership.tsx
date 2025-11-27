@@ -633,7 +633,7 @@ export const MembershipPage: React.FC = () => {
               <div className="price">
                 $10<span>/month</span>
               </div>
-              <Button
+              {/* <Button
                 variant={isPlanActivated('monthly') ? 'secondary' : selectedPlan === 'monthly' ? 'secondary' : 'outline'}
                 fullWidth
                 onClick={() => !isPlanActivated('monthly') && setSelectedPlan('monthly')}
@@ -645,7 +645,7 @@ export const MembershipPage: React.FC = () => {
                 }}
               >
                 {isPlanActivated('monthly') ? '✓ Active Plan' : selectedPlan === 'monthly' ? 'Selected' : 'Choose Plan'}
-              </Button>
+              </Button> */}
               <ul>
                 <li>Official TVK Canada membership card</li>
                 <li>Access to exclusive events</li>
@@ -657,11 +657,11 @@ export const MembershipPage: React.FC = () => {
 
             <PricingCard featured={selectedPlan === 'yearly'}>
               {isPlanActivated('yearly') && <CurrentPlanBadge>✓ Your Current Plan</CurrentPlanBadge>}
-              <h3>Annual - Save $20!</h3>
+              <h3 style={{color:"#fff"}}>Annual - Save $20!</h3>
               <div className="price">
                 $100<span>/year</span>
               </div>
-              <Button
+              {/* <Button
                 variant={isPlanActivated('yearly') ? 'secondary' : selectedPlan === 'yearly' ? 'secondary' : 'outline'}
                 fullWidth
                 onClick={() => !isPlanActivated('yearly') && setSelectedPlan('yearly')}
@@ -673,7 +673,7 @@ export const MembershipPage: React.FC = () => {
                 }}
               >
                 {isPlanActivated('yearly') ? '✓ Active Plan' : selectedPlan === 'yearly' ? 'Selected' : 'Choose Plan'}
-              </Button>
+              </Button> */}
               <ul>
                 <li>Official TVK Canada membership card</li>
                 <li>Access to all exclusive events</li>
@@ -690,7 +690,7 @@ export const MembershipPage: React.FC = () => {
               <div className="price">
                 $5<span>/month</span>
               </div>
-              <Button
+              {/* <Button
                 variant={isPlanActivated('student') ? 'secondary' : selectedPlan === 'student' ? 'secondary' : 'outline'}
                 fullWidth
                 onClick={() => !isPlanActivated('student') && setSelectedPlan('student')}
@@ -702,7 +702,7 @@ export const MembershipPage: React.FC = () => {
                 }}
               >
                 {isPlanActivated('student') ? '✓ Active Plan' : selectedPlan === 'student' ? 'Selected' : 'Choose Plan'}
-              </Button>
+              </Button> */}
               <ul>
                 <li>Student ID verification required</li>
                 <li>Access to student events</li>
@@ -714,8 +714,7 @@ export const MembershipPage: React.FC = () => {
             </PricingCard>
           </Grid>
 
-          <ButtonContainer style={{ marginTop: theme.spacing.xl }}>
-            {/* Show different button text based on membership status */}
+          {/* <ButtonContainer style={{ marginTop: theme.spacing.xl }}>
             {userMembership?.hasActiveMembership ? (
               <Button variant="secondary" size="lg" disabled>
                 Current Plan: {userMembership.type?.charAt(0).toUpperCase() + userMembership.type?.slice(1)} Membership
@@ -729,7 +728,7 @@ export const MembershipPage: React.FC = () => {
                 <span> Join Now - Start Your Membership!</span>
               </JoinButton>
             )}
-          </ButtonContainer>
+          </ButtonContainer> */}
         </Container>
       </Section>
 
