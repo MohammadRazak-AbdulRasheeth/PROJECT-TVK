@@ -19,9 +19,25 @@ export default defineConfig({
   server: {
     port: 3000,
     open: true,
+    historyApiFallback: true,
   },
   build: {
     outDir: 'dist',
-    sourcemap: true,
+    assetsDir: 'assets',
+    sourcemap: false,
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          vendor: ['react', 'react-dom'],
+          router: ['react-router-dom'],
+          styled: ['styled-components']
+        }
+      }
+    }
   },
+  base: '/',
+  preview: {
+    port: 3001,
+    host: true
+  }
 })

@@ -550,19 +550,48 @@ export const MembershipPage: React.FC = () => {
           firstScript.parentNode.insertBefore(script, firstScript)
         }
 
+        // Set permissions policy for the iframe when it loads
+        setTimeout(() => {
+          const iframe = document.querySelector('#joinit-widget-H4x4Dy5Mnr5eCYrSg iframe') as HTMLIFrameElement
+          if (iframe) {
+            iframe.setAttribute('allow', 
+              'payment *; ' +
+              'camera *; ' +
+              'microphone *; ' +
+              'geolocation *; ' +
+              'publickey-credentials-get *; ' +
+              'autoplay *; ' +
+              'encrypted-media *; ' +
+              'fullscreen *'
+            )
+            iframe.setAttribute('sandbox', 
+              'allow-same-origin ' +
+              'allow-scripts ' +
+              'allow-forms ' +
+              'allow-popups ' +
+              'allow-popups-to-escape-sandbox ' +
+              'allow-presentation ' +
+              'allow-payment'
+            )
+          }
+        }, 2000)
+
         // Add message listener for Join It widget
         const handleMessage = (event: MessageEvent) => {
-          if (event.data === 'request-url') {
-            // Reply with the current location — use event.origin as the target origin (matches original embed script)
-            if (event.source && event.origin) {
-              try {
-                ;(event.source as Window).postMessage(window.location.href, event.origin)
-              } catch (err) {
-                // Fallback: try a plain postMessage (some environments may throw)
+          // Only handle messages from trusted Join It domain
+          if (event.origin === 'https://app.joinit.com') {
+            if (event.data === 'request-url') {
+              // Reply with the current location — use event.origin as the target origin (matches original embed script)
+              if (event.source && event.origin) {
                 try {
-                  (event.source as Window).postMessage(window.location.href, '*')
-                } catch (e) {
-                  console.warn('Failed to post message to JoinIt widget:', e)
+                  ;(event.source as Window).postMessage(window.location.href, event.origin)
+                } catch (err) {
+                  // Fallback: try a plain postMessage (some environments may throw)
+                  try {
+                    (event.source as Window).postMessage(window.location.href, '*')
+                  } catch (e) {
+                    console.warn('Failed to post message to JoinIt widget:', e)
+                  }
                 }
               }
             }

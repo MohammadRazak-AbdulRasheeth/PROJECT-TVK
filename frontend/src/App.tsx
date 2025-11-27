@@ -3,7 +3,7 @@
  */
 
 import React, { useEffect } from 'react'
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom'
+import { BrowserRouter as Router, Routes, Route, useLocation, Navigate } from 'react-router-dom'
 import { ThemeProvider } from 'styled-components'
 import { GlobalStyles } from '@styles/GlobalStyles'
 import { theme } from '@styles/theme'
@@ -12,6 +12,7 @@ import { AuthProvider } from '@context/AuthContext'
 import { Header } from '@components/Header'
 import { Footer } from '@components/Footer'
 import { AuthRedirectHandler } from '@components/AuthRedirectHandler'
+import { NotFound } from '@components/NotFound'
 import { HomePage } from '@pages/Home'
 import { AboutPage } from '@pages/About'
 import { MembershipPage } from '@pages/Membership'
@@ -65,9 +66,8 @@ export const App: React.FC = () => {
                   <Route path="/global-network" element={<GlobalNetworkPage />} />
                   <Route path="/gallery" element={<GalleryPage />} />
                   <Route path="/contact" element={<ContactPage />} />
-                  <Route path="*" element={<div style={{ padding: '40px', textAlign: 'center' }}>
-                    <h1>404 - Page Not Found</h1>
-                  </div>} />
+                  {/* Catch-all route for 404 pages */}
+                  <Route path="*" element={<NotFound />} />
                 </Routes>
               </main>
               <Footer />
