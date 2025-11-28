@@ -401,56 +401,70 @@ export const MembershipPage: React.FC = () => {
   const [userMembership, setUserMembership] = useState<any>(null)
   const { isAuthenticated, hasValidToken, user, isLoading } = useAuth()
 
-  const membershipPlans = [
-    {
-      title: "Student",
-      price: "$5.00",
-      period: "/monthly",
-      features: [
-        "Student-only discounts",
-        "Study group invitations", 
-        "Community forum access",
-        "Official TVK Canada membership card",
-        "Access to Events"
-      ],
-      featured: false,
-      buttonText: "JOIN"
-    },
-    {
-      title: "Monthly Membership", 
-      price: "$10.00",
-      period: "/monthly",
-      features: [
-        "Official TVK Canada membership card",
-        "Access to All Events",
-        "Member-only discounts",
-        "Community forum access", 
-        "Event early registration"
-      ],
-      featured: true,
-      buttonText: "JOIN"
-    },
-    {
-      title: "Annual Membership",
-      price: "$100.00", 
-      period: "/12 months",
-      features: [
-        "Official TVK Canada membership card",
-        "VIP Access to Events",
-        "Premium partner discounts",
-        "Community Forum Access",
-        "Annual Member Celebration Invitation"
-      ],
-      featured: false,
-      buttonText: "JOIN"
+  const handleJoinClick = () => {
+    // Scroll to the Join It widget for direct registration
+    const widgetElement = document.getElementById('joinit-widget-H4x4Dy5Mnr5eCYrSg')
+    if (widgetElement) {
+      widgetElement.scrollIntoView({ 
+        behavior: 'smooth',
+        block: 'center'
+      })
     }
-  ];
-
-  const handleJoinClick = (plan: any) => {
-    // Redirect to Join It for the specific plan
-    console.log('Joining plan:', plan.title)
-    window.open('https://app.joinit.com/o/tvkcanada', '_blank')
   }
+
+  // Load Join It widget script on component mount
+  useEffect(() => {
+    const loadJoinItScript = () => {
+      // Check if script already exists
+      if (document.querySelector('script[src*="joinit.com/embed/widget"]')) {
+        return
+      }
+
+      const script = document.createElement('script')
+      script.src = 'https://app.joinit.com/embed/widget/H4x4Dy5Mnr5eCYrSg/embedCode'
+      script.async = true
+      
+      const firstScript = document.getElementsByTagName('script')[0]
+      if (firstScript && firstScript.parentNode) {
+        firstScript.parentNode.insertBefore(script, firstScript)
+      }
+
+      // Set permissions policy for the iframe when it loads
+      setTimeout(() => {
+        const iframe = document.querySelector('#joinit-widget-H4x4Dy5Mnr5eCYrSg iframe') as HTMLIFrameElement
+        if (iframe) {
+          // Remove any restrictive sandbox attributes that might block payments
+          iframe.removeAttribute('sandbox')
+          
+          // Set comprehensive allow attributes for all payment features
+          iframe.setAttribute('allow', 
+            'payment *; ' +
+            'camera *; ' +
+            'microphone *; ' +
+            'geolocation *; ' +
+            'publickey-credentials-get *; ' +
+            'autoplay *; ' +
+            'encrypted-media *; ' +
+            'fullscreen *; ' +
+            'usb *; ' +
+            'serial *; ' +
+            'hid *; ' +
+            'bluetooth *; ' +
+            'web-share *; ' +
+            'display-capture *'
+          )
+          
+          // Set iframe to full width and height
+          iframe.style.width = '100%'
+          iframe.style.height = '100vh'
+          iframe.style.minHeight = '800px'
+          iframe.style.border = 'none'
+        }
+      }, 2000)
+    }
+
+    loadJoinItScript()
+  }, [])
 
   // Debug logging
   useEffect(() => {
@@ -705,7 +719,7 @@ export const MembershipPage: React.FC = () => {
               <JoinButton 
                 variant="primary" 
                 size="lg" 
-                onClick={() => window.open('https://app.joinit.com/o/tvkcanada', '_blank')}
+                onClick={handleJoinClick}
               >
                 <span>🚀 Join Now - Start Your Membership!</span>
               </JoinButton>
@@ -818,105 +832,25 @@ export const MembershipPage: React.FC = () => {
         </Container>
       </Section>
 
-      {/* Custom Membership Widget */}
-      <Section padding={`${theme.spacing.xl} 0`} background="#f5f5f5">
-        <Container>
-          <div style={{
+      {/* Join It Membership Widget - Full Screen */}
+      <Section padding={`${theme.spacing.xl} 0`} background={theme.colors.background}>
+        <Container style={{ maxWidth: 'none', padding: 0 }}>
+          <div style={{ 
+            width: '100vw',
+            marginLeft: 'calc(-50vw + 50%)',
+            minHeight: '100vh',
             background: 'white',
-            borderRadius: '12px',
-            padding: theme.spacing.xl,
-            boxShadow: theme.shadows.lg,
-            maxWidth: '1000px',
-            margin: '0 auto'
+            position: 'relative'
           }}>
-            <h2 style={{ 
-              textAlign: 'center', 
-              marginBottom: theme.spacing.xl,
-              color: '#666',
-              fontSize: '24px',
-              fontWeight: '600'
+            <div id="joinit-widget-H4x4Dy5Mnr5eCYrSg" style={{
+              width: '100%',
+              minHeight: '100vh',
+              height: 'auto'
             }}>
-              Membership Options
-            </h2>
-            
-            <Grid columns={3} gap={theme.spacing.md}>
-              {membershipPlans.map((plan, index) => (
-                <PricingCard key={index} featured={plan.featured} style={{
-                  background: '#FFD700',
-                  color: '#333',
-                  borderRadius: '8px',
-                  padding: theme.spacing.lg,
-                  minHeight: '450px',
-                  display: 'flex',
-                  flexDirection: 'column'
-                }}>
-                  <h3 style={{ 
-                    fontSize: '18px',
-                    fontWeight: 'bold',
-                    marginBottom: theme.spacing.md,
-                    color: '#333'
-                  }}>
-                    {plan.title}
-                  </h3>
-                  
-                  <div style={{
-                    fontSize: '24px',
-                    fontWeight: 'bold',
-                    marginBottom: theme.spacing.sm,
-                    color: '#333'
-                  }}>
-                    {plan.price}
-                    <span style={{ 
-                      fontSize: '14px', 
-                      fontWeight: 'normal' 
-                    }}>
-                      {plan.period}
-                    </span>
-                  </div>
-                  
-                  <div style={{ marginBottom: theme.spacing.md, fontSize: '12px', color: '#333' }}>
-                    + Automatic Rebilling
-                  </div>
-
-                  <Button
-                    onClick={() => handleJoinClick(plan)}
-                    style={{
-                      background: '#4A90E2',
-                      color: 'white',
-                      border: 'none',
-                      borderRadius: '4px',
-                      padding: '12px 24px',
-                      fontSize: '14px',
-                      fontWeight: 'bold',
-                      marginBottom: theme.spacing.md,
-                      cursor: 'pointer'
-                    }}
-                  >
-                    {plan.buttonText}
-                  </Button>
-
-                  <ul style={{
-                    listStyle: 'none',
-                    padding: 0,
-                    margin: 0,
-                    flex: 1
-                  }}>
-                    {plan.features.map((feature, featureIndex) => (
-                      <li key={featureIndex} style={{
-                        padding: '4px 0',
-                        fontSize: '12px',
-                        color: '#333',
-                        display: 'flex',
-                        alignItems: 'center'
-                      }}>
-                        <span style={{ color: '#4CAF50', marginRight: '8px' }}>✦</span>
-                        {feature}
-                      </li>
-                    ))}
-                  </ul>
-                </PricingCard>
-              ))}
-            </Grid>
+              <noscript>
+                View <a href="https://app.joinit.com/o/tvkcanada">Membership Website</a> powered by <a href="https://joinit.com">Membership Software by Join It</a>
+              </noscript>
+            </div>
           </div>
         </Container>
       </Section>

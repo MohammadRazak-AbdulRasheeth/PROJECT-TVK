@@ -388,55 +388,61 @@ const ButtonContainer = styled.div `
 export const MembershipPage = () => {
     const [userMembership, setUserMembership] = useState(null);
     const { isAuthenticated, hasValidToken, user, isLoading } = useAuth();
-    const membershipPlans = [
-        {
-            title: "Student",
-            price: "$5.00",
-            period: "/monthly",
-            features: [
-                "Student-only discounts",
-                "Study group invitations",
-                "Community forum access",
-                "Official TVK Canada membership card",
-                "Access to Events"
-            ],
-            featured: false,
-            buttonText: "JOIN"
-        },
-        {
-            title: "Monthly Membership",
-            price: "$10.00",
-            period: "/monthly",
-            features: [
-                "Official TVK Canada membership card",
-                "Access to All Events",
-                "Member-only discounts",
-                "Community forum access",
-                "Event early registration"
-            ],
-            featured: true,
-            buttonText: "JOIN"
-        },
-        {
-            title: "Annual Membership",
-            price: "$100.00",
-            period: "/12 months",
-            features: [
-                "Official TVK Canada membership card",
-                "VIP Access to Events",
-                "Premium partner discounts",
-                "Community Forum Access",
-                "Annual Member Celebration Invitation"
-            ],
-            featured: false,
-            buttonText: "JOIN"
+    const handleJoinClick = () => {
+        // Scroll to the Join It widget for direct registration
+        const widgetElement = document.getElementById('joinit-widget-H4x4Dy5Mnr5eCYrSg');
+        if (widgetElement) {
+            widgetElement.scrollIntoView({
+                behavior: 'smooth',
+                block: 'center'
+            });
         }
-    ];
-    const handleJoinClick = (plan) => {
-        // Redirect to Join It for the specific plan
-        console.log('Joining plan:', plan.title);
-        window.open('https://app.joinit.com/o/tvkcanada', '_blank');
     };
+    // Load Join It widget script on component mount
+    useEffect(() => {
+        const loadJoinItScript = () => {
+            // Check if script already exists
+            if (document.querySelector('script[src*="joinit.com/embed/widget"]')) {
+                return;
+            }
+            const script = document.createElement('script');
+            script.src = 'https://app.joinit.com/embed/widget/H4x4Dy5Mnr5eCYrSg/embedCode';
+            script.async = true;
+            const firstScript = document.getElementsByTagName('script')[0];
+            if (firstScript && firstScript.parentNode) {
+                firstScript.parentNode.insertBefore(script, firstScript);
+            }
+            // Set permissions policy for the iframe when it loads
+            setTimeout(() => {
+                const iframe = document.querySelector('#joinit-widget-H4x4Dy5Mnr5eCYrSg iframe');
+                if (iframe) {
+                    // Remove any restrictive sandbox attributes that might block payments
+                    iframe.removeAttribute('sandbox');
+                    // Set comprehensive allow attributes for all payment features
+                    iframe.setAttribute('allow', 'payment *; ' +
+                        'camera *; ' +
+                        'microphone *; ' +
+                        'geolocation *; ' +
+                        'publickey-credentials-get *; ' +
+                        'autoplay *; ' +
+                        'encrypted-media *; ' +
+                        'fullscreen *; ' +
+                        'usb *; ' +
+                        'serial *; ' +
+                        'hid *; ' +
+                        'bluetooth *; ' +
+                        'web-share *; ' +
+                        'display-capture *');
+                    // Set iframe to full width and height
+                    iframe.style.width = '100%';
+                    iframe.style.height = '100vh';
+                    iframe.style.minHeight = '800px';
+                    iframe.style.border = 'none';
+                }
+            }, 2000);
+        };
+        loadJoinItScript();
+    }, []);
     // Debug logging
     useEffect(() => {
         const token = localStorage.getItem('token');
@@ -564,7 +570,7 @@ export const MembershipPage = () => {
             return true;
         return false;
     };
-    return (_jsxs(_Fragment, { children: [_jsx(Section, { padding: `${theme.spacing.xxxl} 0`, background: theme.colors.surface, children: _jsx(Container, { children: _jsxs(OfferBanner, { children: [_jsx("h3", { children: "\uD83C\uDF89 Limited Offer: First 200 Members Get 6 Months FREE!" }), _jsx("p", { children: "Join TVK Canada now and receive 6 months of membership absolutely FREE, plus a Special Edition Founding Member Physical Card." })] }) }) }), _jsx(Section, { padding: `${theme.spacing.xxxl} 0`, children: _jsxs(Container, { children: [_jsx("h2", { style: { textAlign: 'center', marginBottom: theme.spacing.xxl }, children: "Membership Plans" }), _jsxs(Grid, { columns: 3, gap: theme.spacing.xl, children: [_jsxs(PricingCard, { children: [isPlanActivated('monthly') && _jsx(CurrentPlanBadge, { children: "\u2713 Your Current Plan" }), _jsx("h3", { children: "Monthly" }), _jsxs("div", { className: "price", children: ["$10", _jsx("span", { children: "/month" })] }), _jsxs("ul", { children: [_jsx("li", { children: "Official TVK Canada membership card" }), _jsx("li", { children: "Access to exclusive events" }), _jsx("li", { children: "Member-only discounts" }), _jsx("li", { children: "Community forum access" }), _jsx("li", { children: "Event early registration" })] })] }), _jsxs(PricingCard, { featured: true, children: [isPlanActivated('yearly') && _jsx(CurrentPlanBadge, { children: "\u2713 Your Current Plan" }), _jsx("h3", { style: { color: "#fff" }, children: "Annual - Save $20!" }), _jsxs("div", { className: "price", children: ["$100", _jsx("span", { children: "/year" })] }), _jsxs("ul", { children: [_jsx("li", { children: "Official TVK Canada membership card" }), _jsx("li", { children: "Access to all exclusive events" }), _jsx("li", { children: "Premium partner discounts" }), _jsx("li", { children: "VIP community forum access" }), _jsx("li", { children: "Priority event registration" }), _jsx("li", { children: "Annual celebration invitation" })] })] }), _jsxs(PricingCard, { children: [isPlanActivated('student') && _jsx(CurrentPlanBadge, { children: "\u2713 Your Current Plan" }), _jsx("h3", { children: "Student" }), _jsxs("div", { className: "price", children: ["$5", _jsx("span", { children: "/month" })] }), _jsxs("ul", { children: [_jsx("li", { children: "Student ID verification required" }), _jsx("li", { children: "Access to student events" }), _jsx("li", { children: "Student-only discounts" }), _jsx("li", { children: "Community forum access" }), _jsx("li", { children: "Movie night access" }), _jsx("li", { children: "Study group invitations" })] })] })] }), _jsx(ButtonContainer, { style: { marginTop: theme.spacing.xl }, children: userMembership?.hasActiveMembership ? (_jsxs(Button, { variant: "secondary", size: "lg", disabled: true, children: ["Current Plan: ", userMembership.type?.charAt(0).toUpperCase() + userMembership.type?.slice(1), " Membership"] })) : (_jsx(JoinButton, { variant: "primary", size: "lg", onClick: () => window.open('https://app.joinit.com/o/tvkcanada', '_blank'), children: _jsx("span", { children: "\uD83D\uDE80 Join Now - Start Your Membership!" }) })) })] }) }), _jsx(Section, { padding: `${theme.spacing.xxxl} 0`, background: theme.colors.surface, children: _jsxs(Container, { children: [_jsx("h2", { style: { textAlign: 'center', marginBottom: theme.spacing.xxl }, children: "How It Works" }), _jsxs(StepperContainer, { children: [_jsxs(StepItem, { active: true, children: [_jsx("div", { className: "step-circle", children: "1" }), _jsx("h4", { children: "Sign Up Online" }), _jsx("p", { children: "Create your account once registration opens" })] }), _jsxs(StepItem, { active: true, children: [_jsx("div", { className: "step-circle", children: "2" }), _jsx("h4", { children: "Choose Plan" }), _jsx("p", { children: "Select Monthly or Yearly membership" })] }), _jsxs(StepItem, { active: true, children: [_jsx("div", { className: "step-circle", children: "3" }), _jsx("h4", { children: "Receive Your Card" }), _jsx("p", { children: "Physical card delivered to your address (2\u20134 weeks)" })] }), _jsxs(StepItem, { children: [_jsx("div", { className: "step-circle", children: "4" }), _jsx("h4", { children: "Enjoy Member Perks" }), _jsx("p", { children: "At events and partner businesses" })] }), _jsxs(StepItem, { children: [_jsx("div", { className: "step-circle", children: "5" }), _jsx("h4", { children: "Stay Connected" }), _jsx("p", { children: "Receive exclusive updates and announcements" })] })] }), _jsx(Flex, { justify: "center", style: { marginTop: theme.spacing.xl }, children: _jsx(Button, { variant: "primary", size: "lg", children: "Get Started Now" }) })] }) }), _jsx(Section, { padding: `${theme.spacing.xxxl} 0`, children: _jsxs(Container, { children: [_jsx("h2", { style: { marginBottom: theme.spacing.xxl }, children: "Frequently Asked Questions" }), _jsx(FAQContainer, { children: [
+    return (_jsxs(_Fragment, { children: [_jsx(Section, { padding: `${theme.spacing.xxxl} 0`, background: theme.colors.surface, children: _jsx(Container, { children: _jsxs(OfferBanner, { children: [_jsx("h3", { children: "\uD83C\uDF89 Limited Offer: First 200 Members Get 6 Months FREE!" }), _jsx("p", { children: "Join TVK Canada now and receive 6 months of membership absolutely FREE, plus a Special Edition Founding Member Physical Card." })] }) }) }), _jsx(Section, { padding: `${theme.spacing.xxxl} 0`, children: _jsxs(Container, { children: [_jsx("h2", { style: { textAlign: 'center', marginBottom: theme.spacing.xxl }, children: "Membership Plans" }), _jsxs(Grid, { columns: 3, gap: theme.spacing.xl, children: [_jsxs(PricingCard, { children: [isPlanActivated('monthly') && _jsx(CurrentPlanBadge, { children: "\u2713 Your Current Plan" }), _jsx("h3", { children: "Monthly" }), _jsxs("div", { className: "price", children: ["$10", _jsx("span", { children: "/month" })] }), _jsxs("ul", { children: [_jsx("li", { children: "Official TVK Canada membership card" }), _jsx("li", { children: "Access to exclusive events" }), _jsx("li", { children: "Member-only discounts" }), _jsx("li", { children: "Community forum access" }), _jsx("li", { children: "Event early registration" })] })] }), _jsxs(PricingCard, { featured: true, children: [isPlanActivated('yearly') && _jsx(CurrentPlanBadge, { children: "\u2713 Your Current Plan" }), _jsx("h3", { style: { color: "#fff" }, children: "Annual - Save $20!" }), _jsxs("div", { className: "price", children: ["$100", _jsx("span", { children: "/year" })] }), _jsxs("ul", { children: [_jsx("li", { children: "Official TVK Canada membership card" }), _jsx("li", { children: "Access to all exclusive events" }), _jsx("li", { children: "Premium partner discounts" }), _jsx("li", { children: "VIP community forum access" }), _jsx("li", { children: "Priority event registration" }), _jsx("li", { children: "Annual celebration invitation" })] })] }), _jsxs(PricingCard, { children: [isPlanActivated('student') && _jsx(CurrentPlanBadge, { children: "\u2713 Your Current Plan" }), _jsx("h3", { children: "Student" }), _jsxs("div", { className: "price", children: ["$5", _jsx("span", { children: "/month" })] }), _jsxs("ul", { children: [_jsx("li", { children: "Student ID verification required" }), _jsx("li", { children: "Access to student events" }), _jsx("li", { children: "Student-only discounts" }), _jsx("li", { children: "Community forum access" }), _jsx("li", { children: "Movie night access" }), _jsx("li", { children: "Study group invitations" })] })] })] }), _jsx(ButtonContainer, { style: { marginTop: theme.spacing.xl }, children: userMembership?.hasActiveMembership ? (_jsxs(Button, { variant: "secondary", size: "lg", disabled: true, children: ["Current Plan: ", userMembership.type?.charAt(0).toUpperCase() + userMembership.type?.slice(1), " Membership"] })) : (_jsx(JoinButton, { variant: "primary", size: "lg", onClick: handleJoinClick, children: _jsx("span", { children: "\uD83D\uDE80 Join Now - Start Your Membership!" }) })) })] }) }), _jsx(Section, { padding: `${theme.spacing.xxxl} 0`, background: theme.colors.surface, children: _jsxs(Container, { children: [_jsx("h2", { style: { textAlign: 'center', marginBottom: theme.spacing.xxl }, children: "How It Works" }), _jsxs(StepperContainer, { children: [_jsxs(StepItem, { active: true, children: [_jsx("div", { className: "step-circle", children: "1" }), _jsx("h4", { children: "Sign Up Online" }), _jsx("p", { children: "Create your account once registration opens" })] }), _jsxs(StepItem, { active: true, children: [_jsx("div", { className: "step-circle", children: "2" }), _jsx("h4", { children: "Choose Plan" }), _jsx("p", { children: "Select Monthly or Yearly membership" })] }), _jsxs(StepItem, { active: true, children: [_jsx("div", { className: "step-circle", children: "3" }), _jsx("h4", { children: "Receive Your Card" }), _jsx("p", { children: "Physical card delivered to your address (2\u20134 weeks)" })] }), _jsxs(StepItem, { children: [_jsx("div", { className: "step-circle", children: "4" }), _jsx("h4", { children: "Enjoy Member Perks" }), _jsx("p", { children: "At events and partner businesses" })] }), _jsxs(StepItem, { children: [_jsx("div", { className: "step-circle", children: "5" }), _jsx("h4", { children: "Stay Connected" }), _jsx("p", { children: "Receive exclusive updates and announcements" })] })] }), _jsx(Flex, { justify: "center", style: { marginTop: theme.spacing.xl }, children: _jsx(Button, { variant: "primary", size: "lg", children: "Get Started Now" }) })] }) }), _jsx(Section, { padding: `${theme.spacing.xxxl} 0`, children: _jsxs(Container, { children: [_jsx("h2", { style: { marginBottom: theme.spacing.xxl }, children: "Frequently Asked Questions" }), _jsx(FAQContainer, { children: [
                                 {
                                     q: '1. When does membership launch?',
                                     a: 'Membership will officially open soon. Announcements will be posted on our website and social media.',
@@ -609,60 +615,15 @@ export const MembershipPage = () => {
                                     q: '11. How do I apply for Student Membership?',
                                     a: 'Student membership is available for $5/month with valid student ID verification. Contact us with your enrollment documents, student ID, and proof of current enrollment status. Student members get access to student-only events, discounts, and study group invitations.',
                                 },
-                            ].map((item, idx) => (_jsxs(FAQItem, { children: [_jsx("summary", { children: item.q }), _jsx("p", { children: item.a })] }, idx))) })] }) }), _jsx(Section, { padding: `${theme.spacing.xl} 0`, background: "#f5f5f5", children: _jsx(Container, { children: _jsxs("div", { style: {
+                            ].map((item, idx) => (_jsxs(FAQItem, { children: [_jsx("summary", { children: item.q }), _jsx("p", { children: item.a })] }, idx))) })] }) }), _jsx(Section, { padding: `${theme.spacing.xl} 0`, background: theme.colors.background, children: _jsx(Container, { style: { maxWidth: 'none', padding: 0 }, children: _jsx("div", { style: {
+                            width: '100vw',
+                            marginLeft: 'calc(-50vw + 50%)',
+                            minHeight: '100vh',
                             background: 'white',
-                            borderRadius: '12px',
-                            padding: theme.spacing.xl,
-                            boxShadow: theme.shadows.lg,
-                            maxWidth: '1000px',
-                            margin: '0 auto'
-                        }, children: [_jsx("h2", { style: {
-                                    textAlign: 'center',
-                                    marginBottom: theme.spacing.xl,
-                                    color: '#666',
-                                    fontSize: '24px',
-                                    fontWeight: '600'
-                                }, children: "Membership Options" }), _jsx(Grid, { columns: 3, gap: theme.spacing.md, children: membershipPlans.map((plan, index) => (_jsxs(PricingCard, { featured: plan.featured, style: {
-                                        background: '#FFD700',
-                                        color: '#333',
-                                        borderRadius: '8px',
-                                        padding: theme.spacing.lg,
-                                        minHeight: '450px',
-                                        display: 'flex',
-                                        flexDirection: 'column'
-                                    }, children: [_jsx("h3", { style: {
-                                                fontSize: '18px',
-                                                fontWeight: 'bold',
-                                                marginBottom: theme.spacing.md,
-                                                color: '#333'
-                                            }, children: plan.title }), _jsxs("div", { style: {
-                                                fontSize: '24px',
-                                                fontWeight: 'bold',
-                                                marginBottom: theme.spacing.sm,
-                                                color: '#333'
-                                            }, children: [plan.price, _jsx("span", { style: {
-                                                        fontSize: '14px',
-                                                        fontWeight: 'normal'
-                                                    }, children: plan.period })] }), _jsx("div", { style: { marginBottom: theme.spacing.md, fontSize: '12px', color: '#333' }, children: "+ Automatic Rebilling" }), _jsx(Button, { onClick: () => handleJoinClick(plan), style: {
-                                                background: '#4A90E2',
-                                                color: 'white',
-                                                border: 'none',
-                                                borderRadius: '4px',
-                                                padding: '12px 24px',
-                                                fontSize: '14px',
-                                                fontWeight: 'bold',
-                                                marginBottom: theme.spacing.md,
-                                                cursor: 'pointer'
-                                            }, children: plan.buttonText }), _jsx("ul", { style: {
-                                                listStyle: 'none',
-                                                padding: 0,
-                                                margin: 0,
-                                                flex: 1
-                                            }, children: plan.features.map((feature, featureIndex) => (_jsxs("li", { style: {
-                                                    padding: '4px 0',
-                                                    fontSize: '12px',
-                                                    color: '#333',
-                                                    display: 'flex',
-                                                    alignItems: 'center'
-                                                }, children: [_jsx("span", { style: { color: '#4CAF50', marginRight: '8px' }, children: "\u2726" }), feature] }, featureIndex))) })] }, index))) })] }) }) })] }));
+                            position: 'relative'
+                        }, children: _jsx("div", { id: "joinit-widget-H4x4Dy5Mnr5eCYrSg", style: {
+                                width: '100%',
+                                minHeight: '100vh',
+                                height: 'auto'
+                            }, children: _jsxs("noscript", { children: ["View ", _jsx("a", { href: "https://app.joinit.com/o/tvkcanada", children: "Membership Website" }), " powered by ", _jsx("a", { href: "https://joinit.com", children: "Membership Software by Join It" })] }) }) }) }) })] }));
 };
