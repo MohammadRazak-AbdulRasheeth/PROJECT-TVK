@@ -5,125 +5,125 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { theme } from '@styles/theme'
-import { Container, Section, Grid, Flex } from '@components/Layout'
+import { Container, Section, Flex } from '@components/Layout'
 import { Button } from '@components/Button'
 import { useAuth } from '../context/AuthContext'
 import { membershipService } from '../services/api'
 
-const PricingCard = styled.div<{ featured?: boolean }>`
-  background: ${(props) => (props.featured ? theme.colors.primary : theme.colors.surface)};
-  color: ${(props) => (props.featured ? theme.colors.text.inverse : theme.colors.text.primary)};
-  border-radius: ${theme.borderRadius['2xl']};
-  padding: ${theme.spacing.xl};
-  text-align: center;
-  box-shadow: ${(props) => (props.featured ? theme.shadows.xl : theme.shadows.md)};
-  transform: ${(props) => (props.featured ? 'scale(1.05)' : 'scale(1)')};
-  transition: all ${theme.transitions.base};
-  border: 2px solid ${(props) => (props.featured ? theme.colors.secondary : 'transparent')};
-  position: relative;
-  overflow: hidden;
-  cursor: pointer;
-  touch-action: manipulation;
-  -webkit-tap-highlight-color: transparent;
+// const PricingCard = styled.div<{ featured?: boolean }>`
+//   background: ${(props) => (props.featured ? theme.colors.primary : theme.colors.surface)};
+//   color: ${(props) => (props.featured ? theme.colors.text.inverse : theme.colors.text.primary)};
+//   border-radius: ${theme.borderRadius['2xl']};
+//   padding: ${theme.spacing.xl};
+//   text-align: center;
+//   box-shadow: ${(props) => (props.featured ? theme.shadows.xl : theme.shadows.md)};
+//   transform: ${(props) => (props.featured ? 'scale(1.05)' : 'scale(1)')};
+//   transition: all ${theme.transitions.base};
+//   border: 2px solid ${(props) => (props.featured ? theme.colors.secondary : 'transparent')};
+//   position: relative;
+//   overflow: hidden;
+//   cursor: pointer;
+//   touch-action: manipulation;
+//   -webkit-tap-highlight-color: transparent;
 
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25), transparent);
-    transition: left 0.6s ease;
-    pointer-events: none;
-  }
+//   &::before {
+//     content: '';
+//     position: absolute;
+//     top: 0;
+//     left: -100%;
+//     width: 100%;
+//     height: 100%;
+//     background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25), transparent);
+//     transition: left 0.6s ease;
+//     pointer-events: none;
+//   }
 
-  &:hover {
-    box-shadow: ${(props) => (props.featured ? theme.shadows.xl : theme.shadows.lg)};
-    transform: ${(props) => (props.featured ? 'scale(1.08) translateY(-6px)' : 'scale(1.02) translateY(-4px)')};
-    border-color: ${theme.colors.secondary};
+//   &:hover {
+//     box-shadow: ${(props) => (props.featured ? theme.shadows.xl : theme.shadows.lg)};
+//     transform: ${(props) => (props.featured ? 'scale(1.08) translateY(-6px)' : 'scale(1.02) translateY(-4px)')};
+//     border-color: ${theme.colors.secondary};
 
-    &::before {
-      left: 100%;
-    }
-  }
+//     &::before {
+//       left: 100%;
+//     }
+//   }
 
-  &:active {
-    transform: ${(props) => (props.featured ? 'scale(1.06) translateY(-4px)' : 'scale(1.01) translateY(-2px)')};
-  }
+//   &:active {
+//     transform: ${(props) => (props.featured ? 'scale(1.06) translateY(-4px)' : 'scale(1.01) translateY(-2px)')};
+//   }
 
-  @media (max-width: ${theme.breakpoints.desktop}) {
-    &:active {
-      transform: scale(0.97);
+//   @media (max-width: ${theme.breakpoints.desktop}) {
+//     &:active {
+//       transform: scale(0.97);
 
-      &::before {
-        display: none;
-      }
-    }
-  }
+//       &::before {
+//         display: none;
+//       }
+//     }
+//   }
 
-  h3 {
-    margin-bottom: ${theme.spacing.md};
-    transition: color ${theme.transitions.base};
-  }
+//   h3 {
+//     margin-bottom: ${theme.spacing.md};
+//     transition: color ${theme.transitions.base};
+//   }
 
-  .price {
-    font-size: ${theme.typography.fontSize['3xl']};
-    font-weight: ${theme.typography.fontWeight.bold};
-    margin: ${theme.spacing.lg} 0;
-    transition: color ${theme.transitions.base};
+//   .price {
+//     font-size: ${theme.typography.fontSize['3xl']};
+//     font-weight: ${theme.typography.fontWeight.bold};
+//     margin: ${theme.spacing.lg} 0;
+//     transition: color ${theme.transitions.base};
 
-    span {
-      font-size: ${theme.typography.fontSize.lg};
-      font-weight: ${theme.typography.fontWeight.normal};
-    }
-  }
+//     span {
+//       font-size: ${theme.typography.fontSize.lg};
+//       font-weight: ${theme.typography.fontWeight.normal};
+//     }
+//   }
 
-  ul {
-    list-style: none;
-    padding: 0;
-    margin: ${theme.spacing.lg} 0;
-    text-align: left;
+//   ul {
+//     list-style: none;
+//     padding: 0;
+//     margin: ${theme.spacing.lg} 0;
+//     text-align: left;
 
-    li {
-      padding: ${theme.spacing.sm} 0;
-      padding-left: ${theme.spacing.sm};
-      border-bottom: 1px solid ${(props) => (props.featured ? 'rgba(255,255,255,0.2)' : theme.colors.border)};
-      border-left: 3px solid transparent;
-      transition: all ${theme.transitions.base};
+//     li {
+//       padding: ${theme.spacing.sm} 0;
+//       padding-left: ${theme.spacing.sm};
+//       border-bottom: 1px solid ${(props) => (props.featured ? 'rgba(255,255,255,0.2)' : theme.colors.border)};
+//       border-left: 3px solid transparent;
+//       transition: all ${theme.transitions.base};
 
-      &:hover {
-        padding-left: ${theme.spacing.lg};
-        border-left-color: ${theme.colors.secondary};
-      }
+//       &:hover {
+//         padding-left: ${theme.spacing.lg};
+//         border-left-color: ${theme.colors.secondary};
+//       }
 
-      &:last-child {
-        border-bottom: none;
-      }
-    }
-  }
+//       &:last-child {
+//         border-bottom: none;
+//       }
+//     }
+//   }
 
-  @media (max-width: ${theme.breakpoints.tablet}) {
-    padding: ${theme.spacing.lg};
-    transform: ${(props) => (props.featured ? 'scale(1)' : 'scale(1)')};
+//   @media (max-width: ${theme.breakpoints.tablet}) {
+//     padding: ${theme.spacing.lg};
+//     transform: ${(props) => (props.featured ? 'scale(1)' : 'scale(1)')};
 
-    .price {
-      font-size: ${theme.typography.fontSize['2xl']};
-    }
-  }
+//     .price {
+//       font-size: ${theme.typography.fontSize['2xl']};
+//     }
+//   }
 
-  @media (max-width: ${theme.breakpoints.mobile}) {
-    padding: ${theme.spacing.md};
+//   @media (max-width: ${theme.breakpoints.mobile}) {
+//     padding: ${theme.spacing.md};
 
-    .price {
-      font-size: ${theme.typography.fontSize.xl};
-    }
+//     .price {
+//       font-size: ${theme.typography.fontSize.xl};
+//     }
 
-    h3 {
-      font-size: ${theme.typography.fontSize.lg};
-    }
-  }
-`
+//     h3 {
+//       font-size: ${theme.typography.fontSize.lg};
+//     }
+//   }
+// `
 
 const OfferBanner = styled.div`
   background: linear-gradient(135deg, ${theme.colors.secondary} 0%, #ffed4e 100%);
@@ -233,164 +233,164 @@ const FAQItem = styled.details`
   }
 `
 
-const CurrentPlanBadge = styled.div`
-  position: absolute;
-  top: ${theme.spacing.sm};
-  left: ${theme.spacing.sm};
-  right: ${theme.spacing.sm};
-  background: linear-gradient(135deg, ${theme.colors.secondary} 0%, #ffed4e 100%);
-  color: ${theme.colors.text.primary};
-  padding: ${theme.spacing.sm} ${theme.spacing.md};
-  border-radius: ${theme.borderRadius.lg};
-  font-size: ${theme.typography.fontSize.sm};
-  font-weight: ${theme.typography.fontWeight.bold};
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  text-align: center;
-  box-shadow: ${theme.shadows.lg};
-  z-index: 2;
-  animation: glow 2s ease-in-out infinite alternate;
+// const CurrentPlanBadge = styled.div`
+//   position: absolute;
+//   top: ${theme.spacing.sm};
+//   left: ${theme.spacing.sm};
+//   right: ${theme.spacing.sm};
+//   background: linear-gradient(135deg, ${theme.colors.secondary} 0%, #ffed4e 100%);
+//   color: ${theme.colors.text.primary};
+//   padding: ${theme.spacing.sm} ${theme.spacing.md};
+//   border-radius: ${theme.borderRadius.lg};
+//   font-size: ${theme.typography.fontSize.sm};
+//   font-weight: ${theme.typography.fontWeight.bold};
+//   text-transform: uppercase;
+//   letter-spacing: 1px;
+//   text-align: center;
+//   box-shadow: ${theme.shadows.lg};
+//   z-index: 2;
+//   animation: glow 2s ease-in-out infinite alternate;
 
-  @keyframes glow {
-    from {
-      box-shadow: ${theme.shadows.lg};
-    }
-    to {
-      box-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
-    }
-  }
+//   @keyframes glow {
+//     from {
+//       box-shadow: ${theme.shadows.lg};
+//     }
+//     to {
+//       box-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+//     }
+//   }
 
-  @media (max-width: ${theme.breakpoints.mobile}) {
-    font-size: ${theme.typography.fontSize.xs};
-    padding: ${theme.spacing.xs} ${theme.spacing.sm};
-  }
-`
+//   @media (max-width: ${theme.breakpoints.mobile}) {
+//     font-size: ${theme.typography.fontSize.xs};
+//     padding: ${theme.spacing.xs} ${theme.spacing.sm};
+//   }
+// `
 
-const JoinButton = styled(Button)`
-  background: linear-gradient(135deg, ${theme.colors.primary} 0%, ${theme.colors.accent || '#8b1428'} 100%);
-  border: 2px solid ${theme.colors.secondary};
-  box-shadow: ${theme.shadows.lg};
-  font-weight: ${theme.typography.fontWeight.bold};
-  text-transform: none;
-  letter-spacing: 0.5px;
-  transition: all ${theme.transitions.base};
-  position: relative;
-  overflow: hidden;
-  white-space: nowrap;
+// const JoinButton = styled(Button)`
+//   background: linear-gradient(135deg, ${theme.colors.primary} 0%, ${theme.colors.accent || '#8b1428'} 100%);
+//   border: 2px solid ${theme.colors.secondary};
+//   box-shadow: ${theme.shadows.lg};
+//   font-weight: ${theme.typography.fontWeight.bold};
+//   text-transform: none;
+//   letter-spacing: 0.5px;
+//   transition: all ${theme.transitions.base};
+//   position: relative;
+//   overflow: hidden;
+//   white-space: nowrap;
   
-  /* Desktop styles */
-  font-size: ${theme.typography.fontSize.lg};
-  padding: ${theme.spacing.lg} ${theme.spacing.xxl};
-  min-height: 56px;
-  min-width: 320px;
+//   /* Desktop styles */
+//   font-size: ${theme.typography.fontSize.lg};
+//   padding: ${theme.spacing.lg} ${theme.spacing.xxl};
+//   min-height: 56px;
+//   min-width: 320px;
   
-  /* Hover effect */
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-    transition: left 0.6s ease;
-  }
+//   /* Hover effect */
+//   &::before {
+//     content: '';
+//     position: absolute;
+//     top: 0;
+//     left: -100%;
+//     width: 100%;
+//     height: 100%;
+//     background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+//     transition: left 0.6s ease;
+//   }
 
-  &:hover {
-    transform: translateY(-3px) scale(1.02);
-    box-shadow: ${theme.shadows.xl};
-    background: linear-gradient(135deg, ${theme.colors.accent || '#8b1428'} 0%, ${theme.colors.primary} 100%);
+//   &:hover {
+//     transform: translateY(-3px) scale(1.02);
+//     box-shadow: ${theme.shadows.xl};
+//     background: linear-gradient(135deg, ${theme.colors.accent || '#8b1428'} 0%, ${theme.colors.primary} 100%);
     
-    &::before {
-      left: 100%;
-    }
-  }
+//     &::before {
+//       left: 100%;
+//     }
+//   }
 
-  &:active {
-    transform: translateY(-1px) scale(1.01);
-  }
+//   &:active {
+//     transform: translateY(-1px) scale(1.01);
+//   }
 
-  /* Tablet styles */
-  @media (max-width: ${theme.breakpoints.desktop}) {
-    font-size: ${theme.typography.fontSize.base};
-    padding: ${theme.spacing.md} ${theme.spacing.xl};
-    min-height: 52px;
-    min-width: 280px;
-  }
+//   /* Tablet styles */
+//   @media (max-width: ${theme.breakpoints.desktop}) {
+//     font-size: ${theme.typography.fontSize.base};
+//     padding: ${theme.spacing.md} ${theme.spacing.xl};
+//     min-height: 52px;
+//     min-width: 280px;
+//   }
 
-  /* Mobile styles */
-  @media (max-width: ${theme.breakpoints.tablet}) {
-    font-size: ${theme.typography.fontSize.base};
-    padding: ${theme.spacing.md} ${theme.spacing.lg};
-    min-height: 48px;
-    min-width: 250px;
-    width: 100%;
-    max-width: 320px;
-    margin: 0 auto;
+//   /* Mobile styles */
+//   @media (max-width: ${theme.breakpoints.tablet}) {
+//     font-size: ${theme.typography.fontSize.base};
+//     padding: ${theme.spacing.md} ${theme.spacing.lg};
+//     min-height: 48px;
+//     min-width: 250px;
+//     width: 100%;
+//     max-width: 320px;
+//     margin: 0 auto;
     
-    /* Adjust text for smaller screens */
-    font-size: ${theme.typography.fontSize.sm};
-  }
+//     /* Adjust text for smaller screens */
+//     font-size: ${theme.typography.fontSize.sm};
+//   }
 
-  /* Small mobile styles */
-  @media (max-width: ${theme.breakpoints.mobile}) {
-    font-size: ${theme.typography.fontSize.sm};
-    padding: ${theme.spacing.sm} ${theme.spacing.md};
-    min-height: 44px;
-    min-width: 200px;
-    letter-spacing: 0.25px;
+//   /* Small mobile styles */
+//   @media (max-width: ${theme.breakpoints.mobile}) {
+//     font-size: ${theme.typography.fontSize.sm};
+//     padding: ${theme.spacing.sm} ${theme.spacing.md};
+//     min-height: 44px;
+//     min-width: 200px;
+//     letter-spacing: 0.25px;
     
-    /* Even more compact text for very small screens */
-    &::after {
-      content: '🚀 Join Now!';
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 100%;
-      display: none;
-    }
-  }
+//     /* Even more compact text for very small screens */
+//     &::after {
+//       content: '🚀 Join Now!';
+//       position: absolute;
+//       top: 50%;
+//       left: 50%;
+//       transform: translate(-50%, -50%);
+//       width: 100%;
+//       display: none;
+//     }
+//   }
 
-  /* Extra small screens - show shortened text */
-  @media (max-width: 320px) {
-    span {
-      display: none;
-    }
+//   /* Extra small screens - show shortened text */
+//   @media (max-width: 320px) {
+//     span {
+//       display: none;
+//     }
     
-    &::after {
-      display: block;
-    }
-  }
+//     &::after {
+//       display: block;
+//     }
+//   }
 
-  /* Ensure proper sizing on touch devices */
-  @media (hover: none) and (pointer: coarse) {
-    min-height: 48px;
-    padding: ${theme.spacing.md} ${theme.spacing.lg};
+//   /* Ensure proper sizing on touch devices */
+//   @media (hover: none) and (pointer: coarse) {
+//     min-height: 48px;
+//     padding: ${theme.spacing.md} ${theme.spacing.lg};
     
-    &:active {
-      transform: scale(0.97);
-      transition: transform 0.1s ease;
-    }
-  }
-`
+//     &:active {
+//       transform: scale(0.97);
+//       transition: transform 0.1s ease;
+//     }
+//   }
+// `
 
-const ButtonContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 0 ${theme.spacing.md};
-  width: 100%;
+// const ButtonContainer = styled.div`
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+//   padding: 0 ${theme.spacing.md};
+//   width: 100%;
   
-  @media (max-width: ${theme.breakpoints.tablet}) {
-    padding: 0 ${theme.spacing.sm};
-  }
+//   @media (max-width: ${theme.breakpoints.tablet}) {
+//     padding: 0 ${theme.spacing.sm};
+//   }
   
-  @media (max-width: ${theme.breakpoints.mobile}) {
-    padding: 0 ${theme.spacing.xs};
-  }
+//   @media (max-width: ${theme.breakpoints.mobile}) {
+//     padding: 0 ${theme.spacing.xs};
+//   }
   
-`
+// `
 
 
 
@@ -398,19 +398,10 @@ const ButtonContainer = styled.div`
  * Membership Page Component
  */
 export const MembershipPage: React.FC = () => {
-  const [userMembership, setUserMembership] = useState<any>(null)
+  const [ setUserMembership] = useState<any>(null)
   const { isAuthenticated, hasValidToken, user, isLoading } = useAuth()
 
-  const handleJoinClick = () => {
-    // Scroll to the Join It widget for direct registration
-    const widgetElement = document.getElementById('joinit-widget-H4x4Dy5Mnr5eCYrSg')
-    if (widgetElement) {
-      widgetElement.scrollIntoView({ 
-        behavior: 'smooth',
-        block: 'center'
-      })
-    }
-  }
+  
 
   // Load Join It widget script on component mount
   useEffect(() => {
@@ -589,17 +580,17 @@ export const MembershipPage: React.FC = () => {
   }, [])
 
   // Helper function to check if a plan is currently active
-  const isPlanActivated = (planType: 'monthly' | 'yearly' | 'student'): boolean => {
-    if (!userMembership || !userMembership.hasActiveMembership) return false
+  // const isPlanActivated = (planType: 'monthly' | 'yearly' | 'student'): boolean => {
+  //   if (!userMembership || !userMembership.hasActiveMembership) return false
     
-    // Map plan types to match membership types
-    const membershipType = userMembership.type
-    if (planType === 'yearly' && membershipType === 'yearly') return true
-    if (planType === 'monthly' && membershipType === 'monthly') return true
-    if (planType === 'student' && membershipType === 'student') return true
+  //   // Map plan types to match membership types
+  //   const membershipType = userMembership.type
+  //   if (planType === 'yearly' && membershipType === 'yearly') return true
+  //   if (planType === 'monthly' && membershipType === 'monthly') return true
+  //   if (planType === 'student' && membershipType === 'student') return true
     
-    return false
-  }
+  //   return false
+  // }
 
   return (
     <>
@@ -616,115 +607,25 @@ export const MembershipPage: React.FC = () => {
       </Section>
 
       {/* Pricing Plans */}
-      <Section padding={`${theme.spacing.xxxl} 0`}>
-        <Container>
-          <h2 style={{ textAlign: 'center', marginBottom: theme.spacing.xxl }}>
-            Membership Plans
-          </h2>
-
-          <Grid columns={3} gap={theme.spacing.xl}>
-            <PricingCard>
-              {isPlanActivated('monthly') && <CurrentPlanBadge>✓ Your Current Plan</CurrentPlanBadge>}
-              <h3>Monthly</h3>
-              <div className="price">
-                $10<span>/month</span>
-              </div>
-              {/* <Button
-                variant={isPlanActivated('monthly') ? 'secondary' : selectedPlan === 'monthly' ? 'secondary' : 'outline'}
-                fullWidth
-                onClick={() => !isPlanActivated('monthly') && setSelectedPlan('monthly')}
-                disabled={isPlanActivated('monthly')}
-                style={{
-                  background: isPlanActivated('monthly') ? `linear-gradient(135deg, ${theme.colors.secondary} 0%, #ffed4e 100%)` : undefined,
-                  color: isPlanActivated('monthly') ? theme.colors.text.primary : undefined,
-                  cursor: isPlanActivated('monthly') ? 'default' : 'pointer'
-                }}
-              >
-                {isPlanActivated('monthly') ? '✓ Active Plan' : selectedPlan === 'monthly' ? 'Selected' : 'Choose Plan'}
-              </Button> */}
-              <ul>
-                <li>Official TVK Canada membership card</li>
-                <li>Access to exclusive events</li>
-                <li>Member-only discounts</li>
-                <li>Community forum access</li>
-                <li>Event early registration</li>
-              </ul>
-            </PricingCard>
-
-            <PricingCard featured={true}>
-              {isPlanActivated('yearly') && <CurrentPlanBadge>✓ Your Current Plan</CurrentPlanBadge>}
-              <h3 style={{color:"#fff"}}>Annual - Save $20!</h3>
-              <div className="price">
-                $100<span>/year</span>
-              </div>
-              {/* <Button
-                variant={isPlanActivated('yearly') ? 'secondary' : selectedPlan === 'yearly' ? 'secondary' : 'outline'}
-                fullWidth
-                onClick={() => !isPlanActivated('yearly') && setSelectedPlan('yearly')}
-                disabled={isPlanActivated('yearly')}
-                style={{
-                  background: isPlanActivated('yearly') ? `linear-gradient(135deg, ${theme.colors.secondary} 0%, #ffed4e 100%)` : undefined,
-                  color: isPlanActivated('yearly') ? theme.colors.text.primary : undefined,
-                  cursor: isPlanActivated('yearly') ? 'default' : 'pointer'
-                }}
-              >
-                {isPlanActivated('yearly') ? '✓ Active Plan' : selectedPlan === 'yearly' ? 'Selected' : 'Choose Plan'}
-              </Button> */}
-              <ul>
-                <li>Official TVK Canada membership card</li>
-                <li>Access to all exclusive events</li>
-                <li>Premium partner discounts</li>
-                <li>VIP community forum access</li>
-                <li>Priority event registration</li>
-                <li>Annual celebration invitation</li>
-              </ul>
-            </PricingCard>
-
-            <PricingCard>
-              {isPlanActivated('student') && <CurrentPlanBadge>✓ Your Current Plan</CurrentPlanBadge>}
-              <h3>Student</h3>
-              <div className="price">
-                $5<span>/month</span>
-              </div>
-              {/* <Button
-                variant={isPlanActivated('student') ? 'secondary' : selectedPlan === 'student' ? 'secondary' : 'outline'}
-                fullWidth
-                onClick={() => !isPlanActivated('student') && setSelectedPlan('student')}
-                disabled={isPlanActivated('student')}
-                style={{
-                  background: isPlanActivated('student') ? `linear-gradient(135deg, ${theme.colors.secondary} 0%, #ffed4e 100%)` : undefined,
-                  color: isPlanActivated('student') ? theme.colors.text.primary : undefined,
-                  cursor: isPlanActivated('student') ? 'default' : 'pointer'
-                }}
-              >
-                {isPlanActivated('student') ? '✓ Active Plan' : selectedPlan === 'student' ? 'Selected' : 'Choose Plan'}
-              </Button> */}
-              <ul>
-                <li>Student ID verification required</li>
-                <li>Access to student events</li>
-                <li>Student-only discounts</li>
-                <li>Community forum access</li>
-                <li>Movie night access</li>
-                <li>Study group invitations</li>
-              </ul>
-            </PricingCard>
-          </Grid>
-
-          <ButtonContainer style={{ marginTop: theme.spacing.xl }}>
-            {userMembership?.hasActiveMembership ? (
-              <Button variant="secondary" size="lg" disabled>
-                Current Plan: {userMembership.type?.charAt(0).toUpperCase() + userMembership.type?.slice(1)} Membership
-              </Button>
-            ) : (
-              <JoinButton 
-                variant="primary" 
-                size="lg" 
-                onClick={handleJoinClick}
-              >
-                <span>🚀 Join Now - Start Your Membership!</span>
-              </JoinButton>
-            )}
-          </ButtonContainer>
+      <Section padding={`${theme.spacing.xl} 0`} background={theme.colors.background}>
+        <Container style={{ maxWidth: 'none', padding: 0 }}>
+          <div style={{ 
+            width: '100vw',
+            marginLeft: 'calc(-50vw + 50%)',
+            minHeight: '100vh',
+            background: 'white',
+            position: 'relative'
+          }}>
+            <div id="joinit-widget-H4x4Dy5Mnr5eCYrSg" style={{
+              width: '100%',
+              minHeight: '50vh',
+              height: 'auto'
+            }}>
+              <noscript>
+                View <a href="https://app.joinit.com/o/tvkcanada">Membership Website</a> powered by <a href="https://joinit.com">Membership Software by Join It</a>
+              </noscript>
+            </div>
+          </div>
         </Container>
       </Section>
 
@@ -833,27 +734,7 @@ export const MembershipPage: React.FC = () => {
       </Section>
 
       {/* Join It Membership Widget - Full Screen */}
-      <Section padding={`${theme.spacing.xl} 0`} background={theme.colors.background}>
-        <Container style={{ maxWidth: 'none', padding: 0 }}>
-          <div style={{ 
-            width: '100vw',
-            marginLeft: 'calc(-50vw + 50%)',
-            minHeight: '100vh',
-            background: 'white',
-            position: 'relative'
-          }}>
-            <div id="joinit-widget-H4x4Dy5Mnr5eCYrSg" style={{
-              width: '100%',
-              minHeight: '100vh',
-              height: 'auto'
-            }}>
-              <noscript>
-                View <a href="https://app.joinit.com/o/tvkcanada">Membership Website</a> powered by <a href="https://joinit.com">Membership Software by Join It</a>
-              </noscript>
-            </div>
-          </div>
-        </Container>
-      </Section>
+      
 
     </>
   )
