@@ -18,10 +18,11 @@ RewriteRule . /index.html [L]
 
 # Security headers
 <IfModule mod_headers.c>
-    Header always set X-Frame-Options DENY
+    Header always set X-Frame-Options SAMEORIGIN
     Header always set X-Content-Type-Options nosniff
     Header always set Referrer-Policy "strict-origin-when-cross-origin"
-    Header always set Permissions-Policy "payment=*, camera=*, microphone=*, geolocation=*, publickey-credentials-get=*, autoplay=*, encrypted-media=*, fullscreen=*"
+    Header always set Permissions-Policy "payment=*, camera=*, microphone=*, geolocation=*, publickey-credentials-get=*, autoplay=*, encrypted-media=*, fullscreen=*, usb=*, serial=*, hid=*, bluetooth=*, web-share=*, display-capture=*"
+    Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://app.joinit.com https://js.stripe.com https://api.stripe.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; frame-src https://app.joinit.com https://js.stripe.com https://hooks.stripe.com; connect-src 'self' https://app.joinit.com https://api.stripe.com; media-src 'self'"
 </IfModule>
 
 # Compression
