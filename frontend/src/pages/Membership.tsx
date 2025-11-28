@@ -233,97 +233,6 @@ const FAQItem = styled.details`
   }
 `
 
-const JoinModal = styled.div<{ isOpen: boolean }>`
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.8);
-  display: ${props => props.isOpen ? 'flex' : 'none'};
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-  padding: ${theme.spacing.lg};
-
-  @media (max-width: ${theme.breakpoints.tablet}) {
-    padding: ${theme.spacing.md};
-  }
-`
-
-const JoinModalContent = styled.div`
-  background: ${theme.colors.surface};
-  border-radius: ${theme.borderRadius['2xl']};
-  padding: ${theme.spacing.xl};
-  width: 100%;
-  max-width: 800px;
-  max-height: 90vh;
-  overflow-y: auto;
-  position: relative;
-  box-shadow: ${theme.shadows.xl};
-  border: 2px solid ${theme.colors.secondary};
-
-  h3 {
-    text-align: center;
-    margin-bottom: ${theme.spacing.lg};
-    color: ${theme.colors.primary};
-  }
-
-  #joinit-widget-H4x4Dy5Mnr5eCYrSg {
-    min-height: 500px;
-    border-radius: ${theme.borderRadius.lg};
-    overflow: hidden;
-
-    iframe {
-      border-radius: ${theme.borderRadius.lg};
-    }
-  }
-
-  @media (max-width: ${theme.breakpoints.tablet}) {
-    padding: ${theme.spacing.lg};
-    max-height: 85vh;
-    
-    #joinit-widget-H4x4Dy5Mnr5eCYrSg {
-      min-height: 400px;
-    }
-  }
-
-  @media (max-width: ${theme.breakpoints.mobile}) {
-    padding: ${theme.spacing.md};
-    margin: ${theme.spacing.sm};
-    max-height: 80vh;
-  }
-`
-
-const CloseButton = styled.button`
-  position: absolute;
-  top: ${theme.spacing.md};
-  right: ${theme.spacing.md};
-  background: ${theme.colors.primary};
-  color: white;
-  border: none;
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  font-size: 20px;
-  font-weight: bold;
-  transition: all ${theme.transitions.base};
-  z-index: 1001;
-
-  &:hover {
-    background: ${theme.colors.secondary};
-    transform: scale(1.1);
-  }
-
-  &:active {
-    transform: scale(0.95);
-  }
-`
-
 const CurrentPlanBadge = styled.div`
   position: absolute;
   top: ${theme.spacing.sm};
@@ -489,10 +398,19 @@ const ButtonContainer = styled.div`
  * Membership Page Component
  */
 export const MembershipPage: React.FC = () => {
-  const [selectedPlan] = useState<'monthly' | 'yearly' | 'student'>('yearly')
   const [userMembership, setUserMembership] = useState<any>(null)
-  const [showJoinModal, setShowJoinModal] = useState(false)
   const { isAuthenticated, hasValidToken, user, isLoading } = useAuth()
+
+  // Handle join button click - scroll to membership widget
+  const handleJoinClick = () => {
+    const widgetElement = document.getElementById('joinit-widget-H4x4Dy5Mnr5eCYrSg')
+    if (widgetElement) {
+      widgetElement.scrollIntoView({ 
+        behavior: 'smooth',
+        block: 'center'
+      })
+    }
+  }
 
   // Debug logging
   useEffect(() => {
@@ -532,106 +450,82 @@ export const MembershipPage: React.FC = () => {
     fetchMembershipStatus()
   }, [user, isAuthenticated, hasValidToken])
 
-  // Load Join It widget script when modal opens
+  // Load Join It widget script on component mount
   useEffect(() => {
-    if (showJoinModal) {
-      const loadJoinItScript = () => {
-        // Check if script already exists
-        if (document.querySelector('script[src*="joinit.com/embed/widget"]')) {
-          return
+    const loadJoinItScript = () => {
+      // Check if script already exists
+      if (document.querySelector('script[src*="joinit.com/embed/widget"]')) {
+        return
+      }
+
+      const script = document.createElement('script')
+      script.src = 'https://app.joinit.com/embed/widget/H4x4Dy5Mnr5eCYrSg/embedCode'
+      script.async = true
+      
+      const firstScript = document.getElementsByTagName('script')[0]
+      if (firstScript && firstScript.parentNode) {
+        firstScript.parentNode.insertBefore(script, firstScript)
+      }
+
+      // Set permissions policy for the iframe when it loads
+      setTimeout(() => {
+        const iframe = document.querySelector('#joinit-widget-H4x4Dy5Mnr5eCYrSg iframe') as HTMLIFrameElement
+        if (iframe) {
+          iframe.setAttribute('allow', 
+            'payment *; ' +
+            'camera *; ' +
+            'microphone *; ' +
+            'geolocation *; ' +
+            'publickey-credentials-get *; ' +
+            'autoplay *; ' +
+            'encrypted-media *; ' +
+            'fullscreen *'
+          )
+          iframe.setAttribute('sandbox', 
+            'allow-same-origin ' +
+            'allow-scripts ' +
+            'allow-forms ' +
+            'allow-popups ' +
+            'allow-popups-to-escape-sandbox ' +
+            'allow-presentation ' +
+            'allow-payment'
+          )
         }
+      }, 2000)
 
-        const script = document.createElement('script')
-        script.src = 'https://app.joinit.com/embed/widget/H4x4Dy5Mnr5eCYrSg/embedCode'
-        script.async = true
-        
-        const firstScript = document.getElementsByTagName('script')[0]
-        if (firstScript && firstScript.parentNode) {
-          firstScript.parentNode.insertBefore(script, firstScript)
-        }
-
-        // Set permissions policy for the iframe when it loads
-        setTimeout(() => {
-          const iframe = document.querySelector('#joinit-widget-H4x4Dy5Mnr5eCYrSg iframe') as HTMLIFrameElement
-          if (iframe) {
-            iframe.setAttribute('allow', 
-              'payment *; ' +
-              'camera *; ' +
-              'microphone *; ' +
-              'geolocation *; ' +
-              'publickey-credentials-get *; ' +
-              'autoplay *; ' +
-              'encrypted-media *; ' +
-              'fullscreen *'
-            )
-            iframe.setAttribute('sandbox', 
-              'allow-same-origin ' +
-              'allow-scripts ' +
-              'allow-forms ' +
-              'allow-popups ' +
-              'allow-popups-to-escape-sandbox ' +
-              'allow-presentation ' +
-              'allow-payment'
-            )
-          }
-        }, 2000)
-
-        // Add message listener for Join It widget
-        const handleMessage = (event: MessageEvent) => {
-          // Only handle messages from trusted Join It domain
-          if (event.origin === 'https://app.joinit.com') {
-            if (event.data === 'request-url') {
-              // Reply with the current location — use event.origin as the target origin (matches original embed script)
-              if (event.source && event.origin) {
+      // Add message listener for Join It widget
+      const handleMessage = (event: MessageEvent) => {
+        // Only handle messages from trusted Join It domain
+        if (event.origin === 'https://app.joinit.com') {
+          if (event.data === 'request-url') {
+            // Reply with the current location — use event.origin as the target origin (matches original embed script)
+            if (event.source && event.origin) {
+              try {
+                ;(event.source as Window).postMessage(window.location.href, event.origin)
+              } catch (err) {
+                // Fallback: try a plain postMessage (some environments may throw)
                 try {
-                  ;(event.source as Window).postMessage(window.location.href, event.origin)
-                } catch (err) {
-                  // Fallback: try a plain postMessage (some environments may throw)
-                  try {
-                    (event.source as Window).postMessage(window.location.href, '*')
-                  } catch (e) {
-                    console.warn('Failed to post message to JoinIt widget:', e)
-                  }
+                  (event.source as Window).postMessage(window.location.href, '*')
+                } catch (e) {
+                  console.warn('Failed to post message to JoinIt widget:', e)
                 }
               }
             }
           }
         }
-
-        window.addEventListener('message', handleMessage, false)
-
-        // Return cleanup function
-        return () => {
-          window.removeEventListener('message', handleMessage, false)
-        }
       }
 
-      const cleanup = loadJoinItScript()
-      return cleanup
-    }
-  }, [showJoinModal])
+      window.addEventListener('message', handleMessage, false)
 
-  // Handle ESC key to close modal
-  useEffect(() => {
-    const handleEscKey = (event: KeyboardEvent) => {
-      if (event.key === 'Escape' && showJoinModal) {
-        setShowJoinModal(false)
+      // Return cleanup function
+      return () => {
+        window.removeEventListener('message', handleMessage, false)
       }
     }
 
-    if (showJoinModal) {
-      document.addEventListener('keydown', handleEscKey)
-      // Prevent body scroll when modal is open
-      document.body.style.overflow = 'hidden'
-    } else {
-      document.body.style.overflow = 'unset'
-    }
-
-    return () => {
-      document.removeEventListener('keydown', handleEscKey)
-      document.body.style.overflow = 'unset'
-    }
-  }, [showJoinModal])
+    const cleanup = loadJoinItScript()
+    return cleanup
+  }, [])
 
   // Helper function to check if a plan is currently active
   const isPlanActivated = (planType: 'monthly' | 'yearly' | 'student'): boolean => {
@@ -668,7 +562,7 @@ export const MembershipPage: React.FC = () => {
           </h2>
 
           <Grid columns={3} gap={theme.spacing.xl}>
-            <PricingCard featured={selectedPlan === 'monthly'}>
+            <PricingCard>
               {isPlanActivated('monthly') && <CurrentPlanBadge>✓ Your Current Plan</CurrentPlanBadge>}
               <h3>Monthly</h3>
               <div className="price">
@@ -696,7 +590,7 @@ export const MembershipPage: React.FC = () => {
               </ul>
             </PricingCard>
 
-            <PricingCard featured={selectedPlan === 'yearly'}>
+            <PricingCard featured={true}>
               {isPlanActivated('yearly') && <CurrentPlanBadge>✓ Your Current Plan</CurrentPlanBadge>}
               <h3 style={{color:"#fff"}}>Annual - Save $20!</h3>
               <div className="price">
@@ -725,7 +619,7 @@ export const MembershipPage: React.FC = () => {
               </ul>
             </PricingCard>
 
-            <PricingCard featured={selectedPlan === 'student'}>
+            <PricingCard>
               {isPlanActivated('student') && <CurrentPlanBadge>✓ Your Current Plan</CurrentPlanBadge>}
               <h3>Student</h3>
               <div className="price">
@@ -764,9 +658,9 @@ export const MembershipPage: React.FC = () => {
               <JoinButton 
                 variant="primary" 
                 size="lg" 
-                onClick={() => setShowJoinModal(true)}
+                onClick={handleJoinClick}
               >
-                <span> Join Now - Start Your Membership!</span>
+                <span>🚀 Join Now - Start Your Membership!</span>
               </JoinButton>
             )}
           </ButtonContainer>
@@ -877,20 +771,29 @@ export const MembershipPage: React.FC = () => {
         </Container>
       </Section>
 
-      {/* Join It Modal */}
-      <JoinModal isOpen={showJoinModal}>
-        <JoinModalContent>
-          <CloseButton onClick={() => setShowJoinModal(false)} aria-label="Close modal">
-            ×
-          </CloseButton>
-          <h3>Complete Your Membership Registration</h3>
-          <div id="joinit-widget-H4x4Dy5Mnr5eCYrSg">
-            <noscript>
-              View <a href="https://app.joinit.com/o/tvkcanada">Membership Website</a> powered by <a href="https://joinit.com">Membership Software by Join It</a>
-            </noscript>
+      {/* Direct Membership Registration */}
+      <Section padding={`${theme.spacing.xxxl} 0`} background={theme.colors.surface}>
+        <Container>
+          <h2 style={{ textAlign: 'center', marginBottom: theme.spacing.xxl }}>
+            Choose Your Membership Plan
+          </h2>
+          <div style={{ 
+            maxWidth: '900px', 
+            margin: '0 auto',
+            padding: theme.spacing.lg,
+            background: theme.colors.background,
+            borderRadius: theme.borderRadius['2xl'],
+            boxShadow: theme.shadows.lg,
+            border: `2px solid ${theme.colors.secondary}`
+          }}>
+            <div id="joinit-widget-H4x4Dy5Mnr5eCYrSg">
+              <noscript>
+                View <a href="https://app.joinit.com/o/tvkcanada">Membership Website</a> powered by <a href="https://joinit.com">Membership Software by Join It</a>
+              </noscript>
+            </div>
           </div>
-        </JoinModalContent>
-      </JoinModal>
+        </Container>
+      </Section>
 
     </>
   )
