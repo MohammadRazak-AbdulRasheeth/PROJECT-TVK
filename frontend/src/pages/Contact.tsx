@@ -234,7 +234,7 @@ export const ContactPage: React.FC = () => {
                 </ContactIcon>
                 <ContactDetails>
                   <h4>Email</h4>
-                  <a href="mailto:tvk.canada@gmail.com">tvk.canada@gmail.com</a>
+                  <a href="mailto:contact@tvkcanada.family">contact@tvkcanada.family</a>
                 </ContactDetails>
               </ContactInfoItem>
               <ContactInfoItem>

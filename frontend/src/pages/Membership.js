@@ -519,7 +519,7 @@ export const MembershipPage = () => {
     //   if (planType === 'student' && membershipType === 'student') return true
     //   return false
     // }
-    return (_jsxs(_Fragment, { children: [_jsx(Section, { padding: `${theme.spacing.xxxl} 0`, background: theme.colors.surface, children: _jsx(Container, { children: _jsxs(OfferBanner, { children: [_jsx("h3", { children: "\uD83C\uDF89 Limited Offer: First 200 Members Get 6 Months FREE!" }), _jsx("p", { children: "Join TVK Canada now and receive 6 months of membership absolutely FREE, plus a Special Edition Founding Member Physical Card." })] }) }) }), _jsx(Section, { padding: `${theme.spacing.xl} 0`, background: theme.colors.background, children: _jsx(Container, { style: { maxWidth: 'none', padding: 0 }, children: _jsx("div", { style: {
+    return (_jsxs(_Fragment, { children: [_jsx(Section, { padding: `${theme.spacing.xxxl} 0`, background: theme.colors.surface, children: _jsx(Container, { children: _jsxs(OfferBanner, { children: [_jsx("h3", { children: "\uD83C\uDF89 Limited Offer: First 200 Members Get 3 Months FREE!" }), _jsx("p", { children: "Join TVK Canada now and receive 6 months of membership absolutely FREE, plus a Special Edition Founding Member Physical Card." })] }) }) }), _jsx(Section, { padding: `${theme.spacing.xl} 0`, background: theme.colors.background, children: _jsx(Container, { style: { maxWidth: 'none', padding: 0 }, children: _jsx("div", { style: {
                             width: '100vw',
                             marginLeft: 'calc(-50vw + 50%)',
                             minHeight: '100vh',

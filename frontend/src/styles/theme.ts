@@ -94,7 +94,7 @@ export const theme = {
     fast: '150ms ease-in-out',
     base: '250ms ease-in-out',
     slow: '350ms ease-in-out',
-  },
+    },
 }
 
 export type Theme = typeof theme

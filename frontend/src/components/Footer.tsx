@@ -124,7 +124,7 @@ export const Footer: React.FC = () => {
 
         <FooterSection>
           <h4>Contact Us</h4>
-          <p>Email: tvk.canada@gmail.com</p>
+          <p>Email: contact@tvkcanada.family</p>
           <p>WhatsApp: Contact via WhatsApp</p>
           <p>Location: Canada</p>
         </FooterSection>
@@ -157,7 +157,7 @@ export const Footer: React.FC = () => {
           reserved.
         </p>
         <p style={{ marginTop: '8px', fontSize: '12px' }}>
-          Developed by <strong style={{ color: '#FFD700' }}>Varnyx Tech</strong> • Empowering communities through technology
+          Developed by <strong style={{ color: '#FFD700' }}>Varnyx Technologies</strong> • Empowering communities through technology
         </p>
       </FooterBottom>
     </FooterWrapper>
