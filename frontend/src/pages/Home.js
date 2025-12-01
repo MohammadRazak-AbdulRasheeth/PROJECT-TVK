@@ -1,4 +1,8 @@
 import { jsx as _jsx, jsxs as _jsxs, Fragment as _Fragment } from "react/jsx-runtime";
+/**
+ * Home Page - Premium Design
+ */
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { theme } from '@styles/theme';
@@ -281,13 +285,27 @@ const EventCard = styled(HighlightCard) `
  */
 export const HomePage = () => {
     const navigate = useNavigate();
+    // SEO optimization
+    useEffect(() => {
+        document.title = 'TVK Canada | Official Thalapathy Vijay Fan Club | Tamil Community Canada';
+        // Update meta description for home page
+        const metaDescription = document.querySelector('meta[name="description"]');
+        if (metaDescription) {
+            metaDescription.setAttribute('content', 'TVK Canada - Official Thalapathy Vijay fan club in Canada. Join the largest Tamil community for Vijay Canada events, Tamil cinema celebrations, and exclusive Thalapathi fan gatherings across Toronto, Vancouver, Montreal, Calgary.');
+        }
+        // Add page-specific keywords
+        const metaKeywords = document.querySelector('meta[name="keywords"]');
+        if (metaKeywords) {
+            metaKeywords.setAttribute('content', 'TVK Canada, Thalapathy Vijay, Vijay Canada, Thalapathi Canada, TVK, Tamil Vijay Katchi, Vijay fan club Canada, Tamil community Canada, Tamil cinema Canada, Vijay events Toronto, Vijay events Vancouver, Vijay events Montreal, Tamil culture Canada, Thalapathy fan club, Vijay supporters Canada, Tamil movie fans Canada, South Indian cinema Canada, Tamil entertainment Canada');
+        }
+    }, []);
     const handleJoinClick = () => {
         navigate('/membership');
     };
     const handleGlobalNetworkClick = () => {
         navigate('/global-network');
     };
-    return (_jsxs(_Fragment, { children: [_jsx(HeroSection, { children: _jsxs(HeroContent, { children: [_jsx(HeroTitle, { children: "TVK CANADA \u2013 The Voice of Vijay Fans in Canada" }), _jsxs(HeroSubtitle, { children: ["Unite with thousands of Thalapathy supporters across Canada.", _jsx("br", {}), "Celebrate culture and community."] }), _jsx(HeroButtons, { children: _jsx(Button, { variant: "secondary", size: "lg", onClick: handleJoinClick, children: "Join TVK Canada" }) })] }) }), _jsx(Section, { padding: `${theme.spacing.xxxl} 0`, background: theme.colors.background, children: _jsxs(Container, { children: [_jsx(SectionTitle, { children: "Membership Benefits" }), _jsxs(Grid, { columns: 3, gap: theme.spacing.xl, children: [_jsxs(HighlightCard, { gradient: true, children: [_jsx(Badge, { children: "Pricing" }), _jsx("h3", { children: "Affordable Plans" }), _jsxs("p", { children: [_jsx("strong", { children: "$10/month" }), " or ", _jsx("strong", { children: "$100/year" }), " \u2013 Choose what works best for you. Cancel anytime."] })] }), _jsxs(HighlightCard, { gradient: true, children: [_jsx(Badge, { children: "First 200 Members" }), _jsx("h3", { children: "Exclusive Offer" }), _jsxs("p", { children: ["Get ", _jsx("strong", { children: "6 months FREE" }), " membership plus a Special Edition Founding Member Physical Card!"] })] }), _jsxs(HighlightCard, { gradient: true, children: [_jsx(Badge, { children: "Member Benefits" }), _jsx("h3", { children: "Member Exclusive Benefits" }), _jsx("p", { children: "Access to exclusive events, member-only discounts, and community forum access with special recognition within our growing network." })] })] })] }) }), _jsx(Section, { padding: `${theme.spacing.xxxl} 0`, background: theme.colors.surface, children: _jsxs(Container, { children: [_jsx(SectionTitle, { children: "Weekly Events & Gatherings" }), _jsx(Grid, { columns: 3, gap: theme.spacing.xl, children: [
+    return (_jsxs(_Fragment, { children: [_jsx(HeroSection, { children: _jsxs(HeroContent, { children: [_jsx(HeroTitle, { children: "TVK CANADA \u2013 The Voice of Vijay Fans in Canada" }), _jsxs(HeroSubtitle, { children: ["Unite with thousands of Thalapathy supporters across Canada.", _jsx("br", {}), "Celebrate culture and community."] }), _jsx(HeroButtons, { children: _jsx(Button, { variant: "secondary", size: "lg", onClick: handleJoinClick, children: "Join TVK Canada" }) })] }) }), _jsx(Section, { padding: `${theme.spacing.xxxl} 0`, background: theme.colors.background, children: _jsxs(Container, { children: [_jsx(SectionTitle, { children: "Membership Benefits" }), _jsxs(Grid, { columns: 3, gap: theme.spacing.xl, children: [_jsxs(HighlightCard, { gradient: true, children: [_jsx(Badge, { children: "Pricing" }), _jsx("h3", { children: "Affordable Plans" }), _jsxs("p", { children: [_jsx("strong", { children: "$10/month" }), " or ", _jsx("strong", { children: "$100/year" }), " \u2013 Choose what works best for you. Cancel anytime."] })] }), _jsxs(HighlightCard, { gradient: true, children: [_jsx(Badge, { children: "First 200 Members" }), _jsx("h3", { children: "Exclusive Offer" }), _jsxs("p", { children: ["Get ", _jsx("strong", { children: "3 months FREE" }), " membership plus a Special Edition Founding Member Physical Card!"] })] }), _jsxs(HighlightCard, { gradient: true, children: [_jsx(Badge, { children: "Member Benefits" }), _jsx("h3", { children: "Member Exclusive Benefits" }), _jsx("p", { children: "Access to exclusive events, member-only discounts, and community forum access with special recognition within our growing network." })] })] })] }) }), _jsx(Section, { padding: `${theme.spacing.xxxl} 0`, background: theme.colors.surface, children: _jsxs(Container, { children: [_jsx(SectionTitle, { children: "Weekly Events & Gatherings" }), _jsx(Grid, { columns: 3, gap: theme.spacing.xl, children: [
                                 {
                                     title: 'Weekly Meetups',
                                     date: 'Every Week',

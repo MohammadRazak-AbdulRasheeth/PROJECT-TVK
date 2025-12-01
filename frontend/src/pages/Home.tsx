@@ -2,7 +2,7 @@
  * Home Page - Premium Design
  */
 
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 import { theme } from '@styles/theme'
@@ -296,6 +296,23 @@ const EventCard = styled(HighlightCard)`
 export const HomePage: React.FC = () => {
   const navigate = useNavigate()
 
+  // SEO optimization
+  useEffect(() => {
+    document.title = 'TVK Canada | Official Thalapathy Vijay Fan Club | Tamil Community Canada'
+    
+    // Update meta description for home page
+    const metaDescription = document.querySelector('meta[name="description"]')
+    if (metaDescription) {
+      metaDescription.setAttribute('content', 'TVK Canada - Official Thalapathy Vijay fan club in Canada. Join the largest Tamil community for Vijay Canada events, Tamil cinema celebrations, and exclusive Thalapathi fan gatherings across Toronto, Vancouver, Montreal, Calgary.')
+    }
+
+    // Add page-specific keywords
+    const metaKeywords = document.querySelector('meta[name="keywords"]')
+    if (metaKeywords) {
+      metaKeywords.setAttribute('content', 'TVK Canada, Thalapathy Vijay, Vijay Canada, Thalapathi Canada, TVK, Tamil Vijay Katchi, Vijay fan club Canada, Tamil community Canada, Tamil cinema Canada, Vijay events Toronto, Vijay events Vancouver, Vijay events Montreal, Tamil culture Canada, Thalapathy fan club, Vijay supporters Canada, Tamil movie fans Canada, South Indian cinema Canada, Tamil entertainment Canada')
+    }
+  }, [])
+
   const handleJoinClick = () => {
     navigate('/membership')
   }
@@ -342,7 +359,7 @@ export const HomePage: React.FC = () => {
               <Badge>First 200 Members</Badge>
               <h3>Exclusive Offer</h3>
               <p>
-                Get <strong>6 months FREE</strong> membership plus a Special Edition Founding Member Physical Card!
+                Get <strong>3 months FREE</strong> membership plus a Special Edition Founding Member Physical Card!
               </p>
             </HighlightCard>
 

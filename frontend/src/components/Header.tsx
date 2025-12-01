@@ -125,7 +125,9 @@ const DesktopNav = styled.nav`
   }
 `
 
-const MobileOverlay = styled.div<{ isOpen: boolean }>`
+const MobileOverlay = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== 'isOpen'
+})<{ isOpen: boolean }>`
   display: none;
 
   @media (max-width: ${theme.breakpoints.tablet}) {
@@ -143,7 +145,9 @@ const MobileOverlay = styled.div<{ isOpen: boolean }>`
   }
 `
 
-const MobileNav = styled.nav<{ isOpen: boolean }>`
+const MobileNav = styled.nav.withConfig({
+  shouldForwardProp: (prop) => prop !== 'isOpen'
+})<{ isOpen: boolean }>`
   display: none;
 
   @media (max-width: ${theme.breakpoints.tablet}) {
@@ -326,7 +330,9 @@ const UserProfile = styled.div`
   }
 `
 
-const DropdownMenu = styled.div<{ isOpen: boolean }>`
+const DropdownMenu = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== 'isOpen'
+})<{ isOpen: boolean }>`
   position: absolute;
   top: 100%;
   right: 0;

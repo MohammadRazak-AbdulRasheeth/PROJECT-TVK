@@ -1,7 +1,9 @@
 import { jsx as _jsx } from "react/jsx-runtime";
 import styled from 'styled-components';
 import { theme } from '@styles/theme';
-const StyledButton = styled.button `
+const StyledButton = styled.button.withConfig({
+    shouldForwardProp: (prop) => !['variant', 'size', 'fullWidth', 'loading'].includes(prop)
+}) `
   font-weight: ${theme.typography.fontWeight.semibold};
   border-radius: ${theme.borderRadius.lg};
   border: none;

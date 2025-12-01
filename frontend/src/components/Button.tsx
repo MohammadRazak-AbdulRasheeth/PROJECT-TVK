@@ -19,7 +19,9 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode
 }
 
-const StyledButton = styled.button<Omit<ButtonProps, 'children'>>`
+const StyledButton = styled.button.withConfig({
+  shouldForwardProp: (prop) => !['variant', 'size', 'fullWidth', 'loading'].includes(prop)
+})<Omit<ButtonProps, 'children'>>`
   font-weight: ${theme.typography.fontWeight.semibold};
   border-radius: ${theme.borderRadius.lg};
   border: none;

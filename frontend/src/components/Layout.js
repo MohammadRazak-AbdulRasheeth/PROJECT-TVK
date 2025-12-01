@@ -17,7 +17,9 @@ export const Container = styled.div `
     padding: ${theme.spacing.md};
   }
 `;
-export const Grid = styled.div `
+export const Grid = styled.div.withConfig({
+    shouldForwardProp: (prop) => !['columns', 'gap'].includes(prop)
+}) `
   display: grid;
   grid-template-columns: repeat(${(props) => props.columns || 3}, 1fr);
   gap: ${(props) => props.gap || theme.spacing.xl};
@@ -30,14 +32,18 @@ export const Grid = styled.div `
     grid-template-columns: 1fr;
   }
 `;
-export const Flex = styled.div `
+export const Flex = styled.div.withConfig({
+    shouldForwardProp: (prop) => !['direction', 'align', 'justify', 'gap'].includes(prop)
+}) `
   display: flex;
   flex-direction: ${(props) => props.direction || 'row'};
   align-items: ${(props) => props.align || 'stretch'};
   justify-content: ${(props) => props.justify || 'flex-start'};
   gap: ${(props) => props.gap || theme.spacing.md};
 `;
-export const Section = styled.section `
+export const Section = styled.section.withConfig({
+    shouldForwardProp: (prop) => !['padding', 'background'].includes(prop)
+}) `
   padding: ${(props) => props.padding || `${theme.spacing.xxxl} 0`};
   background-color: ${(props) => props.background || theme.colors.background};
 

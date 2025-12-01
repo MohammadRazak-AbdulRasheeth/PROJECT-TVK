@@ -25,7 +25,9 @@ export const Container = styled.div<ContainerProps>`
   }
 `
 
-export const Grid = styled.div<{ columns?: number; gap?: string }>`
+export const Grid = styled.div.withConfig({
+  shouldForwardProp: (prop) => !['columns', 'gap'].includes(prop)
+})<{ columns?: number; gap?: string }>`
   display: grid;
   grid-template-columns: repeat(${(props) => props.columns || 3}, 1fr);
   gap: ${(props) => props.gap || theme.spacing.xl};
@@ -39,8 +41,10 @@ export const Grid = styled.div<{ columns?: number; gap?: string }>`
   }
 `
 
-export const Flex = styled.div<{
-  direction?: 'row' | 'column'
+export const Flex = styled.div.withConfig({
+  shouldForwardProp: (prop) => !['direction', 'align', 'justify', 'gap'].includes(prop)
+})<{
+  direction?: string
   align?: string
   justify?: string
   gap?: string
@@ -52,7 +56,9 @@ export const Flex = styled.div<{
   gap: ${(props) => props.gap || theme.spacing.md};
 `
 
-export const Section = styled.section<{ padding?: string; background?: string }>`
+export const Section = styled.section.withConfig({
+  shouldForwardProp: (prop) => !['padding', 'background'].includes(prop)
+})<{ padding?: string; background?: string }>`
   padding: ${(props) => props.padding || `${theme.spacing.xxxl} 0`};
   background-color: ${(props) => props.background || theme.colors.background};
 

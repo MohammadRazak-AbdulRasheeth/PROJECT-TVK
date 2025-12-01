@@ -120,7 +120,9 @@ const DesktopNav = styled.nav `
     display: none;
   }
 `;
-const MobileOverlay = styled.div `
+const MobileOverlay = styled.div.withConfig({
+    shouldForwardProp: (prop) => prop !== 'isOpen'
+}) `
   display: none;
 
   @media (max-width: ${theme.breakpoints.tablet}) {
@@ -137,7 +139,9 @@ const MobileOverlay = styled.div `
     z-index: 999;
   }
 `;
-const MobileNav = styled.nav `
+const MobileNav = styled.nav.withConfig({
+    shouldForwardProp: (prop) => prop !== 'isOpen'
+}) `
   display: none;
 
   @media (max-width: ${theme.breakpoints.tablet}) {
@@ -313,7 +317,9 @@ const UserProfile = styled.div `
     display: none;
   }
 `;
-const DropdownMenu = styled.div `
+const DropdownMenu = styled.div.withConfig({
+    shouldForwardProp: (prop) => prop !== 'isOpen'
+}) `
   position: absolute;
   top: 100%;
   right: 0;

@@ -2,7 +2,7 @@
  * Events & Calendar Page
  */
 
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { theme } from '@styles/theme'
 import { Container, Section, Grid, Flex } from '@components/Layout'
@@ -70,26 +70,35 @@ const CalendarHeader = styled.div`
 
 const GoogleCalendarEmbed = styled.div`
   width: 100%;
-  height: 500px;
+  height: 600px;
+  max-width: 800px;
+  margin: 0 auto;
+  border: solid 1px #777;
+  border-radius: ${theme.borderRadius.lg};
+  overflow: hidden;
   
   iframe {
     width: 100%;
     height: 100%;
     border: none;
+    display: block;
   }
 
   @media (max-width: ${theme.breakpoints.tablet}) {
-    height: 400px;
+    height: 500px;
+    max-width: 100%;
   }
 
   @media (max-width: ${theme.breakpoints.mobile}) {
-    height: 350px;
+    height: 400px;
   }
 `
 
 
 
-const EventCard = styled.div<{ featured?: boolean }>`
+const EventCard = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== 'featured'
+})<{ featured?: boolean }>`
   background: ${props => props.featured ? `linear-gradient(135deg, ${theme.colors.primary}15 0%, ${theme.colors.secondary}15 100%)` : theme.colors.surface};
   border: 2px solid ${props => props.featured ? theme.colors.secondary : theme.colors.border};
   border-radius: ${theme.borderRadius.lg};
@@ -256,6 +265,21 @@ export const EventsPage: React.FC = () => {
   const [activeFilter, setActiveFilter] = useState<string>('all')
   const [currentMonth, setCurrentMonth] = useState(new Date().toLocaleString('default', { month: 'long', year: 'numeric' }))
 
+  // SEO optimization for Events page
+  useEffect(() => {
+    document.title = 'TVK Canada Events | Thalapathy Vijay Fan Gatherings | Tamil Community Events'
+    
+    const metaDescription = document.querySelector('meta[name="description"]')
+    if (metaDescription) {
+      metaDescription.setAttribute('content', 'Join TVK Canada events - Thalapathy Vijay fan gatherings, Tamil cinema celebrations, and community meetups across Toronto, Vancouver, Montreal, Calgary. View our event calendar and register today.')
+    }
+
+    const metaKeywords = document.querySelector('meta[name="keywords"]')
+    if (metaKeywords) {
+      metaKeywords.setAttribute('content', 'TVK Canada events, Thalapathy Vijay events Canada, Tamil events Toronto, Vijay fan meetup, Tamil cinema events, Tamil community gatherings, Vijay birthday celebration, Tamil cultural events Canada, South Indian events Canada')
+    }
+  }, [])
+
   const upcomingEvents = [
     {
       id: 1,
@@ -356,7 +380,7 @@ export const EventsPage: React.FC = () => {
   }
 
   // Google Calendar embed URL (you can replace this with your actual calendar)
-  const calendarEmbedUrl = "https://calendar.google.com/calendar/embed?src=c_classroom6925305f%40group.calendar.google.com&ctz=America%2FToronto"
+  const calendarEmbedUrl = "https://calendar.google.com/calendar/embed?height=600&wkst=1&ctz=UTC&showPrint=0&title=TVK%20CANADA%20CALENDAR&src=MzMyMjcxOWZmZDcyMzQ0Y2RkMGI5YzYxZTE3ZGY3NzA2YmRkNmM1ZGNhYWI5ZGIxNDY4YmI3YThkNDE0YTliYkBncm91cC5jYWxlbmRhci5nb29nbGUuY29t&color=%238e24aa"
 
   return (
     <>
