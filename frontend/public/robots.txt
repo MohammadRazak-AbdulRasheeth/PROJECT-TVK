@@ -1,13 +1,8 @@
 User-agent: *
 Allow: /
 
-# Sitemap location
-Sitemap: https://tvkcanada.netlify.app/sitemap.xml
+Sitemap: https://tvkcanada.family/sitemap.xml
 
-# Allow search engines to crawl all pages
-Crawl-delay: 1
-
-# Optimize for important pages
 Allow: /
 Allow: /membership
 Allow: /events
@@ -16,7 +11,6 @@ Allow: /gallery
 Allow: /global-network
 Allow: /contact
 
-# Block unnecessary files
 Disallow: /src/
 Disallow: /node_modules/
 Disallow: *.json

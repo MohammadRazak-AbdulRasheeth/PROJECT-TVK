@@ -248,6 +248,21 @@ const PhilosophyBox = styled.div`
 export const AboutPage: React.FC = () => {
   return (
     <>
+      {/* Page Header with H1 */}
+      <Section padding={`${theme.spacing.xl} 0`} background={theme.colors.primary}>
+        <Container>
+          <h1 style={{
+            color: theme.colors.text.inverse,
+            textAlign: 'center',
+            fontSize: theme.typography.fontSize['4xl'],
+            fontWeight: theme.typography.fontWeight.extrabold,
+            margin: 0
+          }}>
+            About TVK Canada
+          </h1>
+        </Container>
+      </Section>
+
       {/* Who Are We Section */}
       <Section padding={`${theme.spacing.xxxl} 0`} background={theme.colors.background}>
         <Container>
@@ -318,7 +333,7 @@ export const AboutPage: React.FC = () => {
             <div>
               <ActivitiesSection>
                 <ActivityItem>
-                  <h4>Movie Nights</h4>
+                  <h3>Movie Nights</h3>
                   <p>
                     Enjoy Vijay's films together with fellow fans in a communal, family-friendly
                     setting.
@@ -326,7 +341,7 @@ export const AboutPage: React.FC = () => {
                 </ActivityItem>
 
                 <ActivityItem>
-                  <h4>Watch Parties</h4>
+                  <h3>Watch Parties</h3>
                   <p>
                     Experience major releases and special moments together as a community.
                   </p>
@@ -337,14 +352,14 @@ export const AboutPage: React.FC = () => {
             <div>
               <ActivitiesSection>
                 <ActivityItem>
-                  <h4>Weekly Meetups</h4>
+                  <h3>Weekly Meetups</h3>
                   <p>
                     Build friendships and community spirit through regular gatherings.
                   </p>
                 </ActivityItem>
 
                 <ActivityItem>
-                  <h4>Cultural Gatherings</h4>
+                  <h3>Cultural Gatherings</h3>
                   <p>
                     Celebrate Tamil culture through festivals, celebrations, and community events.
                   </p>

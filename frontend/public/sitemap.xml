@@ -1,43 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://tvkcanada.netlify.app/</loc>
+    <loc>https://tvkcanada.family/</loc>
     <lastmod>2024-12-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://tvkcanada.netlify.app/membership</loc>
+    <loc>https://tvkcanada.family/membership</loc>
     <lastmod>2024-12-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://tvkcanada.netlify.app/events</loc>
+    <loc>https://tvkcanada.family/events</loc>
     <lastmod>2024-12-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://tvkcanada.netlify.app/about</loc>
+    <loc>https://tvkcanada.family/about</loc>
     <lastmod>2024-12-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://tvkcanada.netlify.app/gallery</loc>
+    <loc>https://tvkcanada.family/gallery</loc>
     <lastmod>2024-12-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://tvkcanada.netlify.app/global-network</loc>
+    <loc>https://tvkcanada.family/global-network</loc>
     <lastmod>2024-12-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://tvkcanada.netlify.app/contact</loc>
+    <loc>https://tvkcanada.family/contact</loc>
     <lastmod>2024-12-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>

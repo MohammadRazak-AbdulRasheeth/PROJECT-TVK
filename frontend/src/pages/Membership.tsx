@@ -654,27 +654,27 @@ export const MembershipPage: React.FC = () => {
           <StepperContainer>
             <StepItem active>
               <div className="step-circle">1</div>
-              <h4>Sign Up Online</h4>
+              <h3>Sign Up Online</h3>
               <p>Create your account once registration opens</p>
             </StepItem>
             <StepItem active>
               <div className="step-circle">2</div>
-              <h4>Choose Plan</h4>
+              <h3>Choose Plan</h3>
               <p>Select Monthly or Yearly membership</p>
             </StepItem>
             <StepItem active>
               <div className="step-circle">3</div>
-              <h4>Receive Your Card</h4>
+              <h3>Receive Your Card</h3>
               <p>Physical card delivered to your address (2–4 weeks)</p>
             </StepItem>
             <StepItem>
               <div className="step-circle">4</div>
-              <h4>Enjoy Member Perks</h4>
+              <h3>Enjoy Member Perks</h3>
               <p>At events and partner businesses</p>
             </StepItem>
             <StepItem>
               <div className="step-circle">5</div>
-              <h4>Stay Connected</h4>
+              <h3>Stay Connected</h3>
               <p>Receive exclusive updates and announcements</p>
             </StepItem>
           </StepperContainer>

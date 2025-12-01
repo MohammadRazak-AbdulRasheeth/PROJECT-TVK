@@ -479,7 +479,7 @@ export const EventsPage: React.FC = () => {
 
           {filteredEvents.length === 0 && (
             <div style={{ textAlign: 'center', padding: theme.spacing.xxxl, color: theme.colors.text.secondary }}>
-              <h4>No events found for the selected filter.</h4>
+              <h3>No events found for the selected filter.</h3>
               <p>Try selecting a different filter or check back later for new events.</p>
             </div>
           )}

@@ -233,7 +233,7 @@ export const ContactPage: React.FC = () => {
                   <FaEnvelope />
                 </ContactIcon>
                 <ContactDetails>
-                  <h4>Email</h4>
+                  <h3>Email</h3>
                   <a href="mailto:contact@tvkcanada.family">contact@tvkcanada.family</a>
                 </ContactDetails>
               </ContactInfoItem>
@@ -242,7 +242,7 @@ export const ContactPage: React.FC = () => {
                   <FaWhatsapp />
                 </ContactIcon>
                 <ContactDetails>
-                  <h4>WhatsApp</h4>
+                  <h3>WhatsApp</h3>
                   <a href="https://wa.me/1234567890">Contact via WhatsApp</a>
                 </ContactDetails>
               </ContactInfoItem>
@@ -251,7 +251,7 @@ export const ContactPage: React.FC = () => {
                   <FaMapLocationDot />
                 </ContactIcon>
                 <ContactDetails>
-                  <h4>Location</h4>
+                  <h3>Location</h3>
                   <p>Canada-wide</p>
                 </ContactDetails>
               </ContactInfoItem>
