@@ -1,4 +1,9 @@
 import { jsx as _jsx, jsxs as _jsxs, Fragment as _Fragment } from "react/jsx-runtime";
+/**
+ * TVK Global Network Page
+ * Showcasing Vijay fan groups across the world under the TVK brand
+ */
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { theme } from '@styles/theme';
@@ -75,12 +80,13 @@ const HeroSection = styled.div `
     }
   }
 `;
-const GroupCard = styled.div `
+const InstagramCard = styled.div `
   background: ${theme.colors.surface};
   border-radius: ${theme.borderRadius.lg};
   overflow: hidden;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   border-top: 4px solid ${theme.colors.primary};
+  cursor: pointer;
 
   &:hover {
     transform: translateY(-8px);
@@ -89,7 +95,7 @@ const GroupCard = styled.div `
 
   .header {
     padding: ${theme.spacing.lg};
-    background: ${theme.colors.surface};
+    background: linear-gradient(135deg, ${theme.colors.surface} 0%, #f8f9fa 100%);
     border-bottom: 1px solid ${theme.colors.border};
     display: flex;
     flex-direction: row;
@@ -128,6 +134,17 @@ const GroupCard = styled.div `
   .content {
     padding: ${theme.spacing.lg};
 
+    .instagram-handle {
+      background: linear-gradient(135deg, #833AB4 0%, #C13584 50%, #E1306C 75%, #FD1D1D 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      font-weight: ${theme.typography.fontWeight.bold};
+      font-size: 16px;
+      margin-bottom: ${theme.spacing.md};
+      display: block;
+    }
+
     p {
       color: ${theme.colors.text.secondary};
       line-height: 1.6;
@@ -135,18 +152,31 @@ const GroupCard = styled.div `
       font-size: 14px;
     }
 
-    strong {
-      color: ${theme.colors.primary};
-      display: block;
+    .stats {
+      display: flex;
+      gap: ${theme.spacing.md};
       margin-top: ${theme.spacing.md};
-      margin-bottom: ${theme.spacing.sm};
-    }
+      padding: ${theme.spacing.sm} 0;
+      border-top: 1px solid ${theme.colors.border};
 
-    .hashtags {
-      color: ${theme.colors.primary};
-      font-size: 13px;
-      margin-top: ${theme.spacing.md};
-      font-weight: ${theme.typography.fontWeight.semibold};
+      .stat {
+        text-align: center;
+        flex: 1;
+
+        .number {
+          display: block;
+          color: ${theme.colors.primary};
+          font-weight: ${theme.typography.fontWeight.bold};
+          font-size: 16px;
+        }
+
+        .label {
+          color: ${theme.colors.text.secondary};
+          font-size: 12px;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+        }
+      }
     }
   }
 
@@ -154,47 +184,28 @@ const GroupCard = styled.div `
     .header {
       padding: ${theme.spacing.md};
       .flag {
-        font-size: 36px;
-        margin-bottom: ${theme.spacing.sm};
+        width: 60px;
+        height: 60px;
+        min-width: 60px;
       }
     }
     .content {
       padding: ${theme.spacing.md};
     }
   }
-`;
-const ValuesGrid = styled.div `
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: ${theme.spacing.lg};
-  text-align: center;
 
-  .value {
-    padding: ${theme.spacing.lg};
-    background: ${theme.colors.surface};
-    border-radius: ${theme.borderRadius.lg};
-    border-left: 4px solid ${theme.colors.secondary};
-
-    h4 {
-      color: ${theme.colors.primary};
-      margin-bottom: ${theme.spacing.sm};
-      font-size: 16px;
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    .header {
+      padding: ${theme.spacing.sm};
+      gap: ${theme.spacing.sm};
+      .flag {
+        width: 50px;
+        height: 50px;
+        min-width: 50px;
+      }
     }
-
-    p {
-      color: ${theme.colors.text.secondary};
-      font-size: 14px;
-      margin: 0;
-      line-height: 1.5;
-    }
-  }
-
-  @media (max-width: ${theme.breakpoints.tablet}) {
-    grid-template-columns: repeat(2, 1fr);
-    gap: ${theme.spacing.md};
-
-    .value {
-      padding: ${theme.spacing.md};
+    .content {
+      padding: ${theme.spacing.sm};
     }
   }
 `;
@@ -203,151 +214,159 @@ const ValuesGrid = styled.div `
  */
 export const GlobalNetworkPage = () => {
     const navigate = useNavigate();
+    // SEO optimization
+    useEffect(() => {
+        document.title = 'TVK Global Network - Worldwide Vijay Fan Communities';
+        const metaDescription = document.querySelector('meta[name="description"]');
+        if (metaDescription) {
+            metaDescription.setAttribute('content', 'Discover TVK\'s global network of Thalapathy Vijay fan clubs worldwide. Connect with international Tamil communities and supporters.');
+        }
+        const metaKeywords = document.querySelector('meta[name="keywords"]');
+        if (metaKeywords) {
+            metaKeywords.setAttribute('content', 'TVK global network, worldwide Vijay fans, international Tamil community, global Thalapathy supporters');
+        }
+    }, []);
     const handleJoinClick = () => {
         navigate('/membership');
     };
-    const globalGroups = [
+    // Instagram data for TVK groups worldwide
+    const instagramGroups = [
         {
             id: 1,
-            flag: 'https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/6.14.0/flags/4x3/in.svg',
-            countryCode: 'IN',
-            name: 'Vijay Makkal Mandram',
-            region: 'India – Tamil Nadu',
-            description: 'The original and largest TVK-aligned fan network, active in community events, volunteer programs, and massive fan celebrations.',
-            known_for: 'Community events, Volunteer programs, Large-scale celebrations',
-            hashtags: '#VijayMakkalMandram #TMM #TamilPride',
+            flag: 'https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/6.14.0/flags/4x3/ca.svg',
+            countryCode: 'CA',
+            name: 'TVK Canada - Ottawa, ON',
+            region: 'Canada (Ottawa, ON)',
+            instagramHandle: '@tvkcanada_official',
+            instagramUrl: 'https://instagram.com/tvkcanada_official',
+            description: 'Official Canadian chapter based in Ottawa, ON. Follow for updates on community events, charity work, and fan activities.',
+            followers: '2.5K',
+            posts: '180'
         },
         {
             id: 2,
-            flag: 'https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/6.14.0/flags/4x3/lk.svg',
-            countryCode: 'LK',
-            name: 'Sri Lanka Vijay Fans',
-            region: 'Sri Lanka',
-            description: 'Organized screenings, youth activities, and strong community unity. One of the most loyal overseas Vijay fan bases.',
-            known_for: 'Screenings, Youth programs, Community unity',
-            hashtags: '#SriLankaVijayFans #VijayLove #SLFans',
+            flag: 'https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/6.14.0/flags/4x3/in.svg',
+            countryCode: 'IN',
+            name: 'Vijay Makkal Mandram',
+            region: 'India - Tamil Nadu',
+            instagramHandle: '@vijay_makkal_mandram',
+            instagramUrl: 'https://instagram.com/vijay_makkal_mandram',
+            description: 'The original TVK network in Tamil Nadu. Follow for movie updates, community events, and fan celebrations.',
+            followers: '500K+',
+            posts: '1.2K+'
         },
         {
             id: 3,
-            flag: 'https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/6.14.0/flags/4x3/my.svg',
-            countryCode: 'MY',
-            name: 'Malaysia Vijay Fans',
-            region: 'Malaysia',
-            description: 'Huge fan following with stadium-level celebrations during major movie releases. Highly active in charity and cultural events.',
-            known_for: 'Stadium-level celebrations, Charity events, Cultural programs',
-            hashtags: '#MalaysiaVijayFans #VijayPride #AkKami',
+            flag: 'https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/6.14.0/flags/4x3/us.svg',
+            countryCode: 'US',
+            name: 'USA Vijay Fans',
+            region: 'United States',
+            instagramHandle: '@vijay_fans_usa',
+            instagramUrl: 'https://instagram.com/vijay_fans_usa',
+            description: 'Connect with Vijay fans across American cities. Events in Dallas, California, Chicago, and New Jersey.',
+            followers: '15K+',
+            posts: '400+'
         },
         {
             id: 4,
-            flag: 'https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/6.14.0/flags/4x3/sg.svg',
-            countryCode: 'SG',
-            name: 'Singapore Vijay FC',
-            region: 'Singapore',
-            description: 'Professional, disciplined, and well-respected. Organizes screenings, community meetups, and youth programs.',
-            known_for: 'Professional events, Screenings, Youth programs',
-            hashtags: '#SingaporeVijayFC #VijayFans #SGPride',
-        },
-        {
-            id: 5,
             flag: 'https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/6.14.0/flags/4x3/gb.svg',
             countryCode: 'GB',
             name: 'UK Vijay Fans Network',
             region: 'United Kingdom',
-            description: 'A growing group active in London and other major cities, known for elegant celebrations and culturally rich events.',
-            known_for: 'Elegant celebrations, Cultural events, Community meetups',
-            hashtags: '#UKVijayFans #LondonFans #VijayInUK',
+            instagramHandle: '@uk_vijay_fans',
+            instagramUrl: 'https://instagram.com/uk_vijay_fans',
+            description: 'London and UK-wide Vijay fan community. Follow for screenings, meetups, and cultural events.',
+            followers: '8K+',
+            posts: '250+'
+        },
+        {
+            id: 5,
+            flag: 'https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/6.14.0/flags/4x3/au.svg',
+            countryCode: 'AU',
+            name: 'Australia Vijay Fans',
+            region: 'Australia',
+            instagramHandle: '@australia_vijay_fans',
+            instagramUrl: 'https://instagram.com/australia_vijay_fans',
+            description: 'Sydney, Melbourne, Brisbane fan community. Follow for Aussie Vijay events and celebrations.',
+            followers: '12K+',
+            posts: '350+'
         },
         {
             id: 6,
-            flag: 'https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/6.14.0/flags/4x3/us.svg',
-            countryCode: 'US',
-            name: 'USA Vijay Fans Groups',
-            region: 'USA (Dallas, New Jersey, California, Chicago)',
-            description: 'Strong fan groups across major cities regularly hosting screenings and large family events.',
-            known_for: 'Family events, Large-scale screenings, Community celebrations',
-            hashtags: '#USAVijayFans #AmericaFans #VijayLove',
-        },
-        {
-            id: 7,
-            flag: 'https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/6.14.0/flags/4x3/au.svg',
-            countryCode: 'AU',
-            name: 'Australia Vijay Fans Association',
-            region: 'Australia (Sydney, Melbourne, Brisbane)',
-            description: 'Active in sports-themed events, cultural days, and big movie celebrations.',
-            known_for: 'Sports events, Cultural days, Movie celebrations',
-            hashtags: '#AustraliaVijayFans #AussieVijay #VijayDown Under',
-        },
-        {
-            id: 8,
             flag: 'https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/6.14.0/flags/4x3/ae.svg',
             countryCode: 'AE',
             name: 'UAE & Middle East Vijay Fans',
-            region: 'UAE, Saudi, Kuwait, Qatar',
-            description: 'One of the most energetic fan bases outside India, known for creative displays, massive cutouts, and group celebrations.',
-            known_for: 'Creative displays, Massive celebrations, Community events',
-            hashtags: '#UAEVijayFans #MiddleEastLove #VijayPride',
+            region: 'UAE & Middle East',
+            instagramHandle: '@uae_vijay_fans',
+            instagramUrl: 'https://instagram.com/uae_vijay_fans',
+            description: 'Dubai, UAE, and Middle East Vijay fan network. Follow for massive celebrations and fan events.',
+            followers: '25K+',
+            posts: '600+'
+        },
+        {
+            id: 7,
+            flag: 'https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/6.14.0/flags/4x3/my.svg',
+            countryCode: 'MY',
+            name: 'Malaysia Vijay Fans',
+            region: 'Malaysia',
+            instagramHandle: '@malaysia_vijay_fans',
+            instagramUrl: 'https://instagram.com/malaysia_vijay_fans',
+            description: 'Malaysian Vijay fan community. Follow for stadium-level celebrations and charity events.',
+            followers: '30K+',
+            posts: '750+'
+        },
+        {
+            id: 8,
+            flag: 'https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/6.14.0/flags/4x3/sg.svg',
+            countryCode: 'SG',
+            name: 'Singapore Vijay FC',
+            region: 'Singapore',
+            instagramHandle: '@singapore_vijay_fc',
+            instagramUrl: 'https://instagram.com/singapore_vijay_fc',
+            description: 'Singapore Vijay fan club. Follow for professional events, screenings, and community programs.',
+            followers: '7K+',
+            posts: '200+'
         },
         {
             id: 9,
-            flag: 'https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/6.14.0/flags/4x3/fr.svg',
-            countryCode: 'FR',
-            name: 'France Vijay Fans Club',
-            region: 'France & Europe',
-            description: 'A passionate European community known for street celebrations, meetups, and screenings.',
-            known_for: 'Street celebrations, Meetups, Screenings',
-            hashtags: '#FranceVijayFans #EuropeFans #VijayInEurope',
+            flag: 'https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/6.14.0/flags/4x3/lk.svg',
+            countryCode: 'LK',
+            name: 'Sri Lanka Vijay Fans',
+            region: 'Sri Lanka',
+            instagramHandle: '@srilanka_vijay_fans',
+            instagramUrl: 'https://instagram.com/srilanka_vijay_fans',
+            description: 'Sri Lankan Vijay fan community. Follow for screenings, youth activities, and community unity.',
+            followers: '20K+',
+            posts: '500+'
         },
         {
             id: 10,
-            flag: 'https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/6.14.0/flags/4x3/za.svg',
-            countryCode: 'ZA',
-            name: 'South Africa Vijay Supporters',
-            region: 'South Africa',
-            description: 'A growing fan community hosting local screenings and cultural nights.',
-            known_for: 'Screenings, Cultural events, Community building',
-            hashtags: '#SAVijayFans #AfricaPride #VijayLove',
-        },
-        {
-            id: 11,
-            flag: 'https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/6.14.0/flags/4x3/nz.svg',
-            countryCode: 'NZ',
-            name: 'New Zealand Vijay Fans',
-            region: 'New Zealand',
-            description: 'Growing community of Vijay supporters organizing meetups and cultural celebrations.',
-            known_for: 'Community meetups, Cultural celebrations',
-            hashtags: '#NZVijayFans #KiwiVijay #AotearoaFans',
-        },
-        {
-            id: 12,
-            flag: 'https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/6.14.0/flags/4x3/ca.svg',
-            countryCode: 'CA',
-            name: 'TVK Canada',
-            region: 'Canada',
-            description: 'The official Canadian fan community of Thalapathy Vijay, bringing people together through meaningful community building and memorable events.',
-            known_for: 'Community events, Nationwide meetups, Family-friendly activities',
-            hashtags: '#TVKCanada #VijayCanada #CanadianFans',
-        },
+            flag: 'https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/6.14.0/flags/4x3/fr.svg',
+            countryCode: 'FR',
+            name: 'France & Europe Vijay Fans',
+            region: 'France & Europe',
+            instagramHandle: '@europe_vijay_fans',
+            instagramUrl: 'https://instagram.com/europe_vijay_fans',
+            description: 'European Vijay fan network. Follow for street celebrations, meetups, and cultural events.',
+            followers: '5K+',
+            posts: '150+'
+        }
     ];
-    const globalValues = [
-        { title: 'Unity', description: 'Forming strong bonds across cities and cultures' },
-        { title: 'Respect', description: 'Treating everyone with kindness and dignity' },
-        { title: 'Community', description: 'Building meaningful connections together' },
-        { title: 'Culture', description: 'Celebrating Tamil heritage and values' },
-        { title: 'Positivity', description: 'Spreading joy and inspiration' },
-        { title: 'Brotherhood', description: 'United as one global TVK family' },
-    ];
-    return (_jsxs(_Fragment, { children: [_jsx(HeroSection, { children: _jsxs(Container, { children: [_jsx("h1", { children: "TVK Around the World" }), _jsx("p", { children: "Proudly showcasing TVK fan groups that represent Thalapathy Vijay and support the global TVK brand across continents." })] }) }), _jsx(Section, { padding: `${theme.spacing.xxxl} 0`, children: _jsxs(Container, { children: [_jsx("h2", { style: { textAlign: 'center', marginBottom: theme.spacing.lg }, children: "Featured Global Groups" }), _jsx("p", { style: {
+    return (_jsxs(_Fragment, { children: [_jsx(HeroSection, { children: _jsxs(Container, { children: [_jsx("h1", { children: "TVK Instagram Community" }), _jsx("p", { children: "Connect with TVK fan groups worldwide through their official Instagram pages. Follow for updates, events, and community celebrations." })] }) }), _jsx(Section, { padding: `${theme.spacing.xxxl} 0`, children: _jsxs(Container, { children: [_jsx("h2", { style: { textAlign: 'center', marginBottom: theme.spacing.lg, color: theme.colors.primary, fontSize: theme.typography.fontSize['3xl'] }, children: "Follow Our Global Instagram Community" }), _jsx("p", { style: {
                                 textAlign: 'center',
                                 marginBottom: theme.spacing.xxxl,
                                 color: theme.colors.text.secondary,
-                                fontSize: '16px',
-                            }, children: "From India to Australia, from USA to Europe \u2013 the TVK family spans continents. Here are the vibrant communities keeping Vijay's spirit alive worldwide." }), _jsx(Grid, { columns: 3, gap: theme.spacing.lg, children: globalGroups.map((group) => (_jsxs(GroupCard, { children: [_jsxs("div", { className: "header", children: [_jsx("div", { className: "flag", style: {
-                                                    backgroundImage: `url('${group.flag}')`,
-                                                }, title: group.countryCode }), _jsxs("div", { className: "header-content", children: [_jsx("h3", { children: group.name }), _jsx("p", { className: "region", children: group.region })] })] }), _jsxs("div", { className: "content", children: [_jsx("p", { children: group.description }), _jsx("strong", { children: "Known For:" }), _jsx("p", { children: group.known_for }), _jsx("div", { className: "hashtags", children: group.hashtags })] })] }, group.id))) })] }) }), _jsx(Section, { padding: `${theme.spacing.xxxl} 0`, background: theme.colors.surface, children: _jsxs(Container, { children: [_jsx("h2", { style: { textAlign: 'center', marginBottom: theme.spacing.xxxl }, children: "TVK Global Family Values" }), _jsx(ValuesGrid, { children: globalValues.map((value, idx) => (_jsxs("div", { className: "value", children: [_jsx("h4", { children: value.title }), _jsx("p", { children: value.description })] }, idx))) })] }) }), _jsx(Section, { padding: `${theme.spacing.xxxl} 0`, children: _jsx(Container, { children: _jsxs("div", { style: {
-                            background: `linear-gradient(135deg, ${theme.colors.primary} 0%, #a01829 100%)`,
-                            color: theme.colors.text.inverse,
-                            padding: theme.spacing.xl,
-                            borderRadius: theme.borderRadius['2xl'],
-                            textAlign: 'center',
-                        }, children: [_jsx("h2", { style: { marginBottom: theme.spacing.lg }, children: "TVK is Global. Be Part of It." }), _jsx("p", { style: { marginBottom: theme.spacing.lg, fontSize: '16px' }, children: "Join the largest fan network celebrating Thalapathy Vijay across the world." }), _jsx(Button, { variant: "secondary", onClick: handleJoinClick, children: "Join TVK Canada" })] }) }) })] }));
+                                fontSize: '18px',
+                                maxWidth: '700px',
+                                margin: '0 auto',
+                                lineHeight: '1.7'
+                            }, children: "Stay connected with TVK fan groups around the world. Follow their Instagram pages for the latest updates, event photos, and community highlights." }), _jsx(Grid, { columns: 3, gap: theme.spacing.xl, children: instagramGroups.map((group) => (_jsxs(InstagramCard, { onClick: () => window.open(group.instagramUrl, '_blank'), children: [_jsxs("div", { className: "header", children: [_jsx("div", { className: "flag", style: {
+                                                    backgroundImage: `url(${group.flag})`,
+                                                } }), _jsxs("div", { className: "header-content", children: [_jsx("h3", { children: group.name }), _jsx("p", { className: "region", children: group.region })] })] }), _jsxs("div", { className: "content", children: [_jsx("span", { className: "instagram-handle", children: group.instagramHandle }), _jsx("p", { children: group.description }), _jsxs("div", { className: "stats", children: [_jsxs("div", { className: "stat", children: [_jsx("span", { className: "number", children: group.followers }), _jsx("span", { className: "label", children: "Followers" })] }), _jsxs("div", { className: "stat", children: [_jsx("span", { className: "number", children: group.posts }), _jsx("span", { className: "label", children: "Posts" })] })] })] })] }, group.id))) })] }) }), _jsx(Section, { padding: `${theme.spacing.xxxl} 0`, background: theme.colors.surface, children: _jsxs(Container, { children: [_jsx("h2", { style: { textAlign: 'center', marginBottom: theme.spacing.xl, color: theme.colors.primary, fontSize: theme.typography.fontSize['3xl'] }, children: "Join TVK Canada Community" }), _jsx("div", { style: { textAlign: 'center', maxWidth: '700px', margin: '0 auto', marginBottom: theme.spacing.xl }, children: _jsx("p", { style: { fontSize: theme.typography.fontSize.lg, color: theme.colors.text.secondary, lineHeight: '1.7' }, children: "Based in Ottawa, ON, TVK Canada brings together Thalapathy Vijay fans across Canada for community events, charity work, and cultural celebrations." }) }), _jsxs("div", { style: {
+                                background: `linear-gradient(135deg, ${theme.colors.primary} 0%, #a01829 100%)`,
+                                color: theme.colors.text.inverse,
+                                padding: theme.spacing.xl,
+                                borderRadius: theme.borderRadius['2xl'],
+                                textAlign: 'center',
+                            }, children: [_jsx("h3", { style: { marginBottom: theme.spacing.lg, color: theme.colors.text.inverse }, children: "Ready to Connect with Our Global Family?" }), _jsx("p", { style: { marginBottom: theme.spacing.lg, fontSize: '16px', color: theme.colors.text.inverse, opacity: 0.95 }, children: "Follow us on Instagram and join the TVK Canada membership community." }), _jsxs("div", { style: { display: 'flex', gap: theme.spacing.md, justifyContent: 'center', flexWrap: 'wrap' }, children: [_jsx(Button, { variant: "secondary", onClick: handleJoinClick, children: "Join TVK Canada" }), _jsx(Button, { variant: "outline", onClick: () => window.open('https://instagram.com/tvkcanada_official', '_blank'), style: { background: 'transparent', borderColor: theme.colors.secondary, color: theme.colors.secondary }, children: "Follow on Instagram" })] })] })] }) })] }));
 };

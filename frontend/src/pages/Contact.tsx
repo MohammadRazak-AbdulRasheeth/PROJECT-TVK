@@ -2,7 +2,7 @@
  * Contact Us Page (stub)
  */
 
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { theme } from '@styles/theme'
 import { Container, Section, Grid, Flex } from '@components/Layout'
@@ -181,6 +181,21 @@ const FormGroup = styled.div`
 export const ContactPage: React.FC = () => {
   const [submitted, setSubmitted] = useState(false)
   const [loading, setLoading] = useState(false)
+
+  // SEO optimization
+  useEffect(() => {
+    document.title = 'Contact TVK Canada - Get in Touch with Vijay Fan Club'
+    
+    const metaDescription = document.querySelector('meta[name="description"]')
+    if (metaDescription) {
+      metaDescription.setAttribute('content', 'Contact TVK Canada for membership info, event details, or partnership opportunities. Connect with the leading Thalapathy Vijay fan community.')
+    }
+
+    const metaKeywords = document.querySelector('meta[name="keywords"]')
+    if (metaKeywords) {
+      metaKeywords.setAttribute('content', 'Contact TVK Canada, Vijay fan club contact, Thalapathy fan club info, Tamil community contact Canada')
+    }
+  }, [])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()

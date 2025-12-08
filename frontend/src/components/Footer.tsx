@@ -120,13 +120,20 @@ export const Footer: React.FC = () => {
           <p>
             <a href="/events">Events</a>
           </p>
+          <p>
+            <a href="/contact">Membership Card Inquiry</a>
+          </p>
+          <p>
+            <a href="/contact">Partner with TVK Canada</a>
+          </p>
         </FooterSection>
 
         <FooterSection>
           <h4>Contact Us</h4>
           <p>Email: contact@tvkcanada.family</p>
-          <p>WhatsApp: Contact via WhatsApp</p>
-          <p>Location: Canada</p>
+          <p>Phone: 613-666-6852</p>
+          <p>Address: 203B - 2967 Dundas Street West</p>
+          <p>Toronto, Ontario M6P 1Z2</p>
         </FooterSection>
 
         <FooterSection>
@@ -155,9 +162,6 @@ export const Footer: React.FC = () => {
         <p>
           © {new Date().getFullYear()} TVK Canada - The Voice of Vijay Fans in Canada. All rights
           reserved.
-        </p>
-        <p style={{ marginTop: '8px', fontSize: '12px' }}>
-          Developed by <strong style={{ color: '#FFD700' }}>Varnyx Technologies</strong> • Empowering communities through technology
         </p>
       </FooterBottom>
     </FooterWrapper>

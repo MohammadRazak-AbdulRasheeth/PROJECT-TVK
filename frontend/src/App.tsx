@@ -41,6 +41,37 @@ const ScrollToTop: React.FC = () => {
 }
 
 /**
+ * Main App component with conditional footer rendering
+ */
+const AppContent: React.FC = () => {
+  const location = useLocation()
+  const isHomePage = location.pathname === '/'
+
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+      <Header />
+      <main style={{ flex: 1 }}>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/about" element={<AboutPage />} />
+          <Route path="/membership" element={<MembershipPage />} />
+          <Route path="/my-membership" element={<MembershipDashboard />} />
+          <Route path="/payment-success" element={<PaymentSuccessPage />} />
+          <Route path="/invoice" element={<MembershipInvoice />} />
+          <Route path="/events" element={<EventsPage />} />
+          <Route path="/global-network" element={<GlobalNetworkPage />} />
+          <Route path="/gallery" element={<GalleryPage />} />
+          <Route path="/contact" element={<ContactPage />} />
+          {/* Catch-all route for 404 pages */}
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </main>
+      {!isHomePage && <Footer />}
+    </div>
+  )
+}
+
+/**
  * App Component - Main application shell with routing
  */
 export const App: React.FC = () => {
@@ -52,26 +83,7 @@ export const App: React.FC = () => {
           <Router>
             <AuthRedirectHandler />
             <ScrollToTop />
-            <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-              <Header />
-              <main style={{ flex: 1 }}>
-                <Routes>
-                  <Route path="/" element={<HomePage />} />
-                  <Route path="/about" element={<AboutPage />} />
-                  <Route path="/membership" element={<MembershipPage />} />
-                  <Route path="/my-membership" element={<MembershipDashboard />} />
-                  <Route path="/payment-success" element={<PaymentSuccessPage />} />
-                  <Route path="/invoice" element={<MembershipInvoice />} />
-                  <Route path="/events" element={<EventsPage />} />
-                  <Route path="/global-network" element={<GlobalNetworkPage />} />
-                  <Route path="/gallery" element={<GalleryPage />} />
-                  <Route path="/contact" element={<ContactPage />} />
-                  {/* Catch-all route for 404 pages */}
-                  <Route path="*" element={<NotFound />} />
-                </Routes>
-              </main>
-              <Footer />
-            </div>
+            <AppContent />
           </Router>
         </MembershipProvider>
       </AuthProvider>

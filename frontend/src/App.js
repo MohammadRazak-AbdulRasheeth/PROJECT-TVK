@@ -37,8 +37,16 @@ const ScrollToTop = () => {
     return null;
 };
 /**
+ * Main App component with conditional footer rendering
+ */
+const AppContent = () => {
+    const location = useLocation();
+    const isHomePage = location.pathname === '/';
+    return (_jsxs("div", { style: { display: 'flex', flexDirection: 'column', minHeight: '100vh' }, children: [_jsx(Header, {}), _jsx("main", { style: { flex: 1 }, children: _jsxs(Routes, { children: [_jsx(Route, { path: "/", element: _jsx(HomePage, {}) }), _jsx(Route, { path: "/about", element: _jsx(AboutPage, {}) }), _jsx(Route, { path: "/membership", element: _jsx(MembershipPage, {}) }), _jsx(Route, { path: "/my-membership", element: _jsx(MembershipDashboard, {}) }), _jsx(Route, { path: "/payment-success", element: _jsx(PaymentSuccessPage, {}) }), _jsx(Route, { path: "/invoice", element: _jsx(MembershipInvoice, {}) }), _jsx(Route, { path: "/events", element: _jsx(EventsPage, {}) }), _jsx(Route, { path: "/global-network", element: _jsx(GlobalNetworkPage, {}) }), _jsx(Route, { path: "/gallery", element: _jsx(GalleryPage, {}) }), _jsx(Route, { path: "/contact", element: _jsx(ContactPage, {}) }), _jsx(Route, { path: "*", element: _jsx(NotFound, {}) })] }) }), !isHomePage && _jsx(Footer, {})] }));
+};
+/**
  * App Component - Main application shell with routing
  */
 export const App = () => {
-    return (_jsxs(ThemeProvider, { theme: theme, children: [_jsx(GlobalStyles, {}), _jsx(AuthProvider, { children: _jsx(MembershipProvider, { children: _jsxs(Router, { children: [_jsx(AuthRedirectHandler, {}), _jsx(ScrollToTop, {}), _jsxs("div", { style: { display: 'flex', flexDirection: 'column', minHeight: '100vh' }, children: [_jsx(Header, {}), _jsx("main", { style: { flex: 1 }, children: _jsxs(Routes, { children: [_jsx(Route, { path: "/", element: _jsx(HomePage, {}) }), _jsx(Route, { path: "/about", element: _jsx(AboutPage, {}) }), _jsx(Route, { path: "/membership", element: _jsx(MembershipPage, {}) }), _jsx(Route, { path: "/my-membership", element: _jsx(MembershipDashboard, {}) }), _jsx(Route, { path: "/payment-success", element: _jsx(PaymentSuccessPage, {}) }), _jsx(Route, { path: "/invoice", element: _jsx(MembershipInvoice, {}) }), _jsx(Route, { path: "/events", element: _jsx(EventsPage, {}) }), _jsx(Route, { path: "/global-network", element: _jsx(GlobalNetworkPage, {}) }), _jsx(Route, { path: "/gallery", element: _jsx(GalleryPage, {}) }), _jsx(Route, { path: "/contact", element: _jsx(ContactPage, {}) }), _jsx(Route, { path: "*", element: _jsx(NotFound, {}) })] }) }), _jsx(Footer, {})] })] }) }) })] }));
+    return (_jsxs(ThemeProvider, { theme: theme, children: [_jsx(GlobalStyles, {}), _jsx(AuthProvider, { children: _jsx(MembershipProvider, { children: _jsxs(Router, { children: [_jsx(AuthRedirectHandler, {}), _jsx(ScrollToTop, {}), _jsx(AppContent, {})] }) }) })] }));
 };

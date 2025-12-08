@@ -355,14 +355,14 @@ export const MembershipPage = () => {
     const { isAuthenticated, hasValidToken, user, isLoading } = useAuth();
     // SEO optimization for Membership page
     useEffect(() => {
-        document.title = 'TVK Canada Membership | Join Thalapathy Vijay Fan Club | Tamil Community';
+        document.title = 'Join TVK Canada Membership - Exclusive Vijay Fan Benefits';
         const metaDescription = document.querySelector('meta[name="description"]');
         if (metaDescription) {
-            metaDescription.setAttribute('content', 'Join TVK Canada membership - Official Thalapathy Vijay fan club. Get exclusive access to Vijay Canada events, Tamil cinema celebrations, and special member benefits across Canada.');
+            metaDescription.setAttribute('content', 'Become a TVK Canada member! Get exclusive access to Thalapathy Vijay events, movie premieres, and fan club activities.');
         }
         const metaKeywords = document.querySelector('meta[name="keywords"]');
         if (metaKeywords) {
-            metaKeywords.setAttribute('content', 'TVK Canada membership, Thalapathy Vijay fan club membership, Vijay Canada join, Tamil community membership, TVK membership plans, Vijay fan card Canada, Tamil cinema membership, Thalapathi fan registration Canada');
+            metaKeywords.setAttribute('content', 'TVK Canada membership, Vijay fan club join, Thalapathy membership, Tamil fan club Canada, Vijay events access');
         }
     }, []);
     // Load Join It widget script on component mount

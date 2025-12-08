@@ -1,4 +1,8 @@
 import { jsx as _jsx, jsxs as _jsxs, Fragment as _Fragment } from "react/jsx-runtime";
+/**
+ * About Us Page - Premium Design
+ */
+import { useEffect } from 'react';
 import styled from 'styled-components';
 import { theme } from '@styles/theme';
 import { Container, Section, Grid } from '@components/Layout';
@@ -235,6 +239,18 @@ const PhilosophyBox = styled.div `
  * About Us Page Component - Premium Design
  */
 export const AboutPage = () => {
+    // SEO optimization
+    useEffect(() => {
+        document.title = 'About TVK Canada - Tamil Vijay Katchi Fan Club';
+        const metaDescription = document.querySelector('meta[name="description"]');
+        if (metaDescription) {
+            metaDescription.setAttribute('content', 'Learn about TVK Canada\'s mission to unite Thalapathy Vijay fans across Canada. Join our Tamil community for exclusive events and activities.');
+        }
+        const metaKeywords = document.querySelector('meta[name="keywords"]');
+        if (metaKeywords) {
+            metaKeywords.setAttribute('content', 'About TVK Canada, Thalapathy Vijay fan club, Tamil community Canada, Vijay fans Toronto, Tamil cinema community');
+        }
+    }, []);
     return (_jsxs(_Fragment, { children: [_jsx(Section, { padding: `${theme.spacing.xl} 0`, background: theme.colors.primary, children: _jsx(Container, { children: _jsx("h1", { style: {
                             color: theme.colors.text.inverse,
                             textAlign: 'center',

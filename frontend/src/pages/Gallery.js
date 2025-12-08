@@ -1,4 +1,8 @@
 import { jsx as _jsx, jsxs as _jsxs, Fragment as _Fragment } from "react/jsx-runtime";
+/**
+ * Gallery Page - Premium Design
+ */
+import { useEffect } from 'react';
 import styled from 'styled-components';
 import { theme } from '@styles/theme';
 import { getGalleryImages } from '@utils/images';
@@ -108,5 +112,17 @@ const GalleryHeader = styled.div `
 `;
 export const GalleryPage = () => {
     const galleryImages = getGalleryImages();
+    // SEO optimization
+    useEffect(() => {
+        document.title = 'TVK Canada Photo Gallery - Vijay Fan Events & Memories';
+        const metaDescription = document.querySelector('meta[name="description"]');
+        if (metaDescription) {
+            metaDescription.setAttribute('content', 'Browse TVK Canada\'s photo gallery featuring Thalapathy Vijay fan events, movie celebrations, and community gatherings.');
+        }
+        const metaKeywords = document.querySelector('meta[name="keywords"]');
+        if (metaKeywords) {
+            metaKeywords.setAttribute('content', 'TVK Canada photos, Vijay fan events gallery, Thalapathy celebrations, Tamil community photos Canada');
+        }
+    }, []);
     return (_jsx(_Fragment, { children: _jsx(Section, { padding: `${theme.spacing.xxxl} 0`, background: theme.colors.background, children: _jsxs(Container, { children: [_jsxs(GalleryHeader, { children: [_jsx("h1", { children: "TVK Canada Gallery" }), _jsx("p", { children: "Moments from our community celebrations and events across Canada. See the vibrant spirit of TVK!" })] }), _jsx(Grid, { columns: 3, gap: theme.spacing.lg, children: galleryImages.map((imgSrc, idx) => (_jsx(GalleryImage, { src: imgSrc, alt: `Gallery moment ${idx + 1}`, loading: "lazy" }, idx))) })] }) }) }));
 };

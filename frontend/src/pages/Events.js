@@ -257,14 +257,14 @@ export const EventsPage = () => {
     const [currentMonth, setCurrentMonth] = useState(new Date().toLocaleString('default', { month: 'long', year: 'numeric' }));
     // SEO optimization for Events page
     useEffect(() => {
-        document.title = 'TVK Canada Events | Thalapathy Vijay Fan Gatherings | Tamil Community Events';
+        document.title = 'TVK Canada Events - Thalapathy Vijay Fan Gatherings';
         const metaDescription = document.querySelector('meta[name="description"]');
         if (metaDescription) {
-            metaDescription.setAttribute('content', 'Join TVK Canada events - Thalapathy Vijay fan gatherings, Tamil cinema celebrations, and community meetups across Toronto, Vancouver, Montreal, Calgary. View our event calendar and register today.');
+            metaDescription.setAttribute('content', 'Join upcoming TVK Canada events! Movie screenings, fan meetups, cultural celebrations, and exclusive Thalapathy Vijay gatherings.');
         }
         const metaKeywords = document.querySelector('meta[name="keywords"]');
         if (metaKeywords) {
-            metaKeywords.setAttribute('content', 'TVK Canada events, Thalapathy Vijay events Canada, Tamil events Toronto, Vijay fan meetup, Tamil cinema events, Tamil community gatherings, Vijay birthday celebration, Tamil cultural events Canada, South Indian events Canada');
+            metaKeywords.setAttribute('content', 'TVK Canada events, Vijay movie screenings, Tamil events Canada, Thalapathy fan meetups, Vijay celebrations');
         }
     }, []);
     const upcomingEvents = [

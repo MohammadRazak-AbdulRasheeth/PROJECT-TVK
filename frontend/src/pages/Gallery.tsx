@@ -2,7 +2,7 @@
  * Gallery Page - Premium Design
  */
 
-import React from 'react'
+import React, { useEffect } from 'react'
 import styled from 'styled-components'
 import { theme } from '@styles/theme'
 import { getGalleryImages } from '@utils/images'
@@ -115,6 +115,21 @@ const GalleryHeader = styled.div`
 
 export const GalleryPage: React.FC = () => {
   const galleryImages = getGalleryImages()
+
+  // SEO optimization
+  useEffect(() => {
+    document.title = 'TVK Canada Photo Gallery - Vijay Fan Events & Memories'
+    
+    const metaDescription = document.querySelector('meta[name="description"]')
+    if (metaDescription) {
+      metaDescription.setAttribute('content', 'Browse TVK Canada\'s photo gallery featuring Thalapathy Vijay fan events, movie celebrations, and community gatherings.')
+    }
+
+    const metaKeywords = document.querySelector('meta[name="keywords"]')
+    if (metaKeywords) {
+      metaKeywords.setAttribute('content', 'TVK Canada photos, Vijay fan events gallery, Thalapathy celebrations, Tamil community photos Canada')
+    }
+  }, [])
 
   return (
     <>

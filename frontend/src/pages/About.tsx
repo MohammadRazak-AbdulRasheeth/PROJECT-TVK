@@ -2,7 +2,7 @@
  * About Us Page - Premium Design
  */
 
-import React from 'react'
+import React, { useEffect } from 'react'
 import styled from 'styled-components'
 import { theme } from '@styles/theme'
 import { Container, Section, Grid } from '@components/Layout'
@@ -246,6 +246,21 @@ const PhilosophyBox = styled.div`
  * About Us Page Component - Premium Design
  */
 export const AboutPage: React.FC = () => {
+  // SEO optimization
+  useEffect(() => {
+    document.title = 'About TVK Canada - Tamil Vijay Katchi Fan Club'
+    
+    const metaDescription = document.querySelector('meta[name="description"]')
+    if (metaDescription) {
+      metaDescription.setAttribute('content', 'Learn about TVK Canada\'s mission to unite Thalapathy Vijay fans across Canada. Join our Tamil community for exclusive events and activities.')
+    }
+
+    const metaKeywords = document.querySelector('meta[name="keywords"]')
+    if (metaKeywords) {
+      metaKeywords.setAttribute('content', 'About TVK Canada, Thalapathy Vijay fan club, Tamil community Canada, Vijay fans Toronto, Tamil cinema community')
+    }
+  }, [])
+
   return (
     <>
       {/* Page Header with H1 */}
