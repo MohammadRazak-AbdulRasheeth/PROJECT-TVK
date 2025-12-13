@@ -9,6 +9,7 @@ import { Container, Section, Flex } from '@components/Layout'
 import { Button } from '@components/Button'
 import { useAuth } from '../context/AuthContext'
 import { membershipService } from '../services/api'
+import { SEO, seoData } from '@components/SEO'
 
 // const PricingCard = styled.div<{ featured?: boolean }>`
 //   background: ${(props) => (props.featured ? theme.colors.primary : theme.colors.surface)};
@@ -403,21 +404,6 @@ export const MembershipPage: React.FC = () => {
   const [, setUserMembership] = useState<any>(null)
   const { isAuthenticated, hasValidToken, user, isLoading } = useAuth()
 
-  // SEO optimization for Membership page
-  useEffect(() => {
-    document.title = 'Join TVK Canada Membership - Exclusive Vijay Fan Benefits'
-    
-    const metaDescription = document.querySelector('meta[name="description"]')
-    if (metaDescription) {
-      metaDescription.setAttribute('content', 'Become a TVK Canada member! Get exclusive access to Thalapathy Vijay events, movie premieres, and fan club activities.')
-    }
-
-    const metaKeywords = document.querySelector('meta[name="keywords"]')
-    if (metaKeywords) {
-      metaKeywords.setAttribute('content', 'TVK Canada membership, Vijay fan club join, Thalapathy membership, Tamil fan club Canada, Vijay events access')
-    }
-  }, [])
-
   // Load Join It widget script on component mount
   useEffect(() => {
     const loadJoinItScript = () => {
@@ -609,11 +595,16 @@ export const MembershipPage: React.FC = () => {
 
   return (
     <>
+      <SEO {...seoData.membership} />
+      
       {/* First 200 Offer */}
       <Section padding={`${theme.spacing.xxxl} 0`} background={theme.colors.surface}>
         <Container>
           <OfferBanner>
-            <h3>🎉 Limited Offer: First 200 Members Get 3 Months FREE!</h3>
+            <h1 style={{ fontSize: theme.typography.fontSize['2xl'], margin: 0 }}>
+              🎉 Join TVK Canada - Exclusive Thalapathy Vijay Fan Membership
+            </h1>
+            <h3>Limited Offer: First 200 Members Get 3 Months FREE!</h3>
             <p>
               Join TVK Canada now and receive 3 months of membership absolutely FREE, plus a Special Edition Founding Member Physical Card.
             </p>

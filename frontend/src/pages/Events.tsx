@@ -2,12 +2,13 @@
  * Events & Calendar Page
  */
 
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 import { theme } from '@styles/theme'
 import { Container, Section, Grid, Flex } from '@components/Layout'
 import { Button } from '@components/Button'
 import { useAuth } from '../context/AuthContext'
+import { SEO, seoData } from '@components/SEO'
 
 const CalendarContainer = styled.div`
   width: 100%;
@@ -265,21 +266,6 @@ export const EventsPage: React.FC = () => {
   const [activeFilter, setActiveFilter] = useState<string>('all')
   const [currentMonth, setCurrentMonth] = useState(new Date().toLocaleString('default', { month: 'long', year: 'numeric' }))
 
-  // SEO optimization for Events page
-  useEffect(() => {
-    document.title = 'TVK Canada Events - Thalapathy Vijay Fan Gatherings'
-    
-    const metaDescription = document.querySelector('meta[name="description"]')
-    if (metaDescription) {
-      metaDescription.setAttribute('content', 'Join upcoming TVK Canada events! Movie screenings, fan meetups, cultural celebrations, and exclusive Thalapathy Vijay gatherings.')
-    }
-
-    const metaKeywords = document.querySelector('meta[name="keywords"]')
-    if (metaKeywords) {
-      metaKeywords.setAttribute('content', 'TVK Canada events, Vijay movie screenings, Tamil events Canada, Thalapathy fan meetups, Vijay celebrations')
-    }
-  }, [])
-
   const upcomingEvents = [
     {
       id: 1,
@@ -384,9 +370,19 @@ export const EventsPage: React.FC = () => {
 
   return (
     <>
+      <SEO {...seoData.events} />
+      
       <Section padding={`${theme.spacing.xxxl} 0`} background={theme.colors.surface}>
         <Container>
-          <h1 style={{ textAlign: 'center', marginBottom: theme.spacing.lg }}>Events & Calendar</h1>
+          <h1 style={{ 
+            textAlign: 'center', 
+            marginBottom: theme.spacing.lg,
+            fontSize: theme.typography.fontSize['4xl'],
+            fontWeight: theme.typography.fontWeight.bold,
+            color: theme.colors.primary
+          }}>
+            TVK Canada Events & Calendar - Join Thalapathy Celebrations
+          </h1>
           <p
             style={{
               textAlign: 'center',

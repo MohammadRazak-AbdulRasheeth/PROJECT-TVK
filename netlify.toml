@@ -12,6 +12,13 @@
 [context.production]
   command = "npm run build"
 
+# WWW redirect - redirect from www to non-www
+[[redirects]]
+  from = "https://www.tvkcanada.family/*"
+  to = "https://tvkcanada.family/:splat"
+  status = 301
+
+# Main SPA redirect (must be last)
 [[redirects]]
   from = "/*"
   to = "/index.html"

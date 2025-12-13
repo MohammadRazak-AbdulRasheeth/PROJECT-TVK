@@ -2,12 +2,13 @@
  * Home Page - Premium Design
  */
 
-import React, { useEffect } from 'react'
+import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 import { theme } from '@styles/theme'
 import { Container, Section } from '@components/Layout'
 import { Button } from '@components/Button'
+import { SEO, seoData } from '@components/SEO'
 
 const HeroSection = styled(Section)`
   background: ${theme.colors.gradient.primary};
@@ -393,29 +394,14 @@ const EventsButton = styled(Button)`
 export const HomePage: React.FC = () => {
   const navigate = useNavigate()
 
-  // SEO optimization
-  useEffect(() => {
-    document.title = 'TVK Canada - Official Thalapathy Vijay Fan Club'
-    
-    // Update meta description for home page
-    const metaDescription = document.querySelector('meta[name="description"]')
-    if (metaDescription) {
-      metaDescription.setAttribute('content', 'Join TVK Canada, the official Thalapathy Vijay fan club. Exclusive events, memberships, and Tamil community across Canada.')
-    }
-
-    // Add page-specific keywords
-    const metaKeywords = document.querySelector('meta[name="keywords"]')
-    if (metaKeywords) {
-      metaKeywords.setAttribute('content', 'TVK Canada, Thalapathy Vijay, Tamil Canada, Vijay fan club, Tamil cinema, TVK membership')
-    }
-  }, [])
-
   const handleJoinClick = () => {
     navigate('/membership')
   }
 
   return (
     <>
+      <SEO {...seoData.home} />
+      
       {/* Hero Section */}
       <HeroSection>
         <HeroContent>

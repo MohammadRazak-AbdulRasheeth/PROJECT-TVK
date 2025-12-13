@@ -2,7 +2,7 @@ import { jsx as _jsx, jsxs as _jsxs, Fragment as _Fragment } from "react/jsx-run
 /**
  * Contact Us Page (stub)
  */
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
 import { theme } from '@styles/theme';
 import { Container, Section, Grid, Flex } from '@components/Layout';
@@ -10,6 +10,7 @@ import { Button } from '@components/Button';
 import { FaXTwitter, FaInstagram, FaFacebook, FaTiktok, FaYoutube } from 'react-icons/fa6';
 import { FaWhatsapp, FaMapLocationDot, FaEnvelope } from 'react-icons/fa6';
 import { contactService } from '../services/api';
+import { SEO, seoData } from '@components/SEO';
 const ContactForm = styled.form `
   display: flex;
   flex-direction: column;
@@ -174,18 +175,6 @@ const FormGroup = styled.div `
 export const ContactPage = () => {
     const [submitted, setSubmitted] = useState(false);
     const [loading, setLoading] = useState(false);
-    // SEO optimization
-    useEffect(() => {
-        document.title = 'Contact TVK Canada - Get in Touch with Vijay Fan Club';
-        const metaDescription = document.querySelector('meta[name="description"]');
-        if (metaDescription) {
-            metaDescription.setAttribute('content', 'Contact TVK Canada for membership info, event details, or partnership opportunities. Connect with the leading Thalapathy Vijay fan community.');
-        }
-        const metaKeywords = document.querySelector('meta[name="keywords"]');
-        if (metaKeywords) {
-            metaKeywords.setAttribute('content', 'Contact TVK Canada, Vijay fan club contact, Thalapathy fan club info, Tamil community contact Canada');
-        }
-    }, []);
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
@@ -212,7 +201,13 @@ export const ContactPage = () => {
             setLoading(false);
         }
     };
-    return (_jsxs(_Fragment, { children: [_jsx(Section, { padding: `${theme.spacing.xxxl} 0`, background: theme.colors.surface, children: _jsxs(Container, { children: [_jsx("h1", { style: { textAlign: 'center', marginBottom: theme.spacing.lg }, children: "Contact Us" }), _jsx("p", { style: {
+    return (_jsxs(_Fragment, { children: [_jsx(SEO, { ...seoData.contact }), _jsx(Section, { padding: `${theme.spacing.xxxl} 0`, background: theme.colors.surface, children: _jsxs(Container, { children: [_jsx("h1", { style: {
+                                textAlign: 'center',
+                                marginBottom: theme.spacing.lg,
+                                fontSize: theme.typography.fontSize['4xl'],
+                                fontWeight: theme.typography.fontWeight.bold,
+                                color: theme.colors.primary
+                            }, children: "Contact TVK Canada - Get in Touch with Thalapathy Vijay Fan Club" }), _jsx("p", { style: {
                                 textAlign: 'center',
                                 marginBottom: theme.spacing.xxl,
                                 fontSize: '18px',

@@ -9,6 +9,7 @@ import { Container, Section, Flex } from '@components/Layout';
 import { Button } from '@components/Button';
 import { useAuth } from '../context/AuthContext';
 import { membershipService } from '../services/api';
+import { SEO, seoData } from '@components/SEO';
 // const PricingCard = styled.div<{ featured?: boolean }>`
 //   background: ${(props) => (props.featured ? theme.colors.primary : theme.colors.surface)};
 //   color: ${(props) => (props.featured ? theme.colors.text.inverse : theme.colors.text.primary)};
@@ -353,18 +354,6 @@ const FAQItem = styled.details `
 export const MembershipPage = () => {
     const [, setUserMembership] = useState(null);
     const { isAuthenticated, hasValidToken, user, isLoading } = useAuth();
-    // SEO optimization for Membership page
-    useEffect(() => {
-        document.title = 'Join TVK Canada Membership - Exclusive Vijay Fan Benefits';
-        const metaDescription = document.querySelector('meta[name="description"]');
-        if (metaDescription) {
-            metaDescription.setAttribute('content', 'Become a TVK Canada member! Get exclusive access to Thalapathy Vijay events, movie premieres, and fan club activities.');
-        }
-        const metaKeywords = document.querySelector('meta[name="keywords"]');
-        if (metaKeywords) {
-            metaKeywords.setAttribute('content', 'TVK Canada membership, Vijay fan club join, Thalapathy membership, Tamil fan club Canada, Vijay events access');
-        }
-    }, []);
     // Load Join It widget script on component mount
     useEffect(() => {
         const loadJoinItScript = () => {
@@ -533,7 +522,7 @@ export const MembershipPage = () => {
     //   if (planType === 'student' && membershipType === 'student') return true
     //   return false
     // }
-    return (_jsxs(_Fragment, { children: [_jsx(Section, { padding: `${theme.spacing.xxxl} 0`, background: theme.colors.surface, children: _jsx(Container, { children: _jsxs(OfferBanner, { children: [_jsx("h3", { children: "\uD83C\uDF89 Limited Offer: First 200 Members Get 3 Months FREE!" }), _jsx("p", { children: "Join TVK Canada now and receive 3 months of membership absolutely FREE, plus a Special Edition Founding Member Physical Card." })] }) }) }), _jsx(Section, { padding: `${theme.spacing.xl} 0`, background: theme.colors.background, children: _jsx(Container, { style: { maxWidth: 'none', padding: 0 }, children: _jsx("div", { style: {
+    return (_jsxs(_Fragment, { children: [_jsx(SEO, { ...seoData.membership }), _jsx(Section, { padding: `${theme.spacing.xxxl} 0`, background: theme.colors.surface, children: _jsx(Container, { children: _jsxs(OfferBanner, { children: [_jsx("h1", { style: { fontSize: theme.typography.fontSize['2xl'], margin: 0 }, children: "\uD83C\uDF89 Join TVK Canada - Exclusive Thalapathy Vijay Fan Membership" }), _jsx("h3", { children: "Limited Offer: First 200 Members Get 3 Months FREE!" }), _jsx("p", { children: "Join TVK Canada now and receive 3 months of membership absolutely FREE, plus a Special Edition Founding Member Physical Card." })] }) }) }), _jsx(Section, { padding: `${theme.spacing.xl} 0`, background: theme.colors.background, children: _jsx(Container, { style: { maxWidth: 'none', padding: 0 }, children: _jsx("div", { style: {
                             width: '100vw',
                             marginLeft: 'calc(-50vw + 50%)',
                             minHeight: '100vh',

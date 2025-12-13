@@ -3,12 +3,13 @@
  * Showcasing Vijay fan groups across the world under the TVK brand
  */
 
-import React, { useEffect } from 'react'
+import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 import { theme } from '@styles/theme'
 import { Container, Section, Grid } from '@components/Layout'
 import { Button } from '@components/Button'
+import { SEO, seoData } from '@components/SEO'
 
 const HeroSection = styled.div`
   background: linear-gradient(135deg, ${theme.colors.primary} 0%, #a01829 100%);
@@ -218,21 +219,6 @@ const InstagramCard = styled.div`
 export const GlobalNetworkPage: React.FC = () => {
   const navigate = useNavigate()
 
-  // SEO optimization
-  useEffect(() => {
-    document.title = 'TVK Global Network - Worldwide Vijay Fan Communities'
-    
-    const metaDescription = document.querySelector('meta[name="description"]')
-    if (metaDescription) {
-      metaDescription.setAttribute('content', 'Discover TVK\'s global network of Thalapathy Vijay fan clubs worldwide. Connect with international Tamil communities and supporters.')
-    }
-
-    const metaKeywords = document.querySelector('meta[name="keywords"]')
-    if (metaKeywords) {
-      metaKeywords.setAttribute('content', 'TVK global network, worldwide Vijay fans, international Tamil community, global Thalapathy supporters')
-    }
-  }, [])
-
   const handleJoinClick = () => {
     navigate('/membership')
   }
@@ -363,10 +349,12 @@ export const GlobalNetworkPage: React.FC = () => {
 
   return (
     <>
+      <SEO {...seoData.globalNetwork} />
+      
       {/* Hero Section */}
       <HeroSection>
         <Container>
-          <h1>TVK Instagram Community</h1>
+          <h1>TVK Global Network - Worldwide Thalapathy Vijay Fan Communities</h1>
           <p>
             Connect with TVK fan groups worldwide through their official Instagram pages. Follow for updates, events, and community celebrations.
           </p>

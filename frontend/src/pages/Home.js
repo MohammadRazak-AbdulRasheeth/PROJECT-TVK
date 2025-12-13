@@ -1,13 +1,10 @@
 import { jsx as _jsx, jsxs as _jsxs, Fragment as _Fragment } from "react/jsx-runtime";
-/**
- * Home Page - Premium Design
- */
-import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { theme } from '@styles/theme';
 import { Container, Section } from '@components/Layout';
 import { Button } from '@components/Button';
+import { SEO, seoData } from '@components/SEO';
 const HeroSection = styled(Section) `
   background: ${theme.colors.gradient.primary};
   color: ${theme.colors.text.inverse};
@@ -383,22 +380,8 @@ const EventsButton = styled(Button) `
  */
 export const HomePage = () => {
     const navigate = useNavigate();
-    // SEO optimization
-    useEffect(() => {
-        document.title = 'TVK Canada - Official Thalapathy Vijay Fan Club';
-        // Update meta description for home page
-        const metaDescription = document.querySelector('meta[name="description"]');
-        if (metaDescription) {
-            metaDescription.setAttribute('content', 'Join TVK Canada, the official Thalapathy Vijay fan club. Exclusive events, memberships, and Tamil community across Canada.');
-        }
-        // Add page-specific keywords
-        const metaKeywords = document.querySelector('meta[name="keywords"]');
-        if (metaKeywords) {
-            metaKeywords.setAttribute('content', 'TVK Canada, Thalapathy Vijay, Tamil Canada, Vijay fan club, Tamil cinema, TVK membership');
-        }
-    }, []);
     const handleJoinClick = () => {
         navigate('/membership');
     };
-    return (_jsx(_Fragment, { children: _jsx(HeroSection, { children: _jsxs(HeroContent, { children: [_jsx(HeroTitle, { children: "Building Community. Celebrating Thalapathy. Growing Together in Canada." }), _jsx(HeroSubtitle, { children: "TVK Canada is a membership-driven nonprofit dedicated to recreation, empowerment, and giving back." }), _jsxs(HeroButtons, { children: [_jsx(MembershipButton, { variant: "secondary", size: "lg", onClick: handleJoinClick, children: "Join Membership" }), _jsx(ProgramButton, { variant: "primary", size: "lg", onClick: () => navigate('/about'), children: "Explore Programs" }), _jsx(EventsButton, { variant: "outline", size: "lg", onClick: () => navigate('/events'), children: _jsx("span", { children: "Upcoming Events" }) })] })] }) }) }));
+    return (_jsxs(_Fragment, { children: [_jsx(SEO, { ...seoData.home }), _jsx(HeroSection, { children: _jsxs(HeroContent, { children: [_jsx(HeroTitle, { children: "Building Community. Celebrating Thalapathy. Growing Together in Canada." }), _jsx(HeroSubtitle, { children: "TVK Canada is a membership-driven nonprofit dedicated to recreation, empowerment, and giving back." }), _jsxs(HeroButtons, { children: [_jsx(MembershipButton, { variant: "secondary", size: "lg", onClick: handleJoinClick, children: "Join Membership" }), _jsx(ProgramButton, { variant: "primary", size: "lg", onClick: () => navigate('/about'), children: "Explore Programs" }), _jsx(EventsButton, { variant: "outline", size: "lg", onClick: () => navigate('/events'), children: _jsx("span", { children: "Upcoming Events" }) })] })] }) })] }));
 };

@@ -1,14 +1,10 @@
 import { jsx as _jsx, jsxs as _jsxs, Fragment as _Fragment } from "react/jsx-runtime";
-/**
- * TVK Global Network Page
- * Showcasing Vijay fan groups across the world under the TVK brand
- */
-import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { theme } from '@styles/theme';
 import { Container, Section, Grid } from '@components/Layout';
 import { Button } from '@components/Button';
+import { SEO, seoData } from '@components/SEO';
 const HeroSection = styled.div `
   background: linear-gradient(135deg, ${theme.colors.primary} 0%, #a01829 100%);
   color: ${theme.colors.text.inverse};
@@ -214,18 +210,6 @@ const InstagramCard = styled.div `
  */
 export const GlobalNetworkPage = () => {
     const navigate = useNavigate();
-    // SEO optimization
-    useEffect(() => {
-        document.title = 'TVK Global Network - Worldwide Vijay Fan Communities';
-        const metaDescription = document.querySelector('meta[name="description"]');
-        if (metaDescription) {
-            metaDescription.setAttribute('content', 'Discover TVK\'s global network of Thalapathy Vijay fan clubs worldwide. Connect with international Tamil communities and supporters.');
-        }
-        const metaKeywords = document.querySelector('meta[name="keywords"]');
-        if (metaKeywords) {
-            metaKeywords.setAttribute('content', 'TVK global network, worldwide Vijay fans, international Tamil community, global Thalapathy supporters');
-        }
-    }, []);
     const handleJoinClick = () => {
         navigate('/membership');
     };
@@ -352,7 +336,7 @@ export const GlobalNetworkPage = () => {
             posts: '150+'
         }
     ];
-    return (_jsxs(_Fragment, { children: [_jsx(HeroSection, { children: _jsxs(Container, { children: [_jsx("h1", { children: "TVK Instagram Community" }), _jsx("p", { children: "Connect with TVK fan groups worldwide through their official Instagram pages. Follow for updates, events, and community celebrations." })] }) }), _jsx(Section, { padding: `${theme.spacing.xxxl} 0`, children: _jsxs(Container, { children: [_jsx("h2", { style: { textAlign: 'center', marginBottom: theme.spacing.lg, color: theme.colors.primary, fontSize: theme.typography.fontSize['3xl'] }, children: "Follow Our Global Instagram Community" }), _jsx("p", { style: {
+    return (_jsxs(_Fragment, { children: [_jsx(SEO, { ...seoData.globalNetwork }), _jsx(HeroSection, { children: _jsxs(Container, { children: [_jsx("h1", { children: "TVK Global Network - Worldwide Thalapathy Vijay Fan Communities" }), _jsx("p", { children: "Connect with TVK fan groups worldwide through their official Instagram pages. Follow for updates, events, and community celebrations." })] }) }), _jsx(Section, { padding: `${theme.spacing.xxxl} 0`, children: _jsxs(Container, { children: [_jsx("h2", { style: { textAlign: 'center', marginBottom: theme.spacing.lg, color: theme.colors.primary, fontSize: theme.typography.fontSize['3xl'] }, children: "Follow Our Global Instagram Community" }), _jsx("p", { style: {
                                 textAlign: 'center',
                                 marginBottom: theme.spacing.xxxl,
                                 color: theme.colors.text.secondary,

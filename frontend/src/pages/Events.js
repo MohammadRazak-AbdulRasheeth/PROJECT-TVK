@@ -2,12 +2,13 @@ import { jsx as _jsx, jsxs as _jsxs, Fragment as _Fragment } from "react/jsx-run
 /**
  * Events & Calendar Page
  */
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
 import { theme } from '@styles/theme';
 import { Container, Section, Grid, Flex } from '@components/Layout';
 import { Button } from '@components/Button';
 import { useAuth } from '../context/AuthContext';
+import { SEO, seoData } from '@components/SEO';
 const CalendarContainer = styled.div `
   width: 100%;
   min-height: 600px;
@@ -255,18 +256,6 @@ export const EventsPage = () => {
     const { isAuthenticated } = useAuth();
     const [activeFilter, setActiveFilter] = useState('all');
     const [currentMonth, setCurrentMonth] = useState(new Date().toLocaleString('default', { month: 'long', year: 'numeric' }));
-    // SEO optimization for Events page
-    useEffect(() => {
-        document.title = 'TVK Canada Events - Thalapathy Vijay Fan Gatherings';
-        const metaDescription = document.querySelector('meta[name="description"]');
-        if (metaDescription) {
-            metaDescription.setAttribute('content', 'Join upcoming TVK Canada events! Movie screenings, fan meetups, cultural celebrations, and exclusive Thalapathy Vijay gatherings.');
-        }
-        const metaKeywords = document.querySelector('meta[name="keywords"]');
-        if (metaKeywords) {
-            metaKeywords.setAttribute('content', 'TVK Canada events, Vijay movie screenings, Tamil events Canada, Thalapathy fan meetups, Vijay celebrations');
-        }
-    }, []);
     const upcomingEvents = [
         {
             id: 1,
@@ -364,7 +353,13 @@ export const EventsPage = () => {
     };
     // Google Calendar embed URL (you can replace this with your actual calendar)
     const calendarEmbedUrl = "https://calendar.google.com/calendar/embed?height=600&wkst=1&ctz=UTC&showPrint=0&title=TVK%20CANADA%20CALENDAR&src=MzMyMjcxOWZmZDcyMzQ0Y2RkMGI5YzYxZTE3ZGY3NzA2YmRkNmM1ZGNhYWI5ZGIxNDY4YmI3YThkNDE0YTliYkBncm91cC5jYWxlbmRhci5nb29nbGUuY29t&color=%238e24aa";
-    return (_jsxs(_Fragment, { children: [_jsx(Section, { padding: `${theme.spacing.xxxl} 0`, background: theme.colors.surface, children: _jsxs(Container, { children: [_jsx("h1", { style: { textAlign: 'center', marginBottom: theme.spacing.lg }, children: "Events & Calendar" }), _jsx("p", { style: {
+    return (_jsxs(_Fragment, { children: [_jsx(SEO, { ...seoData.events }), _jsx(Section, { padding: `${theme.spacing.xxxl} 0`, background: theme.colors.surface, children: _jsxs(Container, { children: [_jsx("h1", { style: {
+                                textAlign: 'center',
+                                marginBottom: theme.spacing.lg,
+                                fontSize: theme.typography.fontSize['4xl'],
+                                fontWeight: theme.typography.fontWeight.bold,
+                                color: theme.colors.primary
+                            }, children: "TVK Canada Events & Calendar - Join Thalapathy Celebrations" }), _jsx("p", { style: {
                                 textAlign: 'center',
                                 marginBottom: theme.spacing.xxxl,
                                 fontSize: '18px',

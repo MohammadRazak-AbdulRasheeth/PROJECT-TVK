@@ -1,7 +1,13 @@
 # Netlify redirects file for Single Page Application (SPA)
 # This fixes 404 errors when refreshing pages in React Router
 
-# Redirect all routes to index.html for client-side routing
+# WWW redirect - redirect from www to non-www (301 permanent redirect)
+https://www.tvkcanada.family/*  https://tvkcanada.family/:splat  301
+
+# Force HTTPS for non-www domain
+http://tvkcanada.family/*  https://tvkcanada.family/:splat  301
+
+# Redirect all routes to index.html for client-side routing (SPA routing)
 /*    /index.html   200
 
 # Optional: Redirect old URLs or specific paths

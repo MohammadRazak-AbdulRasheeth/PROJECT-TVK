@@ -3,6 +3,7 @@
  */
 
 import React from 'react'
+import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import { theme } from '@styles/theme'
 import { FaInstagram, FaFacebook, FaTiktok, FaYoutube } from 'react-icons/fa6'
@@ -38,13 +39,21 @@ const FooterSection = styled.div`
     font-size: ${theme.typography.fontSize.lg};
   }
 
-  p, a {
+  p {
     font-size: ${theme.typography.fontSize.sm};
     line-height: ${theme.typography.lineHeight.relaxed};
     color: #cccccc;
+  }
+
+  a {
+    color: #cccccc;
+    text-decoration: none;
+    transition: color ${theme.transitions.base};
+    font-size: ${theme.typography.fontSize.sm};
 
     &:hover {
       color: ${theme.colors.secondary};
+      text-decoration: underline;
     }
   }
 `
@@ -109,22 +118,25 @@ export const Footer: React.FC = () => {
         <FooterSection>
           <h4>Quick Links</h4>
           <p>
-            <a href="/">Home</a>
+            <Link to="/">Home</Link>
           </p>
           <p>
-            <a href="/about">About Us</a>
+            <Link to="/about">About TVK Canada</Link>
           </p>
           <p>
-            <a href="/membership">Membership</a>
+            <Link to="/membership">Join Membership</Link>
           </p>
           <p>
-            <a href="/events">Events</a>
+            <Link to="/events">Upcoming Events</Link>
           </p>
           <p>
-            <a href="/contact">Membership Card Inquiry</a>
+            <Link to="/global-network">Global Network</Link>
           </p>
           <p>
-            <a href="/contact">Partner with TVK Canada</a>
+            <Link to="/gallery">Photo Gallery</Link>
+          </p>
+          <p>
+            <Link to="/contact">Contact Us</Link>
           </p>
         </FooterSection>
 

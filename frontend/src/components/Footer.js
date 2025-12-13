@@ -1,4 +1,5 @@
 import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { theme } from '@styles/theme';
 import { FaInstagram, FaFacebook, FaTiktok, FaYoutube } from 'react-icons/fa6';
@@ -31,13 +32,21 @@ const FooterSection = styled.div `
     font-size: ${theme.typography.fontSize.lg};
   }
 
-  p, a {
+  p {
     font-size: ${theme.typography.fontSize.sm};
     line-height: ${theme.typography.lineHeight.relaxed};
     color: #cccccc;
+  }
+
+  a {
+    color: #cccccc;
+    text-decoration: none;
+    transition: color ${theme.transitions.base};
+    font-size: ${theme.typography.fontSize.sm};
 
     &:hover {
       color: ${theme.colors.secondary};
+      text-decoration: underline;
     }
   }
 `;
@@ -84,5 +93,5 @@ const FooterBottom = styled.div `
  * Footer Component
  */
 export const Footer = () => {
-    return (_jsxs(FooterWrapper, { children: [_jsxs(FooterContent, { children: [_jsxs(FooterSection, { children: [_jsx("h4", { children: "About TVK Canada" }), _jsx("p", { children: "We are a fan club and nonprofit association dedicated to uniting Thalapathy Vijay supporters across Canada." })] }), _jsxs(FooterSection, { children: [_jsx("h4", { children: "Quick Links" }), _jsx("p", { children: _jsx("a", { href: "/", children: "Home" }) }), _jsx("p", { children: _jsx("a", { href: "/about", children: "About Us" }) }), _jsx("p", { children: _jsx("a", { href: "/membership", children: "Membership" }) }), _jsx("p", { children: _jsx("a", { href: "/events", children: "Events" }) }), _jsx("p", { children: _jsx("a", { href: "/contact", children: "Membership Card Inquiry" }) }), _jsx("p", { children: _jsx("a", { href: "/contact", children: "Partner with TVK Canada" }) })] }), _jsxs(FooterSection, { children: [_jsx("h4", { children: "Contact Us" }), _jsx("p", { children: "Email: contact@tvkcanada.family" }), _jsx("p", { children: "Phone: 613-666-6852" }), _jsx("p", { children: "Address: 203B - 2967 Dundas Street West" }), _jsx("p", { children: "Toronto, Ontario M6P 1Z2" })] }), _jsxs(FooterSection, { children: [_jsx("h4", { children: "Follow Us" }), _jsxs(SocialLinks, { children: [_jsx(SocialLink, { href: "https://www.instagram.com/tvk.canada/", target: "_blank", rel: "noopener noreferrer", title: "Instagram", "aria-label": "Follow us on Instagram", children: _jsx(FaInstagram, {}) }), _jsx(SocialLink, { href: "https://www.threads.com/@tvk.canada", target: "_blank", rel: "noopener noreferrer", title: "Threads", "aria-label": "Follow us on Threads", children: _jsx("span", { style: { fontSize: '18px', fontWeight: 'bold' }, children: "@" }) }), _jsx(SocialLink, { href: "https://www.facebook.com/profile.php?id=61572322798883", target: "_blank", rel: "noopener noreferrer", title: "Facebook", "aria-label": "Follow us on Facebook", children: _jsx(FaFacebook, {}) }), _jsx(SocialLink, { href: "https://www.tiktok.com/@tvk.canada", target: "_blank", rel: "noopener noreferrer", title: "TikTok", "aria-label": "Follow us on TikTok", children: _jsx(FaTiktok, {}) }), _jsx(SocialLink, { href: "http://www.youtube.com/@TamilagaVettriKazhagamCanada", target: "_blank", rel: "noopener noreferrer", title: "YouTube", "aria-label": "Subscribe on YouTube", children: _jsx(FaYoutube, {}) })] })] })] }), _jsx(FooterBottom, { children: _jsxs("p", { children: ["\u00A9 ", new Date().getFullYear(), " TVK Canada - The Voice of Vijay Fans in Canada. All rights reserved."] }) })] }));
+    return (_jsxs(FooterWrapper, { children: [_jsxs(FooterContent, { children: [_jsxs(FooterSection, { children: [_jsx("h4", { children: "About TVK Canada" }), _jsx("p", { children: "We are a fan club and nonprofit association dedicated to uniting Thalapathy Vijay supporters across Canada." })] }), _jsxs(FooterSection, { children: [_jsx("h4", { children: "Quick Links" }), _jsx("p", { children: _jsx(Link, { to: "/", children: "Home" }) }), _jsx("p", { children: _jsx(Link, { to: "/about", children: "About TVK Canada" }) }), _jsx("p", { children: _jsx(Link, { to: "/membership", children: "Join Membership" }) }), _jsx("p", { children: _jsx(Link, { to: "/events", children: "Upcoming Events" }) }), _jsx("p", { children: _jsx(Link, { to: "/global-network", children: "Global Network" }) }), _jsx("p", { children: _jsx(Link, { to: "/gallery", children: "Photo Gallery" }) }), _jsx("p", { children: _jsx(Link, { to: "/contact", children: "Contact Us" }) })] }), _jsxs(FooterSection, { children: [_jsx("h4", { children: "Contact Us" }), _jsx("p", { children: "Email: contact@tvkcanada.family" }), _jsx("p", { children: "Phone: 613-666-6852" }), _jsx("p", { children: "Address: 203B - 2967 Dundas Street West" }), _jsx("p", { children: "Toronto, Ontario M6P 1Z2" })] }), _jsxs(FooterSection, { children: [_jsx("h4", { children: "Follow Us" }), _jsxs(SocialLinks, { children: [_jsx(SocialLink, { href: "https://www.instagram.com/tvk.canada/", target: "_blank", rel: "noopener noreferrer", title: "Instagram", "aria-label": "Follow us on Instagram", children: _jsx(FaInstagram, {}) }), _jsx(SocialLink, { href: "https://www.threads.com/@tvk.canada", target: "_blank", rel: "noopener noreferrer", title: "Threads", "aria-label": "Follow us on Threads", children: _jsx("span", { style: { fontSize: '18px', fontWeight: 'bold' }, children: "@" }) }), _jsx(SocialLink, { href: "https://www.facebook.com/profile.php?id=61572322798883", target: "_blank", rel: "noopener noreferrer", title: "Facebook", "aria-label": "Follow us on Facebook", children: _jsx(FaFacebook, {}) }), _jsx(SocialLink, { href: "https://www.tiktok.com/@tvk.canada", target: "_blank", rel: "noopener noreferrer", title: "TikTok", "aria-label": "Follow us on TikTok", children: _jsx(FaTiktok, {}) }), _jsx(SocialLink, { href: "http://www.youtube.com/@TamilagaVettriKazhagamCanada", target: "_blank", rel: "noopener noreferrer", title: "YouTube", "aria-label": "Subscribe on YouTube", children: _jsx(FaYoutube, {}) })] })] })] }), _jsx(FooterBottom, { children: _jsxs("p", { children: ["\u00A9 ", new Date().getFullYear(), " TVK Canada - The Voice of Vijay Fans in Canada. All rights reserved."] }) })] }));
 };

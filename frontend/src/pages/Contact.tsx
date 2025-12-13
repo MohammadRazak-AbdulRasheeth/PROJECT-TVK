@@ -2,7 +2,7 @@
  * Contact Us Page (stub)
  */
 
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 import { theme } from '@styles/theme'
 import { Container, Section, Grid, Flex } from '@components/Layout'
@@ -10,6 +10,7 @@ import { Button } from '@components/Button'
 import { FaXTwitter, FaInstagram, FaFacebook, FaTiktok, FaYoutube } from 'react-icons/fa6'
 import { FaWhatsapp, FaMapLocationDot, FaEnvelope } from 'react-icons/fa6'
 import { contactService } from '../services/api'
+import { SEO, seoData } from '@components/SEO'
 
 const ContactForm = styled.form`
   display: flex;
@@ -182,21 +183,6 @@ export const ContactPage: React.FC = () => {
   const [submitted, setSubmitted] = useState(false)
   const [loading, setLoading] = useState(false)
 
-  // SEO optimization
-  useEffect(() => {
-    document.title = 'Contact TVK Canada - Get in Touch with Vijay Fan Club'
-    
-    const metaDescription = document.querySelector('meta[name="description"]')
-    if (metaDescription) {
-      metaDescription.setAttribute('content', 'Contact TVK Canada for membership info, event details, or partnership opportunities. Connect with the leading Thalapathy Vijay fan community.')
-    }
-
-    const metaKeywords = document.querySelector('meta[name="keywords"]')
-    if (metaKeywords) {
-      metaKeywords.setAttribute('content', 'Contact TVK Canada, Vijay fan club contact, Thalapathy fan club info, Tamil community contact Canada')
-    }
-  }, [])
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
@@ -226,9 +212,19 @@ export const ContactPage: React.FC = () => {
 
   return (
     <>
+      <SEO {...seoData.contact} />
+      
       <Section padding={`${theme.spacing.xxxl} 0`} background={theme.colors.surface}>
         <Container>
-          <h1 style={{ textAlign: 'center', marginBottom: theme.spacing.lg }}>Contact Us</h1>
+          <h1 style={{ 
+            textAlign: 'center', 
+            marginBottom: theme.spacing.lg,
+            fontSize: theme.typography.fontSize['4xl'],
+            fontWeight: theme.typography.fontWeight.bold,
+            color: theme.colors.primary
+          }}>
+            Contact TVK Canada - Get in Touch with Thalapathy Vijay Fan Club
+          </h1>
           <p
             style={{
               textAlign: 'center',
