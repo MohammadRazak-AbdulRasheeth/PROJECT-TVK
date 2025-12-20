@@ -9,6 +9,7 @@ export const GlobalStyles = createGlobalStyle `
 
   html {
     scroll-behavior: smooth;
+    overflow-x: hidden;
   }
 
   body {
@@ -19,6 +20,12 @@ export const GlobalStyles = createGlobalStyle `
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     overflow-x: hidden;
+  }
+
+  /* Hide any ad iframes that appear outside the main content */
+  body > iframe[style*="background-color:transparent"],
+  body > div > iframe[style*="background-color:transparent"] {
+    display: none !important;
   }
 
   h1, h2, h3, h4, h5, h6 {

@@ -12,7 +12,6 @@ const FooterWrapper = styled.footer`
   background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
   color: ${theme.colors.text.inverse};
   padding: ${theme.spacing.xxxl} ${theme.spacing.lg};
-  margin-top: ${theme.spacing.xxxl};
   border-top: 3px solid ${theme.colors.secondary};
 `
 

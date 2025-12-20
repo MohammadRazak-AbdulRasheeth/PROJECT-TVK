@@ -6,7 +6,6 @@ import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { theme } from '@styles/theme'
 import { Container, Section, Flex } from '@components/Layout'
-import { Button } from '@components/Button'
 import { useAuth } from '../context/AuthContext'
 import { membershipService } from '../services/api'
 import { SEO, seoData } from '@components/SEO'
@@ -616,11 +615,11 @@ export const MembershipPage: React.FC = () => {
       <Section padding={`${theme.spacing.xl} 0`} background={theme.colors.background}>
         <Container style={{ maxWidth: 'none', padding: 0 }}>
           <div style={{ 
-            width: '100vw',
-            marginLeft: 'calc(-50vw + 50%)',
+            width: '100%',
             minHeight: '100vh',
             background: 'white',
-            position: 'relative'
+            position: 'relative',
+            overflow: 'hidden'
           }}>
             <div id="joinit-widget-H4x4Dy5Mnr5eCYrSg" style={{
               width: '100%',
@@ -671,9 +670,24 @@ export const MembershipPage: React.FC = () => {
           </StepperContainer>
 
           <Flex justify="center" style={{ marginTop: theme.spacing.xl }}>
-            <Button variant="primary" size="lg">
+            <a 
+              href="https://app.joinit.com/o/tvkcanada/" 
+              title="Memberships for TVK Canada" 
+              style={{
+                textDecoration: 'none',
+                padding: '11px 20px',
+                fontSize: '15px',
+                color: '#fff',
+                border: 'none',
+                backgroundColor: '#c4161c',
+                fontWeight: 400,
+                borderRadius: '3px'
+              }}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               Get Started Now
-            </Button>
+            </a>
           </Flex>
         </Container>
       </Section>
@@ -687,7 +701,7 @@ export const MembershipPage: React.FC = () => {
             {[
               {
                 q: '1. When does membership launch?',
-                a: 'Membership will officially open soon. Announcements will be posted on our website and social media.',
+                a: 'Membership is now open! Join today and become a founding member of TVK Canada.',
               },
               {
                 q: '2. How do I get my membership card?',

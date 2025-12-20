@@ -256,23 +256,6 @@ const MobileMenuButton = styled.button `
     display: flex;
   }
 `;
-const DesktopCTAButton = styled(Button) `
-  flex-shrink: 0;
-  white-space: nowrap;
-
-  @media (max-width: ${theme.breakpoints.tablet}) {
-    display: none;
-  }
-`;
-const MobileCTAButton = styled(Button) `
-  display: none;
-  margin-top: ${theme.spacing.lg};
-  width: 100%;
-
-  @media (max-width: ${theme.breakpoints.tablet}) {
-    display: block;
-  }
-`;
 const ButtonGroup = styled.div `
   display: flex;
   align-items: center;
@@ -381,15 +364,12 @@ export const Header = () => {
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const dropdownRef = useRef(null);
     const navigate = useNavigate();
-    const { user, logout, isLoading, googleLogin } = useAuth();
+    const { user, logout, isLoading } = useAuth();
     const toggleMenu = () => {
         setIsMenuOpen(!isMenuOpen);
     };
     const closeMenu = () => {
         setIsMenuOpen(false);
-    };
-    const handleGoogleLogin = () => {
-        googleLogin();
     };
     const handleLogout = () => {
         logout(); // Use AuthContext logout function which clears all localStorage
@@ -436,12 +416,21 @@ export const Header = () => {
                                             return;
                                         target.dataset.fallbackApplied = 'true';
                                         target.src = images.logoFallback || images.logo;
-                                    }, style: { objectFit: 'contain', background: 'transparent' } }), _jsx("span", { children: "TVK CANADA" })] }), _jsxs(DesktopNav, { children: [_jsx(NavLink, { to: "/", children: "Home" }), _jsx(NavLink, { to: "/about", children: "About Us" }), _jsx(NavLink, { to: "/membership", children: "Membership" }), _jsx(NavLink, { to: "/events", children: "Events" }), _jsx(NavLink, { to: "/global-network", children: "Global Network" }), _jsx(NavLink, { to: "/gallery", children: "Gallery" }), _jsx(NavLink, { to: "/contact", children: "Contact" })] }), _jsxs(ButtonGroup, { children: [isLoading ? (_jsx("div", { style: {
+                                    }, style: { objectFit: 'contain', background: 'transparent' } }), _jsx("span", { children: "TVK CANADA" })] }), _jsxs(DesktopNav, { children: [_jsx(NavLink, { to: "/", children: "Home" }), _jsx(NavLink, { to: "/about", children: "About Us" }), _jsx(NavLink, { to: "/membership", children: "Membership" }), _jsx(NavLink, { to: "/events", children: "Events" }), _jsx(NavLink, { to: "/global-network", children: "Global Network" }), _jsx(NavLink, { to: "/gallery", children: "Gallery" }), _jsx(NavLink, { to: "/contact", children: "Contact" }), _jsx(NavLink, { to: "/faq", children: "FAQ" })] }), _jsxs(ButtonGroup, { children: [isLoading ? (_jsx("div", { style: {
                                         padding: theme.spacing.sm,
                                         color: theme.colors.text.inverse,
                                         fontSize: theme.typography.fontSize.sm,
                                         opacity: 0.8
-                                    }, "aria-busy": "true", children: "Loading..." })) : user ? (_jsxs(UserProfile, { ref: dropdownRef, onClick: () => setDropdownOpen(!dropdownOpen), title: "Click to open menu", children: [_jsx("img", { src: `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name)}&background=C41E3A&color=FFD700&size=40`, alt: user.name }), _jsx("span", { children: user.name.split(' ')[0] }), _jsxs(DropdownMenu, { isOpen: dropdownOpen, children: [_jsx(DropdownItem, { onClick: () => { setDropdownOpen(false); navigate('/my-membership'); }, children: "My Membership" }), _jsx(DropdownItem, { onClick: () => { setDropdownOpen(false); navigate('/events'); }, children: "My Events" }), _jsx(DropdownItem, { onClick: handleLogout, children: "Logout" })] })] })) : (_jsx(DesktopCTAButton, { variant: "secondary", size: "md", onClick: handleGoogleLogin, children: "Login" })), _jsx(MobileMenuButton, { onClick: toggleMenu, "aria-label": isMenuOpen ? 'Close menu' : 'Open menu', "aria-expanded": isMenuOpen, children: isMenuOpen ? '✕' : '☰' })] })] }) }), _jsxs(MobileNav, { isOpen: isMenuOpen, children: [_jsx(NavLink, { to: "/", onClick: closeMenu, children: "Home" }), _jsx(NavLink, { to: "/about", onClick: closeMenu, children: "About Us" }), _jsx(NavLink, { to: "/membership", onClick: closeMenu, children: "Membership" }), _jsx(NavLink, { to: "/events", onClick: closeMenu, children: "Events" }), _jsx(NavLink, { to: "/global-network", onClick: closeMenu, children: "Global Network" }), _jsx(NavLink, { to: "/gallery", onClick: closeMenu, children: "Gallery" }), _jsx(NavLink, { to: "/contact", onClick: closeMenu, children: "Contact" }), isLoading ? (_jsx("div", { style: {
+                                    }, "aria-busy": "true", children: "Loading..." })) : user ? (_jsxs(UserProfile, { ref: dropdownRef, onClick: () => setDropdownOpen(!dropdownOpen), title: "Click to open menu", children: [_jsx("img", { src: `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name)}&background=C41E3A&color=FFD700&size=40`, alt: user.name }), _jsx("span", { children: user.name.split(' ')[0] }), _jsxs(DropdownMenu, { isOpen: dropdownOpen, children: [_jsx(DropdownItem, { onClick: () => { setDropdownOpen(false); navigate('/my-membership'); }, children: "My Membership" }), _jsx(DropdownItem, { onClick: () => { setDropdownOpen(false); navigate('/events'); }, children: "My Events" }), _jsx(DropdownItem, { onClick: handleLogout, children: "Logout" })] })] })) : (_jsx("a", { href: "https://app.joinit.com/o/tvkcanada/members", title: "Memberships for TVK Canada", style: {
+                                        textDecoration: 'none',
+                                        padding: '11px 20px',
+                                        fontSize: '15px',
+                                        color: '#fff',
+                                        border: 'none',
+                                        backgroundColor: '#f5c400',
+                                        fontWeight: 400,
+                                        borderRadius: '3px'
+                                    }, target: "_blank", rel: "noopener noreferrer", children: "LOGIN" })), _jsx(MobileMenuButton, { onClick: toggleMenu, "aria-label": isMenuOpen ? 'Close menu' : 'Open menu', "aria-expanded": isMenuOpen, children: isMenuOpen ? '✕' : '☰' })] })] }) }), _jsxs(MobileNav, { isOpen: isMenuOpen, children: [_jsx(NavLink, { to: "/", onClick: closeMenu, children: "Home" }), _jsx(NavLink, { to: "/about", onClick: closeMenu, children: "About Us" }), _jsx(NavLink, { to: "/membership", onClick: closeMenu, children: "Membership" }), _jsx(NavLink, { to: "/events", onClick: closeMenu, children: "Events" }), _jsx(NavLink, { to: "/global-network", onClick: closeMenu, children: "Global Network" }), _jsx(NavLink, { to: "/gallery", onClick: closeMenu, children: "Gallery" }), _jsx(NavLink, { to: "/contact", onClick: closeMenu, children: "Contact" }), _jsx(NavLink, { to: "/faq", onClick: closeMenu, children: "FAQ" }), isLoading ? (_jsx("div", { style: {
                             marginTop: theme.spacing.lg,
                             padding: theme.spacing.lg,
                             background: 'rgba(255,255,255,0.1)',
@@ -475,5 +464,18 @@ export const Header = () => {
                                     color: theme.colors.primary,
                                     fontSize: theme.typography.fontSize.base,
                                     fontWeight: theme.typography.fontWeight.semibold
-                                }, children: "Logout" })] })) : (_jsx(MobileCTAButton, { variant: "secondary", size: "md", onClick: handleGoogleLogin, children: "Login" }))] })] }));
+                                }, children: "Logout" })] })) : (_jsx("a", { href: "https://app.joinit.com/o/tvkcanada/members", title: "Memberships for TVK Canada", style: {
+                            textDecoration: 'none',
+                            padding: '11px 20px',
+                            fontSize: '15px',
+                            color: '#fff',
+                            border: 'none',
+                            backgroundColor: '#f5c400',
+                            fontWeight: 400,
+                            borderRadius: '3px',
+                            display: 'block',
+                            textAlign: 'center',
+                            marginTop: theme.spacing.lg,
+                            width: '100%'
+                        }, target: "_blank", rel: "noopener noreferrer", children: "LOGIN" }))] })] }));
 };

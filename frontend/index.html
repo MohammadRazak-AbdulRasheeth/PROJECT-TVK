@@ -3,14 +3,19 @@
   <head>
     <meta charset="UTF-8" />
     
-    <!-- Favicon and App Icons -->
-    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <!-- Favicon and App Icons - Optimized for Search Engines -->
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <link rel="icon" type="image/png" sizes="192x192" href="/android-chrome-192x192.png" />
     <link rel="icon" type="image/png" sizes="512x512" href="/android-chrome-512x512.png" />
     <link rel="manifest" href="/manifest.json" />
+    
+    <!-- Additional favicon references for better search engine compatibility -->
+    <meta name="msapplication-TileImage" content="/android-chrome-192x192.png" />
+    <meta name="msapplication-TileColor" content="#C41E3A" />
     
     <!-- Meta Tags -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -43,6 +48,34 @@
     <meta name="twitter:title" content="TVK Canada - The Voice of Vijay Fans in Canada" />
     <meta name="twitter:description" content="Join TVK Canada for exclusive Vijay events, memberships, and Tamil community." />
     <meta name="twitter:image" content="/gallery-1.jpg" />
+    
+    <!-- Additional SEO enhancements -->
+    <meta name="language" content="English" />
+    <meta name="revisit-after" content="7 days" />
+    <meta name="distribution" content="global" />
+    <meta name="rating" content="general" />
+    <link rel="canonical" href="https://tvkcanada.family" />
+    
+    <!-- Structured Data for Organization -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "TVK Canada",
+      "alternateName": "Tamizhaga Vetri Kazhagam Canada",
+      "url": "https://tvkcanada.family",
+      "logo": "https://tvkcanada.family/android-chrome-192x192.png",
+      "description": "Official Thalapathy Vijay fan club serving the Tamil community across Canada",
+      "sameAs": [
+        "https://www.instagram.com/tvk.canada/"
+      ],
+      "address": {
+        "@type": "PostalAddress",
+        "addressCountry": "CA",
+        "addressRegion": "Canada"
+      }
+    }
+    </script>
     
     <!-- App Manifest -->
     <meta name="application-name" content="TVK Canada" />
@@ -84,11 +117,6 @@
         "@type": "ContactPoint",
         "contactType": "customer service",
         "availableLanguage": ["English", "Tamil"]
-      },
-      "event": {
-        "@type": "Event",
-        "name": "TVK Canada Events",
-        "description": "Regular Thalapathy Vijay fan gatherings and Tamil cultural events across Canada"
       }
     }
     </script>

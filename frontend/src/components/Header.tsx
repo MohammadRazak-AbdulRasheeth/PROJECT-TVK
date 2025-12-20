@@ -265,25 +265,6 @@ const MobileMenuButton = styled.button`
   }
 `
 
-const DesktopCTAButton = styled(Button)`
-  flex-shrink: 0;
-  white-space: nowrap;
-
-  @media (max-width: ${theme.breakpoints.tablet}) {
-    display: none;
-  }
-`
-
-const MobileCTAButton = styled(Button)`
-  display: none;
-  margin-top: ${theme.spacing.lg};
-  width: 100%;
-
-  @media (max-width: ${theme.breakpoints.tablet}) {
-    display: block;
-  }
-`
-
 const ButtonGroup = styled.div`
   display: flex;
   align-items: center;
@@ -396,7 +377,7 @@ export const Header: React.FC = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false)
   const dropdownRef = useRef<HTMLDivElement>(null)
   const navigate = useNavigate()
-  const { user, logout, isLoading, googleLogin } = useAuth()
+  const { user, logout, isLoading } = useAuth()
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen)
@@ -404,10 +385,6 @@ export const Header: React.FC = () => {
 
   const closeMenu = () => {
     setIsMenuOpen(false)
-  }
-
-  const handleGoogleLogin = () => {
-    googleLogin()
   }
 
   const handleLogout = () => {
@@ -486,6 +463,7 @@ export const Header: React.FC = () => {
             <NavLink to="/global-network">Global Network</NavLink>
             <NavLink to="/gallery">Gallery</NavLink>
             <NavLink to="/contact">Contact</NavLink>
+            <NavLink to="/faq">FAQ</NavLink>
           </DesktopNav>
 
           <ButtonGroup>
@@ -523,9 +501,24 @@ export const Header: React.FC = () => {
                 </DropdownMenu>
               </UserProfile>
             ) : (
-              <DesktopCTAButton variant="secondary" size="md" onClick={handleGoogleLogin}>
-                Login
-              </DesktopCTAButton>
+              <a 
+                href="https://app.joinit.com/o/tvkcanada/members" 
+                title="Memberships for TVK Canada" 
+                style={{
+                  textDecoration: 'none',
+                  padding: '11px 20px',
+                  fontSize: '15px',
+                  color: '#fff',
+                  border: 'none',
+                  backgroundColor: '#f5c400',
+                  fontWeight: 400,
+                  borderRadius: '3px'
+                }}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                LOGIN
+              </a>
             )}
 
             <MobileMenuButton
@@ -547,6 +540,7 @@ export const Header: React.FC = () => {
         <NavLink to="/global-network" onClick={closeMenu}>Global Network</NavLink>
         <NavLink to="/gallery" onClick={closeMenu}>Gallery</NavLink>
         <NavLink to="/contact" onClick={closeMenu}>Contact</NavLink>
+        <NavLink to="/faq" onClick={closeMenu}>FAQ</NavLink>
         
         {isLoading ? (
           <div style={{ 
@@ -614,9 +608,28 @@ export const Header: React.FC = () => {
             </Button>
           </div>
         ) : (
-          <MobileCTAButton variant="secondary" size="md" onClick={handleGoogleLogin}>
-            Login
-          </MobileCTAButton>
+          <a 
+            href="https://app.joinit.com/o/tvkcanada/members" 
+            title="Memberships for TVK Canada" 
+            style={{
+              textDecoration: 'none',
+              padding: '11px 20px',
+              fontSize: '15px',
+              color: '#fff',
+              border: 'none',
+              backgroundColor: '#f5c400',
+              fontWeight: 400,
+              borderRadius: '3px',
+              display: 'block',
+              textAlign: 'center',
+              marginTop: theme.spacing.lg,
+              width: '100%'
+            }}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            LOGIN
+          </a>
         )}
       </MobileNav>
     </>

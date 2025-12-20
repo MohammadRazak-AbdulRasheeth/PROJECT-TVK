@@ -4,10 +4,9 @@
  */
 
 import React from 'react'
-import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 import { theme } from '@styles/theme'
-import { Container, Section, Grid } from '@components/Layout'
+import { Container, Section } from '@components/Layout'
 import { Button } from '@components/Button'
 import { SEO, seoData } from '@components/SEO'
 
@@ -83,269 +82,12 @@ const HeroSection = styled.div`
   }
 `
 
-const InstagramCard = styled.div`
-  background: ${theme.colors.surface};
-  border-radius: ${theme.borderRadius.lg};
-  overflow: hidden;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  border-top: 4px solid ${theme.colors.primary};
-  cursor: pointer;
-
-  &:hover {
-    transform: translateY(-8px);
-    box-shadow: ${theme.shadows.lg};
-  }
-
-  .header {
-    padding: ${theme.spacing.lg};
-    background: linear-gradient(135deg, ${theme.colors.surface} 0%, #f8f9fa 100%);
-    border-bottom: 1px solid ${theme.colors.border};
-    display: flex;
-    flex-direction: row;
-    align-items: flex-start;
-    gap: ${theme.spacing.lg};
-
-    .flag {
-      width: 80px;
-      height: 80px;
-      min-width: 80px;
-      border-radius: ${theme.borderRadius.lg};
-      position: relative;
-      overflow: hidden;
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-    }
-
-    .header-content {
-      flex: 1;
-
-      h3 {
-        color: ${theme.colors.primary};
-        margin: 0 0 ${theme.spacing.xs} 0;
-        font-size: 18px;
-      }
-
-      .region {
-        color: ${theme.colors.text.secondary};
-        font-size: 14px;
-        margin: 0;
-      }
-    }
-  }
-
-  .content {
-    padding: ${theme.spacing.lg};
-
-    .instagram-handle {
-      background: linear-gradient(135deg, #833AB4 0%, #C13584 50%, #E1306C 75%, #FD1D1D 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      font-weight: ${theme.typography.fontWeight.bold};
-      font-size: 16px;
-      margin-bottom: ${theme.spacing.md};
-      display: block;
-    }
-
-    p {
-      color: ${theme.colors.text.secondary};
-      line-height: 1.6;
-      margin: ${theme.spacing.sm} 0;
-      font-size: 14px;
-    }
-
-    .stats {
-      display: flex;
-      gap: ${theme.spacing.md};
-      margin-top: ${theme.spacing.md};
-      padding: ${theme.spacing.sm} 0;
-      border-top: 1px solid ${theme.colors.border};
-
-      .stat {
-        text-align: center;
-        flex: 1;
-
-        .number {
-          display: block;
-          color: ${theme.colors.primary};
-          font-weight: ${theme.typography.fontWeight.bold};
-          font-size: 16px;
-        }
-
-        .label {
-          color: ${theme.colors.text.secondary};
-          font-size: 12px;
-          text-transform: uppercase;
-          letter-spacing: 0.5px;
-        }
-      }
-    }
-  }
-
-  @media (max-width: ${theme.breakpoints.tablet}) {
-    .header {
-      padding: ${theme.spacing.md};
-      .flag {
-        width: 60px;
-        height: 60px;
-        min-width: 60px;
-      }
-    }
-    .content {
-      padding: ${theme.spacing.md};
-    }
-  }
-
-  @media (max-width: ${theme.breakpoints.mobile}) {
-    .header {
-      padding: ${theme.spacing.sm};
-      gap: ${theme.spacing.sm};
-      .flag {
-        width: 50px;
-        height: 50px;
-        min-width: 50px;
-      }
-    }
-    .content {
-      padding: ${theme.spacing.sm};
-    }
-  }
-`
-
 /**
  * TVK Global Network Page Component
  */
 export const GlobalNetworkPage: React.FC = () => {
-  const navigate = useNavigate()
-
-  const handleJoinClick = () => {
-    navigate('/membership')
-  }
-
-  // Instagram data for TVK groups worldwide
-  const instagramGroups = [
-    {
-      id: 1,
-      flag: 'https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/6.14.0/flags/4x3/ca.svg',
-      countryCode: 'CA',
-      name: 'TVK Canada - Ottawa, ON',
-      region: 'Canada (Ottawa, ON)',
-      instagramHandle: '@tvkcanada_official',
-      instagramUrl: 'https://instagram.com/tvkcanada_official',
-      description: 'Official Canadian chapter based in Ottawa, ON. Follow for updates on community events, charity work, and fan activities.',
-      followers: '2.5K',
-      posts: '180'
-    },
-    {
-      id: 2,
-      flag: 'https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/6.14.0/flags/4x3/in.svg',
-      countryCode: 'IN',
-      name: 'Vijay Makkal Mandram',
-      region: 'India - Tamil Nadu',
-      instagramHandle: '@vijay_makkal_mandram',
-      instagramUrl: 'https://instagram.com/vijay_makkal_mandram',
-      description: 'The original TVK network in Tamil Nadu. Follow for movie updates, community events, and fan celebrations.',
-      followers: '500K+',
-      posts: '1.2K+'
-    },
-    {
-      id: 3,
-      flag: 'https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/6.14.0/flags/4x3/us.svg',
-      countryCode: 'US',
-      name: 'USA Vijay Fans',
-      region: 'United States',
-      instagramHandle: '@vijay_fans_usa',
-      instagramUrl: 'https://instagram.com/vijay_fans_usa',
-      description: 'Connect with Vijay fans across American cities. Events in Dallas, California, Chicago, and New Jersey.',
-      followers: '15K+',
-      posts: '400+'
-    },
-    {
-      id: 4,
-      flag: 'https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/6.14.0/flags/4x3/gb.svg',
-      countryCode: 'GB',
-      name: 'UK Vijay Fans Network',
-      region: 'United Kingdom',
-      instagramHandle: '@uk_vijay_fans',
-      instagramUrl: 'https://instagram.com/uk_vijay_fans',
-      description: 'London and UK-wide Vijay fan community. Follow for screenings, meetups, and cultural events.',
-      followers: '8K+',
-      posts: '250+'
-    },
-    {
-      id: 5,
-      flag: 'https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/6.14.0/flags/4x3/au.svg',
-      countryCode: 'AU',
-      name: 'Australia Vijay Fans',
-      region: 'Australia',
-      instagramHandle: '@australia_vijay_fans',
-      instagramUrl: 'https://instagram.com/australia_vijay_fans',
-      description: 'Sydney, Melbourne, Brisbane fan community. Follow for Aussie Vijay events and celebrations.',
-      followers: '12K+',
-      posts: '350+'
-    },
-    {
-      id: 6,
-      flag: 'https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/6.14.0/flags/4x3/ae.svg',
-      countryCode: 'AE',
-      name: 'UAE & Middle East Vijay Fans',
-      region: 'UAE & Middle East',
-      instagramHandle: '@uae_vijay_fans',
-      instagramUrl: 'https://instagram.com/uae_vijay_fans',
-      description: 'Dubai, UAE, and Middle East Vijay fan network. Follow for massive celebrations and fan events.',
-      followers: '25K+',
-      posts: '600+'
-    },
-    {
-      id: 7,
-      flag: 'https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/6.14.0/flags/4x3/my.svg',
-      countryCode: 'MY',
-      name: 'Malaysia Vijay Fans',
-      region: 'Malaysia',
-      instagramHandle: '@malaysia_vijay_fans',
-      instagramUrl: 'https://instagram.com/malaysia_vijay_fans',
-      description: 'Malaysian Vijay fan community. Follow for stadium-level celebrations and charity events.',
-      followers: '30K+',
-      posts: '750+'
-    },
-    {
-      id: 8,
-      flag: 'https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/6.14.0/flags/4x3/sg.svg',
-      countryCode: 'SG',
-      name: 'Singapore Vijay FC',
-      region: 'Singapore',
-      instagramHandle: '@singapore_vijay_fc',
-      instagramUrl: 'https://instagram.com/singapore_vijay_fc',
-      description: 'Singapore Vijay fan club. Follow for professional events, screenings, and community programs.',
-      followers: '7K+',
-      posts: '200+'
-    },
-    {
-      id: 9,
-      flag: 'https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/6.14.0/flags/4x3/lk.svg',
-      countryCode: 'LK',
-      name: 'Sri Lanka Vijay Fans',
-      region: 'Sri Lanka',
-      instagramHandle: '@srilanka_vijay_fans',
-      instagramUrl: 'https://instagram.com/srilanka_vijay_fans',
-      description: 'Sri Lankan Vijay fan community. Follow for screenings, youth activities, and community unity.',
-      followers: '20K+',
-      posts: '500+'
-    },
-    {
-      id: 10,
-      flag: 'https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/6.14.0/flags/4x3/fr.svg',
-      countryCode: 'FR',
-      name: 'France & Europe Vijay Fans',
-      region: 'France & Europe',
-      instagramHandle: '@europe_vijay_fans',
-      instagramUrl: 'https://instagram.com/europe_vijay_fans',
-      description: 'European Vijay fan network. Follow for street celebrations, meetups, and cultural events.',
-      followers: '5K+',
-      posts: '150+'
-    }
-  ]
+  // Global Instagram hashtags for TVK community
+  const globalHashtags = ['#ThalapathyVijay', '#TVK', '#Thalapathy', '#VijayFans']
 
   return (
     <>
@@ -361,16 +103,16 @@ export const GlobalNetworkPage: React.FC = () => {
         </Container>
       </HeroSection>
 
-      {/* Instagram Groups Section */}
+      {/* TVK Canada Instagram Profile Section */}
       <Section padding={`${theme.spacing.xxxl} 0`}>
         <Container>
           <h2 style={{ textAlign: 'center', marginBottom: theme.spacing.lg, color: theme.colors.primary, fontSize: theme.typography.fontSize['3xl'] }}>
-            Follow Our Global Instagram Community
+            Follow @tvk.canada on Instagram
           </h2>
           <p
             style={{
               textAlign: 'center',
-              marginBottom: theme.spacing.xxxl,
+              marginBottom: theme.spacing.xl,
               color: theme.colors.text.secondary,
               fontSize: '18px',
               maxWidth: '700px',
@@ -378,43 +120,142 @@ export const GlobalNetworkPage: React.FC = () => {
               lineHeight: '1.7'
             }}
           >
-            Stay connected with TVK fan groups around the world. Follow their Instagram pages for the latest updates, event photos, and community highlights.
+            Stay connected with TVK Canada for the latest updates, event photos, and community highlights from Thalapathy Vijay fans across Canada.
           </p>
-          <Grid columns={3} gap={theme.spacing.xl}>
-            {instagramGroups.map((group) => (
-              <InstagramCard
-                key={group.id}
-                onClick={() => window.open(group.instagramUrl, '_blank')}
+          
+          {/* Instagram Profile Card */}
+          <div style={{
+            maxWidth: '500px',
+            margin: '0 auto',
+            marginTop: theme.spacing.xl,
+            marginBottom: theme.spacing.xxl
+          }}>
+            <a
+              href="https://instagram.com/tvk.canada"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                display: 'block',
+                background: theme.colors.surface,
+                borderRadius: theme.borderRadius['2xl'],
+                padding: theme.spacing.xxl,
+                textAlign: 'center',
+                textDecoration: 'none',
+                border: `3px solid ${theme.colors.primary}`,
+                boxShadow: theme.shadows.lg,
+                transition: 'all 0.3s ease'
+              }}
+              onMouseOver={(e) => {
+                e.currentTarget.style.transform = 'translateY(-8px)'
+                e.currentTarget.style.boxShadow = '0 20px 40px rgba(196, 22, 28, 0.3)'
+              }}
+              onMouseOut={(e) => {
+                e.currentTarget.style.transform = 'translateY(0)'
+                e.currentTarget.style.boxShadow = theme.shadows.lg
+              }}
+            >
+              {/* Instagram Icon */}
+              <div style={{
+                width: '100px',
+                height: '100px',
+                margin: '0 auto',
+                marginBottom: theme.spacing.lg,
+                background: 'linear-gradient(135deg, #833AB4 0%, #C13584 50%, #E1306C 75%, #FD1D1D 100%)',
+                borderRadius: '24px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontSize: '48px'
+              }}>
+                📷
+              </div>
+              <h3 style={{ 
+                color: theme.colors.primary, 
+                marginBottom: theme.spacing.sm,
+                fontSize: theme.typography.fontSize['2xl']
+              }}>
+                @tvk.canada
+              </h3>
+              <p style={{ 
+                color: theme.colors.text.secondary, 
+                marginBottom: theme.spacing.lg,
+                fontSize: theme.typography.fontSize.base
+              }}>
+                TVK Canada Official Instagram
+              </p>
+              <div style={{
+                background: 'linear-gradient(135deg, #833AB4 0%, #C13584 50%, #E1306C 75%, #FD1D1D 100%)',
+                color: '#fff',
+                padding: `${theme.spacing.md} ${theme.spacing.xl}`,
+                borderRadius: theme.borderRadius.lg,
+                fontWeight: theme.typography.fontWeight.bold,
+                fontSize: theme.typography.fontSize.base,
+                display: 'inline-block'
+              }}>
+                Follow on Instagram
+              </div>
+            </a>
+          </div>
+
+          {/* Global Hashtags */}
+          <h3 style={{ textAlign: 'center', marginBottom: theme.spacing.lg, color: theme.colors.text.primary }}>
+            Explore Global TVK Hashtags
+          </h3>
+          <div style={{ 
+            display: 'flex', 
+            justifyContent: 'center', 
+            flexWrap: 'wrap', 
+            gap: theme.spacing.md, 
+            marginBottom: theme.spacing.xxl 
+          }}>
+            {globalHashtags.map((hashtag) => (
+              <a
+                key={hashtag}
+                href={`https://www.instagram.com/explore/tags/${hashtag.replace('#', '')}/`}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  background: 'linear-gradient(135deg, #833AB4 0%, #C13584 50%, #E1306C 75%, #FD1D1D 100%)',
+                  color: '#fff',
+                  padding: `${theme.spacing.sm} ${theme.spacing.lg}`,
+                  borderRadius: theme.borderRadius.xl,
+                  textDecoration: 'none',
+                  fontWeight: theme.typography.fontWeight.bold,
+                  fontSize: theme.typography.fontSize.base,
+                  boxShadow: theme.shadows.md,
+                  transition: 'all 0.3s ease',
+                  display: 'inline-block'
+                }}
+                onMouseOver={(e) => {
+                  e.currentTarget.style.transform = 'translateY(-4px)'
+                  e.currentTarget.style.boxShadow = theme.shadows.lg
+                }}
+                onMouseOut={(e) => {
+                  e.currentTarget.style.transform = 'translateY(0)'
+                  e.currentTarget.style.boxShadow = theme.shadows.md
+                }}
               >
-                <div className="header">
-                  <div
-                    className="flag"
-                    style={{
-                      backgroundImage: `url(${group.flag})`,
-                    }}
-                  />
-                  <div className="header-content">
-                    <h3>{group.name}</h3>
-                    <p className="region">{group.region}</p>
-                  </div>
-                </div>
-                <div className="content">
-                  <span className="instagram-handle">{group.instagramHandle}</span>
-                  <p>{group.description}</p>
-                  <div className="stats">
-                    <div className="stat">
-                      <span className="number">{group.followers}</span>
-                      <span className="label">Followers</span>
-                    </div>
-                    <div className="stat">
-                      <span className="number">{group.posts}</span>
-                      <span className="label">Posts</span>
-                    </div>
-                  </div>
-                </div>
-              </InstagramCard>
+                {hashtag}
+              </a>
             ))}
-          </Grid>
+          </div>
+
+          {/* Call to Action */}
+          <div style={{
+            background: theme.colors.surface,
+            borderRadius: theme.borderRadius['2xl'],
+            padding: theme.spacing.xxl,
+            textAlign: 'center',
+            border: `2px solid ${theme.colors.border}`
+          }}>
+            <div style={{ fontSize: '48px', marginBottom: theme.spacing.md }}>🌍</div>
+            <h3 style={{ color: theme.colors.primary, marginBottom: theme.spacing.md }}>
+              Join the Global TVK Community
+            </h3>
+            <p style={{ color: theme.colors.text.secondary, marginBottom: theme.spacing.lg, maxWidth: '600px', margin: '0 auto' }}>
+              Share your TVK moments on Instagram using our community hashtags. Tag @tvk.canada and your posts will be part of the worldwide Thalapathy Vijay fan network!
+            </p>
+          </div>
         </Container>
       </Section>
       {/* Membership Section */}
@@ -442,13 +283,30 @@ export const GlobalNetworkPage: React.FC = () => {
               Follow us on Instagram and join the TVK Canada membership community.
             </p>
             <div style={{ display: 'flex', gap: theme.spacing.md, justifyContent: 'center', flexWrap: 'wrap' }}>
-              <Button variant="secondary" onClick={handleJoinClick}>Join TVK Canada</Button>
+              <a 
+                href="https://app.joinit.com/o/tvkcanada/" 
+                title="Memberships for TVK Canada" 
+                style={{
+                  textDecoration: 'none',
+                  padding: '11px 20px',
+                  fontSize: '15px',
+                  color: '#fff',
+                  border: 'none',
+                  backgroundColor: '#c4161c',
+                  fontWeight: 400,
+                  borderRadius: '3px'
+                }}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Join TVK Canada
+              </a>
               <Button 
                 variant="outline" 
-                onClick={() => window.open('https://instagram.com/tvkcanada_official', '_blank')}
+                onClick={() => window.open('https://instagram.com/tvk.canada', '_blank')}
                 style={{ background: 'transparent', borderColor: theme.colors.secondary, color: theme.colors.secondary }}
               >
-                Follow on Instagram
+                Follow @tvk.canada
               </Button>
             </div>
           </div>

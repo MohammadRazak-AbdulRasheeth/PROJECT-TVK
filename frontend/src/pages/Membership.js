@@ -6,7 +6,6 @@ import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { theme } from '@styles/theme';
 import { Container, Section, Flex } from '@components/Layout';
-import { Button } from '@components/Button';
 import { useAuth } from '../context/AuthContext';
 import { membershipService } from '../services/api';
 import { SEO, seoData } from '@components/SEO';
@@ -523,19 +522,28 @@ export const MembershipPage = () => {
     //   return false
     // }
     return (_jsxs(_Fragment, { children: [_jsx(SEO, { ...seoData.membership }), _jsx(Section, { padding: `${theme.spacing.xxxl} 0`, background: theme.colors.surface, children: _jsx(Container, { children: _jsxs(OfferBanner, { children: [_jsx("h1", { style: { fontSize: theme.typography.fontSize['2xl'], margin: 0 }, children: "\uD83C\uDF89 Join TVK Canada - Exclusive Thalapathy Vijay Fan Membership" }), _jsx("h3", { children: "Limited Offer: First 200 Members Get 3 Months FREE!" }), _jsx("p", { children: "Join TVK Canada now and receive 3 months of membership absolutely FREE, plus a Special Edition Founding Member Physical Card." })] }) }) }), _jsx(Section, { padding: `${theme.spacing.xl} 0`, background: theme.colors.background, children: _jsx(Container, { style: { maxWidth: 'none', padding: 0 }, children: _jsx("div", { style: {
-                            width: '100vw',
-                            marginLeft: 'calc(-50vw + 50%)',
+                            width: '100%',
                             minHeight: '100vh',
                             background: 'white',
-                            position: 'relative'
+                            position: 'relative',
+                            overflow: 'hidden'
                         }, children: _jsx("div", { id: "joinit-widget-H4x4Dy5Mnr5eCYrSg", style: {
                                 width: '100%',
                                 minHeight: '50vh',
                                 height: 'auto'
-                            }, children: _jsxs("noscript", { children: ["View ", _jsx("a", { href: "https://app.joinit.com/o/tvkcanada", children: "Membership Website" }), " powered by ", _jsx("a", { href: "https://joinit.com", children: "Membership Software by Join It" })] }) }) }) }) }), _jsx(Section, { padding: `${theme.spacing.xxxl} 0`, background: theme.colors.surface, children: _jsxs(Container, { children: [_jsx("h2", { style: { textAlign: 'center', marginBottom: theme.spacing.xxl }, children: "How It Works" }), _jsxs(StepperContainer, { children: [_jsxs(StepItem, { active: true, children: [_jsx("div", { className: "step-circle", children: "1" }), _jsx("h3", { children: "Sign Up Online" }), _jsx("p", { children: "Create your account once registration opens" })] }), _jsxs(StepItem, { active: true, children: [_jsx("div", { className: "step-circle", children: "2" }), _jsx("h3", { children: "Choose Plan" }), _jsx("p", { children: "Select Monthly or Yearly membership" })] }), _jsxs(StepItem, { active: true, children: [_jsx("div", { className: "step-circle", children: "3" }), _jsx("h3", { children: "Receive Your Card" }), _jsx("p", { children: "Physical card delivered to your address (2\u20134 weeks)" })] }), _jsxs(StepItem, { children: [_jsx("div", { className: "step-circle", children: "4" }), _jsx("h3", { children: "Enjoy Member Perks" }), _jsx("p", { children: "At events and partner businesses" })] }), _jsxs(StepItem, { children: [_jsx("div", { className: "step-circle", children: "5" }), _jsx("h3", { children: "Stay Connected" }), _jsx("p", { children: "Receive exclusive updates and announcements" })] })] }), _jsx(Flex, { justify: "center", style: { marginTop: theme.spacing.xl }, children: _jsx(Button, { variant: "primary", size: "lg", children: "Get Started Now" }) })] }) }), _jsx(Section, { padding: `${theme.spacing.xxxl} 0`, children: _jsxs(Container, { children: [_jsx("h2", { style: { marginBottom: theme.spacing.xxl }, children: "Frequently Asked Questions" }), _jsx(FAQContainer, { children: [
+                            }, children: _jsxs("noscript", { children: ["View ", _jsx("a", { href: "https://app.joinit.com/o/tvkcanada", children: "Membership Website" }), " powered by ", _jsx("a", { href: "https://joinit.com", children: "Membership Software by Join It" })] }) }) }) }) }), _jsx(Section, { padding: `${theme.spacing.xxxl} 0`, background: theme.colors.surface, children: _jsxs(Container, { children: [_jsx("h2", { style: { textAlign: 'center', marginBottom: theme.spacing.xxl }, children: "How It Works" }), _jsxs(StepperContainer, { children: [_jsxs(StepItem, { active: true, children: [_jsx("div", { className: "step-circle", children: "1" }), _jsx("h3", { children: "Sign Up Online" }), _jsx("p", { children: "Create your account once registration opens" })] }), _jsxs(StepItem, { active: true, children: [_jsx("div", { className: "step-circle", children: "2" }), _jsx("h3", { children: "Choose Plan" }), _jsx("p", { children: "Select Monthly or Yearly membership" })] }), _jsxs(StepItem, { active: true, children: [_jsx("div", { className: "step-circle", children: "3" }), _jsx("h3", { children: "Receive Your Card" }), _jsx("p", { children: "Physical card delivered to your address (2\u20134 weeks)" })] }), _jsxs(StepItem, { children: [_jsx("div", { className: "step-circle", children: "4" }), _jsx("h3", { children: "Enjoy Member Perks" }), _jsx("p", { children: "At events and partner businesses" })] }), _jsxs(StepItem, { children: [_jsx("div", { className: "step-circle", children: "5" }), _jsx("h3", { children: "Stay Connected" }), _jsx("p", { children: "Receive exclusive updates and announcements" })] })] }), _jsx(Flex, { justify: "center", style: { marginTop: theme.spacing.xl }, children: _jsx("a", { href: "https://app.joinit.com/o/tvkcanada/", title: "Memberships for TVK Canada", style: {
+                                    textDecoration: 'none',
+                                    padding: '11px 20px',
+                                    fontSize: '15px',
+                                    color: '#fff',
+                                    border: 'none',
+                                    backgroundColor: '#c4161c',
+                                    fontWeight: 400,
+                                    borderRadius: '3px'
+                                }, target: "_blank", rel: "noopener noreferrer", children: "Get Started Now" }) })] }) }), _jsx(Section, { padding: `${theme.spacing.xxxl} 0`, children: _jsxs(Container, { children: [_jsx("h2", { style: { marginBottom: theme.spacing.xxl }, children: "Frequently Asked Questions" }), _jsx(FAQContainer, { children: [
                                 {
                                     q: '1. When does membership launch?',
-                                    a: 'Membership will officially open soon. Announcements will be posted on our website and social media.',
+                                    a: 'Membership is now open! Join today and become a founding member of TVK Canada.',
                                 },
                                 {
                                     q: '2. How do I get my membership card?',

@@ -259,75 +259,27 @@ export const EventsPage = () => {
     const upcomingEvents = [
         {
             id: 1,
-            title: 'Weekly Community Meetup',
-            date: 'December 4, 2025 • 6:00 PM EST',
-            location: 'Scarborough Town Centre, Toronto',
-            type: 'weekly',
-            description: 'Join us for casual discussions, networking, and community building. Light refreshments provided.',
-            memberOnly: false,
+            title: 'Jana Nayagan Music Launch Watch Party',
+            date: 'December 20, 2025 • 7:00 PM EST',
+            location: 'To Be Determined',
+            type: 'watch-party',
+            description: 'Join us for the exclusive music launch of Jana Nayagan! Experience Thalapathy Vijay\'s latest musical masterpiece with fellow fans across Canada.',
+            memberOnly: true,
             featured: true,
-            attendees: 45,
+            attendees: 25,
             maxAttendees: 100
         },
         {
             id: 2,
-            title: 'Vijay Movie Marathon Night',
-            date: 'December 7, 2025 • 7:00 PM EST',
-            location: 'Cineplex Cinemas Yonge-Dundas',
+            title: 'Jana Nayagan Movie WATCH PARTY',
+            date: 'January 15, 2026 • 8:00 PM EST',
+            location: 'To Be Determined',
             type: 'movie',
-            description: 'Experience classic Vijay films together! Members get discounted tickets and premium seating.',
+            description: 'Experience Jana Nayagan on the big screen with TVK Canada community! Special group booking with premium seating for all members.',
             memberOnly: true,
-            featured: false,
-            attendees: 78,
-            maxAttendees: 120
-        },
-        {
-            id: 3,
-            title: 'Tamil Cultural Festival',
-            date: 'December 15, 2025 • 2:00 PM EST',
-            location: 'Metro Toronto Convention Centre',
-            type: 'cultural',
-            description: 'Celebrate Tamil culture with traditional music, dance, food, and family activities.',
-            memberOnly: false,
             featured: true,
-            attendees: 156,
-            maxAttendees: 500
-        },
-        {
-            id: 4,
-            title: 'New Year Watch Party',
-            date: 'December 31, 2025 • 10:00 PM EST',
-            location: 'TVK Canada Headquarters',
-            type: 'watch-party',
-            description: 'Ring in the new year with fellow TVK fans! Special movie screening and countdown celebration.',
-            memberOnly: true,
-            featured: false,
-            attendees: 23,
-            maxAttendees: 80
-        },
-        {
-            id: 5,
-            title: 'Montreal Chapter Meetup',
-            date: 'January 5, 2026 • 3:00 PM EST',
-            location: 'Place des Arts, Montreal',
-            type: 'meetup',
-            description: 'Connect with TVK Montreal members for discussions and community building.',
-            memberOnly: false,
-            featured: false,
-            attendees: 12,
-            maxAttendees: 50
-        },
-        {
-            id: 6,
-            title: 'Family Fun Day',
-            date: 'January 12, 2026 • 11:00 AM EST',
-            location: 'Harbourfront Centre, Toronto',
-            type: 'family',
-            description: 'Bring the whole family for games, activities, and entertainment suitable for all ages.',
-            memberOnly: false,
-            featured: false,
-            attendees: 34,
-            maxAttendees: 200
+            attendees: 45,
+            maxAttendees: 150
         },
     ];
     const filters = [
@@ -353,7 +305,99 @@ export const EventsPage = () => {
     };
     // Google Calendar embed URL (you can replace this with your actual calendar)
     const calendarEmbedUrl = "https://calendar.google.com/calendar/embed?height=600&wkst=1&ctz=UTC&showPrint=0&title=TVK%20CANADA%20CALENDAR&src=MzMyMjcxOWZmZDcyMzQ0Y2RkMGI5YzYxZTE3ZGY3NzA2YmRkNmM1ZGNhYWI5ZGIxNDY4YmI3YThkNDE0YTliYkBncm91cC5jYWxlbmRhci5nb29nbGUuY29t&color=%238e24aa";
-    return (_jsxs(_Fragment, { children: [_jsx(SEO, { ...seoData.events }), _jsx(Section, { padding: `${theme.spacing.xxxl} 0`, background: theme.colors.surface, children: _jsxs(Container, { children: [_jsx("h1", { style: {
+    return (_jsxs(_Fragment, { children: [_jsx(SEO, { ...seoData.events }), _jsx("script", { type: "application/ld+json", dangerouslySetInnerHTML: {
+                    __html: JSON.stringify({
+                        "@context": "https://schema.org",
+                        "@type": "EventSeries",
+                        "name": "TVK Canada Events",
+                        "description": "Exclusive Thalapathy Vijay fan events and Tamil community gatherings across Canada",
+                        "organizer": {
+                            "@type": "Organization",
+                            "name": "TVK Canada",
+                            "url": "https://tvkcanada.family"
+                        },
+                        "location": {
+                            "@type": "Place",
+                            "name": "Various Locations across Canada",
+                            "address": {
+                                "@type": "PostalAddress",
+                                "addressCountry": "CA"
+                            }
+                        }
+                    })
+                } }), _jsx("script", { type: "application/ld+json", dangerouslySetInnerHTML: {
+                    __html: JSON.stringify([
+                        {
+                            "@context": "https://schema.org",
+                            "@type": "Event",
+                            "name": "Jana Nayagan Music Launch Watch Party",
+                            "description": "Join us for the exclusive music launch of Jana Nayagan! Experience Thalapathy Vijay's latest musical masterpiece with fellow fans across Canada.",
+                            "startDate": "2025-12-20T19:00:00-05:00",
+                            "endDate": "2025-12-20T21:00:00-05:00",
+                            "eventStatus": "https://schema.org/EventScheduled",
+                            "eventAttendanceMode": "https://schema.org/OnlineEventAttendanceMode",
+                            "location": {
+                                "@type": "VirtualLocation",
+                                "name": "Online Event (Zoom)",
+                                "url": "https://tvkcanada.family/events"
+                            },
+                            "organizer": {
+                                "@type": "Organization",
+                                "name": "TVK Canada",
+                                "url": "https://tvkcanada.family"
+                            },
+                            "image": "https://tvkcanada.family/android-chrome-192x192.png",
+                            "offers": {
+                                "@type": "Offer",
+                                "price": "0",
+                                "priceCurrency": "CAD",
+                                "availability": "https://schema.org/InStock",
+                                "validFrom": "2025-12-14",
+                                "description": "Free for TVK Canada members"
+                            },
+                            "performer": {
+                                "@type": "Person",
+                                "name": "Thalapathy Vijay"
+                            }
+                        },
+                        {
+                            "@context": "https://schema.org",
+                            "@type": "Event",
+                            "name": "Jana Nayagan Movie WATCH PARTY",
+                            "description": "Experience Jana Nayagan on the big screen with TVK Canada community! Special group booking with premium seating for all members.",
+                            "startDate": "2026-01-15T20:00:00-05:00",
+                            "endDate": "2026-01-15T23:00:00-05:00",
+                            "eventStatus": "https://schema.org/EventScheduled",
+                            "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+                            "location": {
+                                "@type": "Place",
+                                "name": "To Be Determined",
+                                "address": {
+                                    "@type": "PostalAddress",
+                                    "addressCountry": "CA"
+                                }
+                            },
+                            "organizer": {
+                                "@type": "Organization",
+                                "name": "TVK Canada",
+                                "url": "https://tvkcanada.family"
+                            },
+                            "image": "https://tvkcanada.family/android-chrome-192x192.png",
+                            "offers": {
+                                "@type": "Offer",
+                                "price": "0",
+                                "priceCurrency": "CAD",
+                                "availability": "https://schema.org/InStock",
+                                "validFrom": "2025-12-14",
+                                "description": "Free for TVK Canada members"
+                            },
+                            "performer": {
+                                "@type": "Person",
+                                "name": "Thalapathy Vijay"
+                            }
+                        }
+                    ])
+                } }), _jsx(Section, { padding: `${theme.spacing.xxxl} 0`, background: theme.colors.surface, children: _jsxs(Container, { children: [_jsx("h1", { style: {
                                 textAlign: 'center',
                                 marginBottom: theme.spacing.lg,
                                 fontSize: theme.typography.fontSize['4xl'],

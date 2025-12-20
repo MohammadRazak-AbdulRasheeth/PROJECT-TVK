@@ -31,6 +31,13 @@ RewriteRule . /index.html [L]
     AddOutputFilterByType DEFLATE application/xml application/xhtml+xml application/rss+xml
     AddOutputFilterByType DEFLATE application/javascript application/x-javascript
     AddOutputFilterByType DEFLATE image/svg+xml
+    AddOutputFilterByType DEFLATE image/x-icon
+</IfModule>
+
+# Set proper MIME types for favicon files
+<IfModule mod_mime.c>
+    AddType image/x-icon .ico
+    AddType image/png .png
 </IfModule>
 
 # Cache headers for static assets
@@ -43,6 +50,13 @@ RewriteRule . /index.html [L]
     ExpiresByType image/jpeg "access plus 1 year"
     ExpiresByType image/gif "access plus 1 year"
     ExpiresByType image/svg+xml "access plus 1 year"
+    ExpiresByType image/x-icon "access plus 1 year"
     ExpiresByType font/woff "access plus 1 year"
     ExpiresByType font/woff2 "access plus 1 year"
 </IfModule>
+
+# Ensure favicon.ico is accessible
+<Files "favicon.ico">
+    Order Allow,Deny
+    Allow from all
+</Files>

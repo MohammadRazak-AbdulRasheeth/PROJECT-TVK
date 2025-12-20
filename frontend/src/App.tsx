@@ -23,6 +23,7 @@ import { EventsPage } from '@pages/Events'
 import { GlobalNetworkPage } from '@pages/GlobalNetwork'
 import { GalleryPage } from '@pages/Gallery'
 import { ContactPage } from '@pages/Contact'
+import { FAQPage } from '@pages/FAQ'
 
 /**
  * Scroll to top on route change component
@@ -62,6 +63,7 @@ const AppContent: React.FC = () => {
           <Route path="/global-network" element={<GlobalNetworkPage />} />
           <Route path="/gallery" element={<GalleryPage />} />
           <Route path="/contact" element={<ContactPage />} />
+          <Route path="/faq" element={<FAQPage />} />
           {/* Catch-all route for 404 pages */}
           <Route path="*" element={<NotFound />} />
         </Routes>
