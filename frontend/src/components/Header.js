@@ -53,7 +53,7 @@ const Logo = styled(Link) `
   }
 
   img {
-    height: 50px;
+    height: 65px;
     width: auto;
     border-radius: ${theme.borderRadius.md};
     box-shadow: ${theme.shadows.md};
@@ -63,7 +63,7 @@ const Logo = styled(Link) `
     font-size: ${theme.typography.fontSize.xl};
 
     img {
-      height: 45px;
+      height: 58px;
     }
   }
 
@@ -71,7 +71,7 @@ const Logo = styled(Link) `
     font-size: ${theme.typography.fontSize.lg};
 
     img {
-      height: 40px;
+      height: 52px;
     }
 
     span {
@@ -83,7 +83,7 @@ const Logo = styled(Link) `
     font-size: ${theme.typography.fontSize.xl};
     
     img {
-      height: 40px;
+      height: 50px;
     }
   }
 
@@ -91,7 +91,7 @@ const Logo = styled(Link) `
     font-size: ${theme.typography.fontSize.lg};
 
     img {
-      height: 35px;
+      height: 45px;
     }
 
     span {

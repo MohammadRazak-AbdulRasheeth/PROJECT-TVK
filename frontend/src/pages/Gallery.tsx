@@ -8,6 +8,7 @@ import { theme } from '@styles/theme'
 import { getGalleryImages } from '@utils/images'
 import { Container, Section, Grid } from '@components/Layout'
 import { SEO, seoData } from '@components/SEO'
+import { AdUnit } from '@components/AdUnit'
 
 const GalleryImage = styled.img`
   width: 100%;
@@ -130,11 +131,17 @@ export const GalleryPage: React.FC = () => {
             </p>
           </GalleryHeader>
 
+          {/* Ad Unit - Top of Gallery */}
+          <AdUnit />
+
           <Grid columns={3} gap={theme.spacing.lg}>
             {galleryImages.map((imgSrc, idx) => (
               <GalleryImage key={idx} src={imgSrc} alt={`Gallery moment ${idx + 1}`} loading="lazy" />
             ))}
           </Grid>
+
+          {/* Ad Unit - Bottom of Gallery */}
+          <AdUnit />
         </Container>
       </Section>
     </>

@@ -3,7 +3,7 @@
  */
 
 export const images = {
-  logo: '/logo.svg',
+  logo: '/tvk-canada-logo.png',
   logoFallback: '/logo-large.svg',
 
   gallery: {

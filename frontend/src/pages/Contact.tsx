@@ -254,7 +254,7 @@ export const ContactPage: React.FC = () => {
                 </ContactIcon>
                 <ContactDetails>
                   <h3>WhatsApp</h3>
-                  <a href="https://wa.me/1234567890">Contact via WhatsApp</a>
+                  <a href="https://wa.me/16136666852">+1 (613) 666-6852</a>
                 </ContactDetails>
               </ContactInfoItem>
               <ContactInfoItem>
@@ -381,7 +381,36 @@ export const ContactPage: React.FC = () => {
               <br /><br />
               <em>Corporate partners gain visibility across our Canada-wide network, event promotions, social media spotlights, and special recognition within our membership community.</em>
             </p>
-            <Button variant="secondary">Become a Corporate Partner</Button>
+            <a 
+              href="mailto:contact@tvkcanada.family"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                padding: `${theme.spacing.md} ${theme.spacing.lg}`,
+                backgroundColor: theme.colors.secondary,
+                color: theme.colors.text.primary,
+                fontWeight: theme.typography.fontWeight.semibold,
+                borderRadius: theme.borderRadius.lg,
+                textDecoration: 'none',
+                fontSize: theme.typography.fontSize.base,
+                minHeight: '44px',
+                transition: `all ${theme.transitions.base}`,
+                cursor: 'pointer'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = '#ffed4e'
+                e.currentTarget.style.transform = 'translateY(-2px)'
+                e.currentTarget.style.boxShadow = theme.shadows.lg
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = theme.colors.secondary
+                e.currentTarget.style.transform = 'translateY(0)'
+                e.currentTarget.style.boxShadow = 'none'
+              }}
+            >
+              Become a Corporate Partner
+            </a>
           </div>
         </Container>
       </Section>
