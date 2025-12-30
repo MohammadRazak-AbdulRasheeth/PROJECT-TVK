@@ -3,7 +3,7 @@ import { jsx as _jsx, jsxs as _jsxs, Fragment as _Fragment } from "react/jsx-run
  * Fully Responsive Header component with mobile menu
  */
 import { useState, useEffect, useRef } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import { theme } from '@styles/theme';
 import { images } from '@utils/images';
@@ -169,13 +169,15 @@ const MobileNav = styled.nav.withConfig({
     padding: 70px ${theme.spacing.lg} ${theme.spacing.lg};
   }
 `;
-const NavLink = styled(Link) `
-  color: ${theme.colors.text.inverse};
+const NavLink = styled(Link).withConfig({
+    shouldForwardProp: (prop) => prop !== 'isActive'
+}) `
+  color: ${props => props.isActive ? theme.colors.secondary : theme.colors.text.inverse};
   text-decoration: none;
   font-weight: ${theme.typography.fontWeight.semibold};
   transition: all ${theme.transitions.base};
   padding: ${theme.spacing.sm} 0;
-  border-bottom: 2px solid transparent;
+  border-bottom: 2px solid ${props => props.isActive ? theme.colors.secondary : 'transparent'};
   position: relative;
   white-space: nowrap;
   font-size: ${theme.typography.fontSize.base};
@@ -204,10 +206,11 @@ const NavLink = styled(Link) `
   @media (max-width: ${theme.breakpoints.tablet}) {
     padding: ${theme.spacing.md} ${theme.spacing.lg};
     font-size: ${theme.typography.fontSize.lg};
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid ${props => props.isActive ? theme.colors.secondary : 'rgba(255, 255, 255, 0.1)'};
     border-radius: ${theme.borderRadius.md};
     margin: ${theme.spacing.xs} 0;
     white-space: normal;
+    background: ${props => props.isActive ? 'rgba(255, 255, 255, 0.15)' : 'transparent'};
 
     &:hover {
       background: rgba(255, 255, 255, 0.1);
@@ -364,7 +367,15 @@ export const Header = () => {
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const dropdownRef = useRef(null);
     const navigate = useNavigate();
+    const location = useLocation();
     const { user, logout, isLoading } = useAuth();
+    // Helper function to check if a path is active
+    const isActivePath = (path) => {
+        if (path === '/') {
+            return location.pathname === '/';
+        }
+        return location.pathname.startsWith(path);
+    };
     const toggleMenu = () => {
         setIsMenuOpen(!isMenuOpen);
     };
@@ -416,7 +427,7 @@ export const Header = () => {
                                             return;
                                         target.dataset.fallbackApplied = 'true';
                                         target.src = images.logoFallback || images.logo;
-                                    }, style: { objectFit: 'contain', background: 'transparent' } }), _jsx("span", { children: "TVK CANADA" })] }), _jsxs(DesktopNav, { children: [_jsx(NavLink, { to: "/", children: "Home" }), _jsx(NavLink, { to: "/about", children: "About Us" }), _jsx(NavLink, { to: "/membership", children: "Membership" }), _jsx(NavLink, { to: "/events", children: "Events" }), _jsx(NavLink, { to: "/global-network", children: "Global Network" }), _jsx(NavLink, { to: "/gallery", children: "Gallery" }), _jsx(NavLink, { to: "/contact", children: "Contact" }), _jsx(NavLink, { to: "/faq", children: "FAQ" })] }), _jsxs(ButtonGroup, { children: [isLoading ? (_jsx("div", { style: {
+                                    }, style: { objectFit: 'contain', background: 'transparent' } }), _jsx("span", { children: "TVK CANADA" })] }), _jsxs(DesktopNav, { children: [_jsx(NavLink, { to: "/", isActive: isActivePath('/'), children: "Home" }), _jsx(NavLink, { to: "/about", isActive: isActivePath('/about'), children: "About Us" }), _jsx(NavLink, { to: "/programs", isActive: isActivePath('/programs'), children: "Programs" }), _jsx(NavLink, { to: "/events", isActive: isActivePath('/events'), children: "Events" }), _jsx(NavLink, { to: "/join", isActive: isActivePath('/join'), children: "Join Free" }), _jsx(NavLink, { to: "/global-network", isActive: isActivePath('/global-network'), children: "Global Network" }), _jsx(NavLink, { to: "/gallery", isActive: isActivePath('/gallery'), children: "Gallery" }), _jsx(NavLink, { to: "/contact", isActive: isActivePath('/contact'), children: "Contact" })] }), _jsxs(ButtonGroup, { children: [isLoading ? (_jsx("div", { style: {
                                         padding: theme.spacing.sm,
                                         color: theme.colors.text.inverse,
                                         fontSize: theme.typography.fontSize.sm,
@@ -430,7 +441,7 @@ export const Header = () => {
                                         backgroundColor: '#f5c400',
                                         fontWeight: 400,
                                         borderRadius: '3px'
-                                    }, target: "_blank", rel: "noopener noreferrer", children: "LOGIN" })), _jsx(MobileMenuButton, { onClick: toggleMenu, "aria-label": isMenuOpen ? 'Close menu' : 'Open menu', "aria-expanded": isMenuOpen, children: isMenuOpen ? '✕' : '☰' })] })] }) }), _jsxs(MobileNav, { isOpen: isMenuOpen, children: [_jsx(NavLink, { to: "/", onClick: closeMenu, children: "Home" }), _jsx(NavLink, { to: "/about", onClick: closeMenu, children: "About Us" }), _jsx(NavLink, { to: "/membership", onClick: closeMenu, children: "Membership" }), _jsx(NavLink, { to: "/events", onClick: closeMenu, children: "Events" }), _jsx(NavLink, { to: "/global-network", onClick: closeMenu, children: "Global Network" }), _jsx(NavLink, { to: "/gallery", onClick: closeMenu, children: "Gallery" }), _jsx(NavLink, { to: "/contact", onClick: closeMenu, children: "Contact" }), _jsx(NavLink, { to: "/faq", onClick: closeMenu, children: "FAQ" }), isLoading ? (_jsx("div", { style: {
+                                    }, target: "_blank", rel: "noopener noreferrer", children: "LOGIN" })), _jsx(MobileMenuButton, { onClick: toggleMenu, "aria-label": isMenuOpen ? 'Close menu' : 'Open menu', "aria-expanded": isMenuOpen, children: isMenuOpen ? '✕' : '☰' })] })] }) }), _jsxs(MobileNav, { isOpen: isMenuOpen, children: [_jsx(NavLink, { to: "/", onClick: closeMenu, isActive: isActivePath('/'), children: "Home" }), _jsx(NavLink, { to: "/about", onClick: closeMenu, isActive: isActivePath('/about'), children: "About Us" }), _jsx(NavLink, { to: "/programs", onClick: closeMenu, isActive: isActivePath('/programs'), children: "Programs" }), _jsx(NavLink, { to: "/events", onClick: closeMenu, isActive: isActivePath('/events'), children: "Events" }), _jsx(NavLink, { to: "/join", onClick: closeMenu, isActive: isActivePath('/join'), children: "Join Free" }), _jsx(NavLink, { to: "/global-network", onClick: closeMenu, isActive: isActivePath('/global-network'), children: "Global Network" }), _jsx(NavLink, { to: "/gallery", onClick: closeMenu, isActive: isActivePath('/gallery'), children: "Gallery" }), _jsx(NavLink, { to: "/contact", onClick: closeMenu, isActive: isActivePath('/contact'), children: "Contact" }), isLoading ? (_jsx("div", { style: {
                             marginTop: theme.spacing.lg,
                             padding: theme.spacing.lg,
                             background: 'rgba(255,255,255,0.1)',

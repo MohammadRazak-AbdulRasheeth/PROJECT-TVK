@@ -259,6 +259,45 @@ export const EventsPage = () => {
     const upcomingEvents = [
         {
             id: 1,
+            title: 'Mental Health Drop-In',
+            date: 'Weekly (Starting after Pongal)',
+            location: 'To Be Announced',
+            type: 'wellness',
+            description: 'A safe, supportive space to connect, share, and grow together. Open conversations about mental wellness in a judgment-free environment.',
+            memberOnly: false,
+            featured: true,
+            attendees: 0,
+            maxAttendees: 20,
+            price: 'Free'
+        },
+        {
+            id: 2,
+            title: 'Basketball Drop-In',
+            date: 'Weekly',
+            location: 'Durham Region',
+            type: 'sports',
+            description: '1.5 hours of play + 30 mins setup. All skill levels welcome. Great way to stay active and meet fellow community members.',
+            memberOnly: false,
+            featured: true,
+            attendees: 8,
+            maxAttendees: 20,
+            price: '$15'
+        },
+        {
+            id: 3,
+            title: 'Indoor Sports On-Demand',
+            date: 'Starting January 15, 2025',
+            location: 'Multiple Locations',
+            type: 'sports',
+            description: 'Have a sport your group wants to play? We organize based on community interest. Badminton, volleyball, table tennis, and more.',
+            memberOnly: false,
+            featured: false,
+            attendees: 0,
+            maxAttendees: 30,
+            price: 'Varies'
+        },
+        {
+            id: 4,
             title: 'Jana Nayagan Music Launch Watch Party',
             date: 'December 20, 2025 • 7:00 PM EST',
             location: 'To Be Determined',
@@ -267,10 +306,11 @@ export const EventsPage = () => {
             memberOnly: true,
             featured: true,
             attendees: 25,
-            maxAttendees: 100
+            maxAttendees: 100,
+            price: 'Members First'
         },
         {
-            id: 2,
+            id: 5,
             title: 'Jana Nayagan Movie WATCH PARTY',
             date: 'January 15, 2026 • 8:00 PM EST',
             location: 'To Be Determined',
@@ -279,20 +319,23 @@ export const EventsPage = () => {
             memberOnly: true,
             featured: true,
             attendees: 45,
-            maxAttendees: 150
+            maxAttendees: 150,
+            price: 'Members First'
         },
     ];
     const filters = [
         { key: 'all', label: 'All Events', count: upcomingEvents.length },
-        { key: 'member', label: 'Member Only', count: upcomingEvents.filter(e => e.memberOnly).length },
-        { key: 'public', label: 'Public Events', count: upcomingEvents.filter(e => !e.memberOnly).length },
-        { key: 'featured', label: 'Featured', count: upcomingEvents.filter(e => e.featured).length }
+        { key: 'sports', label: 'Sports', count: upcomingEvents.filter(e => e.type === 'sports').length },
+        { key: 'wellness', label: 'Wellness', count: upcomingEvents.filter(e => e.type === 'wellness').length },
+        { key: 'movie', label: 'Movies', count: upcomingEvents.filter(e => e.type === 'movie' || e.type === 'watch-party').length },
+        { key: 'member', label: 'Member Only', count: upcomingEvents.filter(e => e.memberOnly).length }
     ];
     const filteredEvents = upcomingEvents.filter(event => {
         switch (activeFilter) {
             case 'member': return event.memberOnly;
-            case 'public': return !event.memberOnly;
-            case 'featured': return event.featured;
+            case 'sports': return event.type === 'sports';
+            case 'wellness': return event.type === 'wellness';
+            case 'movie': return event.type === 'movie' || event.type === 'watch-party';
             default: return true;
         }
     });
@@ -403,14 +446,14 @@ export const EventsPage = () => {
                                 fontSize: theme.typography.fontSize['4xl'],
                                 fontWeight: theme.typography.fontWeight.bold,
                                 color: theme.colors.primary
-                            }, children: "TVK Canada Events & Calendar - Join Thalapathy Celebrations" }), _jsx("p", { style: {
+                            }, children: "Programs & Events" }), _jsx("p", { style: {
                                 textAlign: 'center',
                                 marginBottom: theme.spacing.xxxl,
                                 fontSize: '18px',
                                 color: theme.colors.text.secondary,
-                                maxWidth: '600px',
+                                maxWidth: '700px',
                                 margin: `0 auto ${theme.spacing.xxxl} auto`
-                            }, children: "Join Tamizhaga Vetri Kazhagam Canada for weekly events, cultural gatherings, and community celebrations across the country." })] }) }), _jsx(Section, { padding: `${theme.spacing.xxxl} 0`, children: _jsxs(Container, { children: [_jsx("h2", { style: { marginBottom: theme.spacing.lg, textAlign: 'center' }, children: "Public Calendar" }), _jsxs(CalendarContainer, { children: [_jsxs(CalendarHeader, { children: [_jsxs("h3", { children: ["\uD83D\uDCC5 TVK Canada Events - ", currentMonth] }), _jsxs("div", { className: "controls", children: [_jsx("button", { onClick: () => setCurrentMonth(new Date().toLocaleString('default', { month: 'long', year: 'numeric' })), children: "Today" }), _jsx("button", { onClick: () => window.open(calendarEmbedUrl.replace('/embed', ''), '_blank'), children: "Full Calendar" })] })] }), _jsx(GoogleCalendarEmbed, { children: _jsx("iframe", { src: calendarEmbedUrl, title: "TVK Canada Events Calendar", frameBorder: "0", scrolling: "no" }) })] })] }) }), _jsx(Section, { padding: `${theme.spacing.xxxl} 0`, background: theme.colors.surface, children: _jsxs(Container, { children: [_jsx("h2", { style: { marginBottom: theme.spacing.xl, textAlign: 'center' }, children: "Upcoming Events" }), _jsx(FilterTabs, { children: filters.map(filter => (_jsxs(FilterTab, { active: activeFilter === filter.key, onClick: () => setActiveFilter(filter.key), children: [filter.label, " (", filter.count, ")"] }, filter.key))) }), _jsx(Grid, { columns: 2, gap: theme.spacing.xl, children: filteredEvents.map((event) => (_jsxs(EventCard, { featured: event.featured, children: [_jsxs("div", { className: "event-header", children: [_jsx("h4", { children: event.title }), _jsx("div", { className: "event-badge", children: event.memberOnly ? '🔒 Member Only' : '🌟 Open to All' })] }), _jsx("div", { className: "date", children: event.date }), _jsx("div", { className: "location", children: event.location }), _jsx("p", { children: event.description }), _jsxs("div", { className: "rsvp-section", children: [_jsxs("div", { className: "attendees", children: ["\uD83D\uDC65 ", event.attendees, "/", event.maxAttendees, " attending"] }), _jsx(Button, { variant: event.featured ? "secondary" : "primary", size: "sm", onClick: () => handleRSVP(event.id), disabled: event.memberOnly && !isAuthenticated, children: event.memberOnly && !isAuthenticated ? 'Login Required' : 'RSVP' })] })] }, event.id))) }), filteredEvents.length === 0 && (_jsxs("div", { style: { textAlign: 'center', padding: theme.spacing.xxxl, color: theme.colors.text.secondary }, children: [_jsx("h3", { children: "No events found for the selected filter." }), _jsx("p", { children: "Try selecting a different filter or check back later for new events." })] }))] }) }), _jsx(Section, { padding: `${theme.spacing.xxxl} 0`, children: _jsx(Container, { children: _jsxs("div", { style: {
+                            }, children: "Drop-in sports, mental health support, movie nights, and community gatherings. Join us for activities that bring our family together." })] }) }), _jsx(Section, { padding: `${theme.spacing.xxxl} 0`, children: _jsxs(Container, { children: [_jsx("h2", { style: { marginBottom: theme.spacing.lg, textAlign: 'center' }, children: "Public Calendar" }), _jsxs(CalendarContainer, { children: [_jsxs(CalendarHeader, { children: [_jsxs("h3", { children: ["\uD83D\uDCC5 TVK Canada Events - ", currentMonth] }), _jsxs("div", { className: "controls", children: [_jsx("button", { onClick: () => setCurrentMonth(new Date().toLocaleString('default', { month: 'long', year: 'numeric' })), children: "Today" }), _jsx("button", { onClick: () => window.open(calendarEmbedUrl.replace('/embed', ''), '_blank'), children: "Full Calendar" })] })] }), _jsx(GoogleCalendarEmbed, { children: _jsx("iframe", { src: calendarEmbedUrl, title: "TVK Canada Events Calendar", frameBorder: "0", scrolling: "no" }) })] })] }) }), _jsx(Section, { padding: `${theme.spacing.xxxl} 0`, background: theme.colors.surface, children: _jsxs(Container, { children: [_jsx("h2", { style: { marginBottom: theme.spacing.xl, textAlign: 'center' }, children: "Upcoming Events" }), _jsx(FilterTabs, { children: filters.map(filter => (_jsxs(FilterTab, { active: activeFilter === filter.key, onClick: () => setActiveFilter(filter.key), children: [filter.label, " (", filter.count, ")"] }, filter.key))) }), _jsx(Grid, { columns: 2, gap: theme.spacing.xl, children: filteredEvents.map((event) => (_jsxs(EventCard, { featured: event.featured, children: [_jsxs("div", { className: "event-header", children: [_jsx("h4", { children: event.title }), _jsx("div", { className: "event-badge", children: event.memberOnly ? '🔒 Member Only' : '🌟 Open to All' })] }), _jsx("div", { className: "date", children: event.date }), _jsx("div", { className: "location", children: event.location }), _jsx("p", { children: event.description }), _jsxs("div", { className: "rsvp-section", children: [_jsxs("div", { className: "attendees", children: [_jsxs("span", { style: { marginRight: '12px' }, children: ["\uD83D\uDCB0 ", event.price] }), "\uD83D\uDC65 ", event.attendees, "/", event.maxAttendees, " attending"] }), _jsx(Button, { variant: event.featured ? "secondary" : "primary", size: "sm", onClick: () => handleRSVP(event.id), disabled: event.memberOnly && !isAuthenticated, children: event.memberOnly && !isAuthenticated ? 'Login Required' : 'RSVP' })] })] }, event.id))) }), filteredEvents.length === 0 && (_jsxs("div", { style: { textAlign: 'center', padding: theme.spacing.xxxl, color: theme.colors.text.secondary }, children: [_jsx("h3", { children: "No events found for the selected filter." }), _jsx("p", { children: "Try selecting a different filter or check back later for new events." })] }))] }) }), _jsx(Section, { padding: `${theme.spacing.xxxl} 0`, children: _jsx(Container, { children: _jsxs("div", { style: {
                             textAlign: 'center',
                             background: `linear-gradient(135deg, ${theme.colors.primary}15 0%, ${theme.colors.secondary}15 100%)`,
                             padding: theme.spacing.xxxl,

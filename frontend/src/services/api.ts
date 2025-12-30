@@ -108,3 +108,26 @@ export const globalNetworkService = {
     return response.data
   }
 }
+
+// Community Member services
+export const communityMemberService = {
+  checkEmail: async (email: string) => {
+    const response = await api.get(`/community/check-email?email=${encodeURIComponent(email)}`)
+    return response.data
+  },
+  
+  signup: async (data: {
+    firstName: string
+    lastName: string
+    email: string
+    phone: string
+    city: string
+    ageRange: string
+    interests: string[]
+    emailConsent: boolean
+    smsConsent: boolean
+  }) => {
+    const response = await api.post('/community/signup', data)
+    return response.data
+  }
+}

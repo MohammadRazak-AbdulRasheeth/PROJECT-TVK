@@ -32,10 +32,10 @@ export const MembershipProvider: React.FC<{ children: ReactNode }> = ({ children
           description: plan.name,
           perks: [
             'Official TVK Canada membership card',
-            'Access to exclusive events',
-            'Member-only discounts with partners',
-            'Early access to event registration',
-            'Community forum access',
+            'Priority access to community events',
+            'Member discounts with partners',
+            'Early access to program registration',
+            'Community updates and newsletter',
           ],
         })))
       } catch (error) {

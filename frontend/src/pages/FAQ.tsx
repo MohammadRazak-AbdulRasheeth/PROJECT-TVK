@@ -189,47 +189,41 @@ export const FAQPage: React.FC = () => {
             </CategorySection>
 
             <CategorySection>
-              <h2>Membership</h2>
+              <h2>Community Membership</h2>
               
               <FAQItem>
-                <FAQSummary>How much does membership cost?</FAQSummary>
+                <FAQSummary>Is it free to join TVK Canada?</FAQSummary>
                 <FAQAnswer>
-                  <p>We offer flexible membership options:</p>
-                  <ul>
-                    <li><strong>Monthly:</strong> $15/month</li>
-                    <li><strong>Yearly:</strong> $150/year (Save $30!)</li>
-                    <li><strong>Lifetime:</strong> $500 one-time (Best value)</li>
-                  </ul>
-                  <p>All memberships include access to exclusive events, community networking, and special member benefits.</p>
+                  <p><strong>Yes! Joining TVK Canada is completely free.</strong> We're a community-first organization focused on wellness, mental health, sports, and growth. No payment is required to become a community member.</p>
                 </FAQAnswer>
               </FAQItem>
 
               <FAQItem>
                 <FAQSummary>Is membership currently open?</FAQSummary>
                 <FAQAnswer>
-                  <p><strong>Yes! Membership is now open.</strong> We're accepting new members and building our community across Canada. Join today to be part of the founding members of TVK Canada.</p>
+                  <p><strong>Yes! Community membership is now open.</strong> We're welcoming new members and building our family across Canada. Join today to be part of the TVK Canada community.</p>
                 </FAQAnswer>
               </FAQItem>
 
               <FAQItem>
-                <FAQSummary>What benefits do members get?</FAQSummary>
+                <FAQSummary>What benefits do community members get?</FAQSummary>
                 <FAQAnswer>
-                  <p>TVK Canada members enjoy:</p>
+                  <p>TVK Canada community members enjoy:</p>
                   <ul>
-                    <li>Exclusive access to member-only events and movie premieres</li>
-                    <li>Early bird discounts for all TVK activities</li>
-                    <li>Direct networking with Tamil professionals across Canada</li>
-                    <li>Access to our private member community and forums</li>
-                    <li>Special merchandise and collectibles</li>
-                    <li>Priority booking for limited-capacity events</li>
+                    <li>Updates on programs and events</li>
+                    <li>Early access to drop-in registrations</li>
+                    <li>Priority booking for movie nights</li>
+                    <li>Community newsletter</li>
+                    <li>Networking with Tamil community members across Canada</li>
+                    <li>Future member perks and discounts</li>
                   </ul>
                 </FAQAnswer>
               </FAQItem>
 
               <FAQItem>
-                <FAQSummary>Can I cancel my membership anytime?</FAQSummary>
+                <FAQSummary>Are there any paid programs?</FAQSummary>
                 <FAQAnswer>
-                  <p>Yes, you can cancel your monthly or yearly membership at any time through your member dashboard. Lifetime memberships are non-refundable but provide permanent access to TVK Canada benefits.</p>
+                  <p>Some drop-in programs have a small fee to cover venue costs (e.g., Basketball Drop-In is $15 per session). However, many programs like Mental Health Drop-In are completely free. Check the Programs page for specific pricing.</p>
                 </FAQAnswer>
               </FAQItem>
             </CategorySection>
@@ -238,37 +232,44 @@ export const FAQPage: React.FC = () => {
               <h2>Events & Activities</h2>
               
               <FAQItem>
-                <FAQSummary>When will the TVK events start?</FAQSummary>
+                <FAQSummary>What programs does TVK Canada offer?</FAQSummary>
                 <FAQAnswer>
-                  <p>Our full service event rollout will begin once we reach 200 members. However, online events will start as soon as we reach 100 members, so members can begin engaging early.</p>
+                  <p>We offer a variety of community programs including:</p>
+                  <ul>
+                    <li><strong>Mental Health Drop-In:</strong> Weekly, free sessions starting after Pongal</li>
+                    <li><strong>Basketball Drop-In:</strong> Weekly in Durham Region, $15 per session</li>
+                    <li><strong>Indoor Sports On-Demand:</strong> Starting January 15, based on group interest</li>
+                    <li><strong>Summer Sports:</strong> Cricket and more outdoor activities</li>
+                    <li><strong>Monthly Movie Watch Parties:</strong> Community members get priority access</li>
+                  </ul>
                 </FAQAnswer>
               </FAQItem>
 
               <FAQItem>
-                <FAQSummary>What kind of events are you looking to run?</FAQSummary>
+                <FAQSummary>How do I participate in drop-in programs?</FAQSummary>
                 <FAQAnswer>
-                  <p>We plan to offer motivational group sessions and organize recreational programs based on the interests and feedback of our members, ensuring events are relevant and community-driven.</p>
+                  <p>Simply join TVK Canada for free to receive updates about upcoming programs. When a program is scheduled, community members get early access to register. Some programs may have a small fee to cover venue costs.</p>
                 </FAQAnswer>
               </FAQItem>
 
               <FAQItem>
-                <FAQSummary>Will we be charged before the events start?</FAQSummary>
+                <FAQSummary>Can I suggest a new program or sport?</FAQSummary>
                 <FAQAnswer>
-                  <p>No. We are currently offering a free promotional period, and this period will be extended if needed to ensure members experience value before any charges apply.</p>
+                  <p>Absolutely! We organize programs based on community interest. If you have a sport or activity you'd like to see, contact us through our Contact page or reach out on social media. We're building this community together!</p>
                 </FAQAnswer>
               </FAQItem>
 
               <FAQItem>
                 <FAQSummary>Are events held in all cities?</FAQSummary>
                 <FAQAnswer>
-                  <p>We aim to organize events in all major Canadian cities with significant Tamil populations. Initially, events will be concentrated in Toronto, Vancouver, and Calgary, with expansion to other cities as our membership grows.</p>
+                  <p>We aim to organize events in all major Canadian cities with significant Tamil populations. Initially, events will be concentrated in Toronto, Vancouver, and Calgary, with expansion to other cities as our community grows.</p>
                 </FAQAnswer>
               </FAQItem>
 
               <FAQItem>
-                <FAQSummary>Can non-members attend public events?</FAQSummary>
+                <FAQSummary>Can anyone attend events?</FAQSummary>
                 <FAQAnswer>
-                  <p>Some of our events are open to the general public, while others are exclusive to members. Check the event details on our Events page for specific access requirements.</p>
+                  <p>Most of our programs are open to all community members. Some events may have limited capacity, in which case registered community members get priority. Check the event details on our Events page for specific information.</p>
                 </FAQAnswer>
               </FAQItem>
             </CategorySection>
@@ -317,16 +318,16 @@ export const FAQPage: React.FC = () => {
               <h2>Technical & Website</h2>
               
               <FAQItem>
-                <FAQSummary>How do I reset my password?</FAQSummary>
+                <FAQSummary>How do I update my profile information?</FAQSummary>
                 <FAQAnswer>
-                  <p>Click on "Forgot Password" on the login page, enter your email address, and we'll send you a password reset link. If you continue to have issues, contact our support team.</p>
+                  <p>You can update your profile information by logging into your account and visiting your profile settings. If you need to change your email address, please contact our support team.</p>
                 </FAQAnswer>
               </FAQItem>
 
               <FAQItem>
-                <FAQSummary>Can I update my membership plan?</FAQSummary>
+                <FAQSummary>How do I stay updated on programs and events?</FAQSummary>
                 <FAQAnswer>
-                  <p>Yes, you can upgrade or downgrade your membership plan anytime through your member dashboard. Changes will take effect at your next billing cycle.</p>
+                  <p>Join TVK Canada for free to receive email updates about programs and events. You can also follow us on social media for the latest announcements.</p>
                 </FAQAnswer>
               </FAQItem>
 

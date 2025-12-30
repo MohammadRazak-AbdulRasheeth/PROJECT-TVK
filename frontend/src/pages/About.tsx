@@ -1,5 +1,6 @@
 /**
- * About Us Page - Premium Design
+ * About Us Page - Community-First Design
+ * Emphasizing family, wellness, mental health, growth, and civic responsibility
  */
 
 import React from 'react'
@@ -7,6 +8,7 @@ import styled from 'styled-components'
 import { theme } from '@styles/theme'
 import { Container, Section, Grid } from '@components/Layout'
 import { SEO, seoData } from '@components/SEO'
+import { FaHandshake, FaBrain, FaPersonRunning, FaStar, FaFilm, FaGlobe, FaSpa, FaBasketball, FaClapperboard, FaPeopleGroup } from 'react-icons/fa6'
 
 const Mission = styled.div`
   text-align: center;
@@ -243,8 +245,22 @@ const PhilosophyBox = styled.div`
   }
 `
 
+const ValueIcon = styled.div`
+  font-size: 32px;
+  color: ${theme.colors.primary};
+  margin-bottom: ${theme.spacing.md};
+  margin-top: ${theme.spacing.lg};
+`
+
+const ActivityIcon = styled.span`
+  display: inline-flex;
+  align-items: center;
+  margin-right: ${theme.spacing.sm};
+  color: ${theme.colors.primary};
+`
+
 /**
- * About Us Page Component - Premium Design
+ * About Us Page Component - Community-First Design
  */
 export const AboutPage: React.FC = () => {
   return (
@@ -261,8 +277,18 @@ export const AboutPage: React.FC = () => {
             fontWeight: theme.typography.fontWeight.extrabold,
             margin: 0
           }}>
-            About TVK Canada - Uniting Thalapathy Fans Across Canada
+            About TVK Canada
           </h1>
+          <p style={{
+            color: theme.colors.text.inverse,
+            textAlign: 'center',
+            fontSize: theme.typography.fontSize.lg,
+            opacity: 0.9,
+            marginTop: theme.spacing.md,
+            marginBottom: 0
+          }}>
+            More than a fan club. A family that grows, supports, and serves.
+          </p>
         </Container>
       </Section>
 
@@ -270,22 +296,21 @@ export const AboutPage: React.FC = () => {
       <Section padding={`${theme.spacing.xxxl} 0`} background={theme.colors.background}>
         <Container>
           <Mission>
-            <h2>Who Are We</h2>
+            <h2>Who We Are</h2>
             <p>
-              TVK Canada is the official fan club for Thalapathy Vijay in Canada, created to unite
-              fans, families, and Tamil Canadians through celebration, culture, and community. We
-              are a nonprofit organization built on passion, togetherness, and the shared
-              admiration for Vijay's talent, discipline, and values.
+              TVK Canada is a family of like-minded Thalapathy fans who support one another in 
+              wellness, growth, and community service. We are more than just a fan club – we are 
+              a community united by shared values, passion for culture, and commitment to 
+              meaningful connections.
             </p>
           </Mission>
 
           <Mission>
-            <h2>Our Mission</h2>
+            <h2>Our Purpose</h2>
             <p>
-              Our mission is to bring people together through meaningful community building,
-              memorable events, and a positive fan experience. We aim to create a welcoming space
-              where supporters of Vijay can connect, celebrate, and enjoy being part of a vibrant
-              Canadian fan community.
+              We exist to create a welcoming space where fans and families can come together 
+              beyond movies. Our focus is on wellness, mental health, sports, personal growth, 
+              and giving back to our communities across Canada.
             </p>
           </Mission>
         </Container>
@@ -295,30 +320,60 @@ export const AboutPage: React.FC = () => {
       <Section padding={`${theme.spacing.xxxl} 0`} background={theme.colors.surface}>
         <Container>
           <h2 style={{ textAlign: 'center', marginBottom: theme.spacing.xxl, fontSize: theme.typography.fontSize['3xl'], color: theme.colors.primary, fontWeight: theme.typography.fontWeight.extrabold }}>
-            Our Core Values
+            What We Stand For
           </h2>
           <ValuesGrid columns={3}>
             <ValueCard>
-              <h3>Unity</h3>
+              <ValueIcon><FaHandshake /></ValueIcon>
+              <h3>Family First</h3>
               <p>
-                Forming strong bonds across cities and cultures, bringing people together with
-                shared passion and purpose.
+                We treat every member as family. Supporting each other through life's 
+                challenges and celebrating together in good times.
               </p>
             </ValueCard>
 
             <ValueCard>
-              <h3>Democracy</h3>
+              <ValueIcon><FaBrain /></ValueIcon>
+              <h3>Wellness & Growth</h3>
               <p>
-                Encouraging openness, equality, and fairness within our community. Every voice
-                matters in our decision-making.
+                Mental health matters. We create safe spaces for open conversations, 
+                personal development, and holistic well-being.
               </p>
             </ValueCard>
 
             <ValueCard>
-              <h3>Respect</h3>
+              <ValueIcon><FaPersonRunning /></ValueIcon>
+              <h3>Active Living</h3>
               <p>
-                Treating everyone with kindness, dignity, and inclusiveness. We respect diverse
-                perspectives and backgrounds.
+                Sports and recreation bring us together. From basketball to cricket, 
+                we stay active and build friendships through play.
+              </p>
+            </ValueCard>
+
+            <ValueCard>
+              <ValueIcon><FaStar /></ValueIcon>
+              <h3>Giving Back</h3>
+              <p>
+                Civic responsibility is in our DNA. We volunteer, support local causes, 
+                and contribute positively to Canadian society.
+              </p>
+            </ValueCard>
+
+            <ValueCard>
+              <ValueIcon><FaFilm /></ValueIcon>
+              <h3>Celebrating Culture</h3>
+              <p>
+                Thalapathy's films inspire us, but our bond goes deeper. We celebrate 
+                Tamil culture, arts, and the values Vijay represents.
+              </p>
+            </ValueCard>
+
+            <ValueCard>
+              <ValueIcon><FaGlobe /></ValueIcon>
+              <h3>Inclusive Community</h3>
+              <p>
+                Everyone is welcome. We embrace diversity and create an environment 
+                where all feel they belong.
               </p>
             </ValueCard>
           </ValuesGrid>
@@ -329,24 +384,25 @@ export const AboutPage: React.FC = () => {
       <Section padding={`${theme.spacing.xxxl} 0`} background={theme.colors.background}>
         <Container>
           <h2 style={{ textAlign: 'center', marginBottom: theme.spacing.xxl, fontSize: theme.typography.fontSize['3xl'], color: theme.colors.primary, fontWeight: theme.typography.fontWeight.extrabold }}>
-            What We Do
+            How We Come Together
           </h2>
 
           <Grid columns={2} gap={theme.spacing.xl}>
             <div>
               <ActivitiesSection>
                 <ActivityItem>
-                  <h3>Movie Nights</h3>
+                  <h4><ActivityIcon><FaSpa /></ActivityIcon> Mental Health Drop-Ins</h4>
                   <p>
-                    Enjoy Vijay's films together with fellow fans in a communal, family-friendly
-                    setting.
+                    Weekly safe spaces for open conversations about wellness, stress, 
+                    and life challenges. No judgment, just support.
                   </p>
                 </ActivityItem>
 
                 <ActivityItem>
-                  <h3>Watch Parties</h3>
+                  <h4><ActivityIcon><FaBasketball /></ActivityIcon> Sports & Recreation</h4>
                   <p>
-                    Experience major releases and special moments together as a community.
+                    Basketball, cricket, badminton, and more. Drop-in sessions for all 
+                    skill levels to stay active and connected.
                   </p>
                 </ActivityItem>
               </ActivitiesSection>
@@ -355,16 +411,18 @@ export const AboutPage: React.FC = () => {
             <div>
               <ActivitiesSection>
                 <ActivityItem>
-                  <h3>Weekly Meetups</h3>
+                  <h4><ActivityIcon><FaClapperboard /></ActivityIcon> Movie Watch Parties</h4>
                   <p>
-                    Build friendships and community spirit through regular gatherings.
+                    Experience Thalapathy's films together on the big screen. 
+                    Members get priority access to group bookings.
                   </p>
                 </ActivityItem>
 
                 <ActivityItem>
-                  <h3>Cultural Gatherings</h3>
+                  <h4><ActivityIcon><FaPeopleGroup /></ActivityIcon> Community Service</h4>
                   <p>
-                    Celebrate Tamil culture through festivals, celebrations, and community events.
+                    Volunteering opportunities, charity drives, and initiatives 
+                    that give back to our Canadian communities.
                   </p>
                 </ActivityItem>
               </ActivitiesSection>
@@ -377,11 +435,12 @@ export const AboutPage: React.FC = () => {
       <Section padding={`${theme.spacing.xxxl} 0`} background={theme.colors.surface}>
         <Container>
           <PhilosophyBox>
-            <h2>More Than a Fan Club</h2>
+            <h2>More Than Movies. One Family. One Purpose.</h2>
             <p>
-              We are a joyful and growing Canadian community brought together by our love and
-              admiration for Thalapathy Vijay. More than just followers, we are a family united by
-              shared values, passion for culture, and commitment to meaningful community building.
+              We are a joyful and growing Canadian community brought together by our admiration 
+              for Thalapathy Vijay. But what keeps us together is bigger than fandom – it's the 
+              genuine care we have for each other's well-being, growth, and happiness. Whether 
+              you're here for the sports, the support, or the celebrations, you're family.
             </p>
           </PhilosophyBox>
         </Container>

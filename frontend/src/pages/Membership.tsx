@@ -9,6 +9,7 @@ import { Container, Section, Flex } from '@components/Layout'
 import { useAuth } from '../context/AuthContext'
 import { membershipService } from '../services/api'
 import { SEO, seoData } from '@components/SEO'
+import { FaGift } from 'react-icons/fa6'
 
 // const PricingCard = styled.div<{ featured?: boolean }>`
 //   background: ${(props) => (props.featured ? theme.colors.primary : theme.colors.surface)};
@@ -601,7 +602,7 @@ export const MembershipPage: React.FC = () => {
         <Container>
           <OfferBanner>
             <h1 style={{ fontSize: theme.typography.fontSize['2xl'], margin: 0 }}>
-              🎉 Join TVK Canada - Exclusive Thalapathy Vijay Fan Membership
+              <FaGift style={{ marginRight: '8px', verticalAlign: 'middle' }} /> Join TVK Canada - Exclusive Thalapathy Vijay Fan Membership
             </h1>
             <h3>Limited Offer: First 200 Members Get 3 Months FREE!</h3>
             <p>

@@ -1,5 +1,6 @@
 /**
- * Home Page - Premium Design
+ * Home Page - Community-First Design
+ * TVK Canada: More Than Movies. One Family. One Purpose.
  */
 
 import React from 'react'
@@ -9,6 +10,62 @@ import { theme } from '@styles/theme'
 import { Container, Section } from '@components/Layout'
 import { Button } from '@components/Button'
 import { SEO, seoData } from '@components/SEO'
+import { FaBasketball } from 'react-icons/fa6'
+
+const AnnouncementStrip = styled.div`
+  background: linear-gradient(135deg, ${theme.colors.secondary} 0%, #ffed4e 100%);
+  color: ${theme.colors.text.primary};
+  padding: ${theme.spacing.md} ${theme.spacing.lg};
+  text-align: center;
+  position: relative;
+  z-index: 10;
+
+  .announcement-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: ${theme.spacing.sm};
+  }
+
+  .main-text {
+    font-weight: ${theme.typography.fontWeight.bold};
+    font-size: ${theme.typography.fontSize.lg};
+    color: ${theme.colors.primary};
+  }
+
+  .sub-text {
+    font-size: ${theme.typography.fontSize.sm};
+    opacity: 0.9;
+  }
+
+  .cta-link {
+    background: ${theme.colors.primary};
+    color: white;
+    padding: ${theme.spacing.xs} ${theme.spacing.md};
+    border-radius: ${theme.borderRadius.full};
+    text-decoration: none;
+    font-weight: ${theme.typography.fontWeight.semibold};
+    font-size: ${theme.typography.fontSize.sm};
+    transition: all ${theme.transitions.base};
+    cursor: pointer;
+    border: none;
+
+    &:hover {
+      transform: scale(1.05);
+      box-shadow: ${theme.shadows.md};
+    }
+  }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    padding: ${theme.spacing.sm} ${theme.spacing.md};
+    
+    .main-text {
+      font-size: ${theme.typography.fontSize.base};
+    }
+  }
+`
 
 const HeroSection = styled(Section)`
   background: ${theme.colors.gradient.primary};
@@ -16,7 +73,7 @@ const HeroSection = styled(Section)`
   padding: 0;
   position: relative;
   overflow: hidden;
-  min-height: 100vh;
+  min-height: calc(100vh - 120px);
   display: flex;
   align-items: center;
 
@@ -43,11 +100,11 @@ const HeroSection = styled(Section)`
   }
 
   @media (max-width: ${theme.breakpoints.tablet}) {
-    min-height: 100vh;
+    min-height: calc(100vh - 100px);
   }
 
   @media (max-width: ${theme.breakpoints.mobile}) {
-    min-height: 100vh;
+    min-height: calc(100vh - 80px);
   }
 `
 
@@ -59,16 +116,17 @@ const HeroContent = styled(Container)`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
+  min-height: calc(100vh - 180px);
   padding: ${theme.spacing.xl} ${theme.spacing.lg};
 
   @media (max-width: ${theme.breakpoints.tablet}) {
     padding: ${theme.spacing.lg} ${theme.spacing.md};
+    min-height: calc(100vh - 160px);
   }
 
   @media (max-width: ${theme.breakpoints.mobile}) {
     padding: ${theme.spacing.md} ${theme.spacing.sm};
-    min-height: calc(100vh - 60px);
+    min-height: calc(100vh - 140px);
   }
 `
 
@@ -389,38 +447,51 @@ const EventsButton = styled(Button)`
 `
 
 /**
- * Home Page Component - Premium Design
+ * Home Page Component - Community-First Design
  */
 export const HomePage: React.FC = () => {
   const navigate = useNavigate()
 
   const handleJoinClick = () => {
-    navigate('/membership')
+    navigate('/join')
+  }
+
+  const handleRequestSport = () => {
+    navigate('/contact')
   }
 
   return (
     <>
       <SEO {...seoData.home} />
       
+      {/* Announcement Strip */}
+      <AnnouncementStrip>
+        <div className="announcement-content">
+          <span className="main-text"><FaBasketball style={{ marginRight: '8px', verticalAlign: 'middle' }} /> Indoor Drop-In Sports start January 15</span>
+          <span className="sub-text">Have a sport your group wants to play? Get in touch to make it happen</span>
+          <button className="cta-link" onClick={handleRequestSport}>Request a Sport</button>
+        </div>
+      </AnnouncementStrip>
+      
       {/* Hero Section */}
       <HeroSection>
         <HeroContent>
           <HeroTitle>
-            Building Community. Celebrating Thalapathy. Growing Together in Canada.
+            TVK Canada – More Than Movies. One Family. One Purpose.
           </HeroTitle>
           <HeroSubtitle>
-            TVK Canada is a membership-driven nonprofit dedicated to recreation, empowerment, and giving back.
+            Community of Thalapathy fans focused on wellness, mental health, sports, growth, and giving back.
           </HeroSubtitle>
           <HeroButtons>
             <MembershipButton variant="secondary" size="lg" onClick={handleJoinClick}>
-              Join Membership
+              Join Free – Stay Updated
             </MembershipButton>
             <ProgramButton 
               variant="primary" 
               size="lg" 
-              onClick={() => navigate('/about')}
+              onClick={() => navigate('/programs')}
             >
-              Explore Programs
+              View Programs
             </ProgramButton>
             <EventsButton 
               variant="outline" 

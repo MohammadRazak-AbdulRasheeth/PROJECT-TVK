@@ -7,6 +7,7 @@ import styled from 'styled-components'
 import { theme } from '@styles/theme'
 import { Button } from '@components/Button'
 import { membershipService } from '../services/api'
+import { FaCheck } from 'react-icons/fa6'
 
 interface MembershipModalProps {
   isOpen: boolean
@@ -516,7 +517,7 @@ export const MembershipModal: React.FC<MembershipModalProps> = ({ isOpen, onClos
                   />
                   <div className="upload-text">
                     {formData.studentId ? (
-                      <div className="file-name">✓ {formData.studentId.name}</div>
+                      <div className="file-name"><FaCheck style={{ marginRight: '4px', color: theme.colors.primary }} /> {formData.studentId.name}</div>
                     ) : (
                       <div>
                         <div>Click to upload Student ID</div>
@@ -541,7 +542,7 @@ export const MembershipModal: React.FC<MembershipModalProps> = ({ isOpen, onClos
                   />
                   <div className="upload-text">
                     {formData.timetable ? (
-                      <div className="file-name">✓ {formData.timetable.name}</div>
+                      <div className="file-name"><FaCheck style={{ marginRight: '4px', color: theme.colors.primary }} /> {formData.timetable.name}</div>
                     ) : (
                       <div>
                         <div>Click to upload Timetable</div>

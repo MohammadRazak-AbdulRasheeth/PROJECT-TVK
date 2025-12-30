@@ -216,8 +216,8 @@ export const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, onSucce
         </ModalHeader>
 
         <LoginInfo>
-          <h3>Join TVK Canada Community</h3>
-          <p>Please login to access membership subscriptions and exclusive member benefits.</p>
+          <h3>Welcome to TVK Canada</h3>
+          <p>Please login to access your community profile and member features.</p>
         </LoginInfo>
 
         {error && <ErrorMessage>{error}</ErrorMessage>}

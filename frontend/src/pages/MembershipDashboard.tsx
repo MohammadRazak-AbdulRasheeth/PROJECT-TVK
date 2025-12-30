@@ -766,22 +766,22 @@ export const MembershipDashboard: React.FC = () => {
           <Container>
             <ContentWrapper>
               <WelcomeSection>
-                <h1>Join TVK Canada Today</h1>
-                <div className="subtitle">Unlock exclusive benefits and connect with our amazing community</div>
+                <h1>Welcome to TVK Canada</h1>
+                <div className="subtitle">Join our community and connect with fellow Thalapathy fans</div>
               </WelcomeSection>
               
               <PremiumCard>
-                <h2 style={{ textAlign: 'center', marginBottom: theme.spacing.lg }}>No Active Membership</h2>
+                <h2 style={{ textAlign: 'center', marginBottom: theme.spacing.lg }}>Join Our Community</h2>
                 <p style={{ textAlign: 'center', fontSize: theme.typography.fontSize.lg, marginBottom: theme.spacing.xl }}>
-                  You don't have an active membership yet. Join TVK Canada to access exclusive benefits, 
-                  premium events, and connect with fellow fans across Canada!
+                  Become part of the TVK Canada family! Get updates on programs, events, 
+                  and connect with fellow community members across Canada.
                 </p>
                 <ActionSection>
-                  <EnhancedButton variant="primary" onClick={() => window.location.href = '/membership'}>
-                    View Membership Plans
+                  <EnhancedButton variant="primary" onClick={() => window.location.href = '/join'}>
+                    Join Free
                   </EnhancedButton>
-                  <EnhancedButton variant="outline" onClick={() => window.location.href = '/about'}>
-                    Learn More
+                  <EnhancedButton variant="outline" onClick={() => window.location.href = '/programs'}>
+                    View Programs
                   </EnhancedButton>
                 </ActionSection>
               </PremiumCard>

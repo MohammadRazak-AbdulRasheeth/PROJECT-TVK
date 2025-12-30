@@ -634,13 +634,13 @@ export const MembershipInvoice: React.FC = () => {
         pdf.rect(margin, yPosition - 3, 80, 12, 'F')
         pdf.setDrawColor(76, 175, 80)
         pdf.rect(margin, yPosition - 3, 80, 12, 'S')
-        addText('✓ PAID IN FULL', margin + 5, yPosition + 4, 11, true, '#4CAF50')
+        addText('PAID IN FULL', margin + 5, yPosition + 4, 11, true, '#4CAF50')
       } else {
         pdf.setFillColor(255, 152, 0, 0.2)
         pdf.rect(margin, yPosition - 3, 100, 12, 'F')
         pdf.setDrawColor(255, 152, 0)
         pdf.rect(margin, yPosition - 3, 100, 12, 'S')
-        addText('⏳ PAYMENT PENDING', margin + 5, yPosition + 4, 11, true, '#FF9800')
+        addText('PAYMENT PENDING', margin + 5, yPosition + 4, 11, true, '#FF9800')
       }
       
       yPosition += 25

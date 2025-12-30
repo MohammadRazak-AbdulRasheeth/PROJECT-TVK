@@ -269,6 +269,45 @@ export const EventsPage: React.FC = () => {
   const upcomingEvents = [
     {
       id: 1,
+      title: 'Mental Health Drop-In',
+      date: 'Weekly (Starting after Pongal)',
+      location: 'To Be Announced',
+      type: 'wellness',
+      description: 'A safe, supportive space to connect, share, and grow together. Open conversations about mental wellness in a judgment-free environment.',
+      memberOnly: false,
+      featured: true,
+      attendees: 0,
+      maxAttendees: 20,
+      price: 'Free'
+    },
+    {
+      id: 2,
+      title: 'Basketball Drop-In',
+      date: 'Weekly',
+      location: 'Durham Region',
+      type: 'sports',
+      description: '1.5 hours of play + 30 mins setup. All skill levels welcome. Great way to stay active and meet fellow community members.',
+      memberOnly: false,
+      featured: true,
+      attendees: 8,
+      maxAttendees: 20,
+      price: '$15'
+    },
+    {
+      id: 3,
+      title: 'Indoor Sports On-Demand',
+      date: 'Starting January 15, 2025',
+      location: 'Multiple Locations',
+      type: 'sports',
+      description: 'Have a sport your group wants to play? We organize based on community interest. Badminton, volleyball, table tennis, and more.',
+      memberOnly: false,
+      featured: false,
+      attendees: 0,
+      maxAttendees: 30,
+      price: 'Varies'
+    },
+    {
+      id: 4,
       title: 'Jana Nayagan Music Launch Watch Party',
       date: 'December 20, 2025 • 7:00 PM EST',
       location: 'To Be Determined',
@@ -277,10 +316,11 @@ export const EventsPage: React.FC = () => {
       memberOnly: true,
       featured: true,
       attendees: 25,
-      maxAttendees: 100
+      maxAttendees: 100,
+      price: 'Members First'
     },
     {
-      id: 2,
+      id: 5,
       title: 'Jana Nayagan Movie WATCH PARTY',
       date: 'January 15, 2026 • 8:00 PM EST',
       location: 'To Be Determined',
@@ -289,22 +329,25 @@ export const EventsPage: React.FC = () => {
       memberOnly: true,
       featured: true,
       attendees: 45,
-      maxAttendees: 150
+      maxAttendees: 150,
+      price: 'Members First'
     },
   ]
 
   const filters = [
     { key: 'all', label: 'All Events', count: upcomingEvents.length },
-    { key: 'member', label: 'Member Only', count: upcomingEvents.filter(e => e.memberOnly).length },
-    { key: 'public', label: 'Public Events', count: upcomingEvents.filter(e => !e.memberOnly).length },
-    { key: 'featured', label: 'Featured', count: upcomingEvents.filter(e => e.featured).length }
+    { key: 'sports', label: 'Sports', count: upcomingEvents.filter(e => e.type === 'sports').length },
+    { key: 'wellness', label: 'Wellness', count: upcomingEvents.filter(e => e.type === 'wellness').length },
+    { key: 'movie', label: 'Movies', count: upcomingEvents.filter(e => e.type === 'movie' || e.type === 'watch-party').length },
+    { key: 'member', label: 'Member Only', count: upcomingEvents.filter(e => e.memberOnly).length }
   ]
 
   const filteredEvents = upcomingEvents.filter(event => {
     switch (activeFilter) {
       case 'member': return event.memberOnly
-      case 'public': return !event.memberOnly
-      case 'featured': return event.featured
+      case 'sports': return event.type === 'sports'
+      case 'wellness': return event.type === 'wellness'
+      case 'movie': return event.type === 'movie' || event.type === 'watch-party'
       default: return true
     }
   })
@@ -437,7 +480,7 @@ export const EventsPage: React.FC = () => {
             fontWeight: theme.typography.fontWeight.bold,
             color: theme.colors.primary
           }}>
-            TVK Canada Events & Calendar - Join Thalapathy Celebrations
+            Programs & Events
           </h1>
           <p
             style={{
@@ -445,11 +488,12 @@ export const EventsPage: React.FC = () => {
               marginBottom: theme.spacing.xxxl,
               fontSize: '18px',
               color: theme.colors.text.secondary,
-              maxWidth: '600px',
+              maxWidth: '700px',
               margin: `0 auto ${theme.spacing.xxxl} auto`
             }}
           >
-            Join Tamizhaga Vetri Kazhagam Canada for weekly events, cultural gatherings, and community celebrations across the country.
+            Drop-in sports, mental health support, movie nights, and community gatherings. 
+            Join us for activities that bring our family together.
           </p>
         </Container>
       </Section>
@@ -514,6 +558,7 @@ export const EventsPage: React.FC = () => {
                 
                 <div className="rsvp-section">
                   <div className="attendees">
+                    <span style={{ marginRight: '12px' }}>💰 {event.price}</span>
                     👥 {event.attendees}/{event.maxAttendees} attending
                   </div>
                   <Button 

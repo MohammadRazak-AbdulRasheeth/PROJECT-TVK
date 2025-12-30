@@ -3,7 +3,7 @@
  */
 
 import React, { useState, useEffect, useRef } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useLocation } from 'react-router-dom'
 import styled from 'styled-components'
 import { theme } from '@styles/theme'
 import { images } from '@utils/images'
@@ -176,13 +176,15 @@ const MobileNav = styled.nav.withConfig({
   }
 `
 
-const NavLink = styled(Link)`
-  color: ${theme.colors.text.inverse};
+const NavLink = styled(Link).withConfig({
+  shouldForwardProp: (prop) => prop !== 'isActive'
+})<{ isActive?: boolean }>`
+  color: ${props => props.isActive ? theme.colors.secondary : theme.colors.text.inverse};
   text-decoration: none;
   font-weight: ${theme.typography.fontWeight.semibold};
   transition: all ${theme.transitions.base};
   padding: ${theme.spacing.sm} 0;
-  border-bottom: 2px solid transparent;
+  border-bottom: 2px solid ${props => props.isActive ? theme.colors.secondary : 'transparent'};
   position: relative;
   white-space: nowrap;
   font-size: ${theme.typography.fontSize.base};
@@ -211,10 +213,11 @@ const NavLink = styled(Link)`
   @media (max-width: ${theme.breakpoints.tablet}) {
     padding: ${theme.spacing.md} ${theme.spacing.lg};
     font-size: ${theme.typography.fontSize.lg};
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid ${props => props.isActive ? theme.colors.secondary : 'rgba(255, 255, 255, 0.1)'};
     border-radius: ${theme.borderRadius.md};
     margin: ${theme.spacing.xs} 0;
     white-space: normal;
+    background: ${props => props.isActive ? 'rgba(255, 255, 255, 0.15)' : 'transparent'};
 
     &:hover {
       background: rgba(255, 255, 255, 0.1);
@@ -377,7 +380,16 @@ export const Header: React.FC = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false)
   const dropdownRef = useRef<HTMLDivElement>(null)
   const navigate = useNavigate()
+  const location = useLocation()
   const { user, logout, isLoading } = useAuth()
+
+  // Helper function to check if a path is active
+  const isActivePath = (path: string) => {
+    if (path === '/') {
+      return location.pathname === '/'
+    }
+    return location.pathname.startsWith(path)
+  }
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen)
@@ -456,14 +468,14 @@ export const Header: React.FC = () => {
           </Logo>
 
           <DesktopNav>
-            <NavLink to="/">Home</NavLink>
-            <NavLink to="/about">About Us</NavLink>
-            <NavLink to="/membership">Membership</NavLink>
-            <NavLink to="/events">Events</NavLink>
-            <NavLink to="/global-network">Global Network</NavLink>
-            <NavLink to="/gallery">Gallery</NavLink>
-            <NavLink to="/contact">Contact</NavLink>
-            <NavLink to="/faq">FAQ</NavLink>
+            <NavLink to="/" isActive={isActivePath('/')}>Home</NavLink>
+            <NavLink to="/about" isActive={isActivePath('/about')}>About Us</NavLink>
+            <NavLink to="/programs" isActive={isActivePath('/programs')}>Programs</NavLink>
+            <NavLink to="/events" isActive={isActivePath('/events')}>Events</NavLink>
+            <NavLink to="/join" isActive={isActivePath('/join')}>Join Free</NavLink>
+            <NavLink to="/global-network" isActive={isActivePath('/global-network')}>Global Network</NavLink>
+            <NavLink to="/gallery" isActive={isActivePath('/gallery')}>Gallery</NavLink>
+            <NavLink to="/contact" isActive={isActivePath('/contact')}>Contact</NavLink>
           </DesktopNav>
 
           <ButtonGroup>
@@ -533,14 +545,14 @@ export const Header: React.FC = () => {
       </HeaderWrapper>
 
       <MobileNav isOpen={isMenuOpen}>
-        <NavLink to="/" onClick={closeMenu}>Home</NavLink>
-        <NavLink to="/about" onClick={closeMenu}>About Us</NavLink>
-        <NavLink to="/membership" onClick={closeMenu}>Membership</NavLink>
-        <NavLink to="/events" onClick={closeMenu}>Events</NavLink>
-        <NavLink to="/global-network" onClick={closeMenu}>Global Network</NavLink>
-        <NavLink to="/gallery" onClick={closeMenu}>Gallery</NavLink>
-        <NavLink to="/contact" onClick={closeMenu}>Contact</NavLink>
-        <NavLink to="/faq" onClick={closeMenu}>FAQ</NavLink>
+        <NavLink to="/" onClick={closeMenu} isActive={isActivePath('/')}>Home</NavLink>
+        <NavLink to="/about" onClick={closeMenu} isActive={isActivePath('/about')}>About Us</NavLink>
+        <NavLink to="/programs" onClick={closeMenu} isActive={isActivePath('/programs')}>Programs</NavLink>
+        <NavLink to="/events" onClick={closeMenu} isActive={isActivePath('/events')}>Events</NavLink>
+        <NavLink to="/join" onClick={closeMenu} isActive={isActivePath('/join')}>Join Free</NavLink>
+        <NavLink to="/global-network" onClick={closeMenu} isActive={isActivePath('/global-network')}>Global Network</NavLink>
+        <NavLink to="/gallery" onClick={closeMenu} isActive={isActivePath('/gallery')}>Gallery</NavLink>
+        <NavLink to="/contact" onClick={closeMenu} isActive={isActivePath('/contact')}>Contact</NavLink>
         
         {isLoading ? (
           <div style={{ 

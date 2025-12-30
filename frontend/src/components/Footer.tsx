@@ -109,8 +109,8 @@ export const Footer: React.FC = () => {
         <FooterSection>
           <h4>About TVK Canada</h4>
           <p>
-            We are a fan club and nonprofit association dedicated to uniting Thalapathy Vijay
-            supporters across Canada.
+            More than a fan club. A family of Thalapathy fans focused on wellness, mental health, 
+            sports, growth, and giving back to our communities.
           </p>
         </FooterSection>
 
@@ -120,19 +120,19 @@ export const Footer: React.FC = () => {
             <Link to="/">Home</Link>
           </p>
           <p>
-            <Link to="/about">About TVK Canada</Link>
+            <Link to="/about">About Us</Link>
           </p>
           <p>
-            <Link to="/membership">Join Membership</Link>
+            <Link to="/programs">Programs</Link>
           </p>
           <p>
-            <Link to="/events">Upcoming Events</Link>
+            <Link to="/events">Events</Link>
           </p>
           <p>
-            <Link to="/global-network">Global Network</Link>
+            <Link to="/join">Join Free</Link>
           </p>
           <p>
-            <Link to="/gallery">Photo Gallery</Link>
+            <Link to="/gallery">Gallery</Link>
           </p>
           <p>
             <Link to="/contact">Contact Us</Link>
@@ -171,7 +171,7 @@ export const Footer: React.FC = () => {
 
       <FooterBottom>
         <p>
-          © {new Date().getFullYear()} TVK Canada - The Voice of Vijay Fans in Canada. All rights
+          © {new Date().getFullYear()} TVK Canada - More Than Movies. One Family. One Purpose. All rights
           reserved.
         </p>
       </FooterBottom>

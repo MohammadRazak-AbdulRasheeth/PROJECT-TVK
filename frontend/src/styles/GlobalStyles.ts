@@ -103,8 +103,6 @@ export const GlobalStyles = createGlobalStyle`
     border-radius: ${theme.borderRadius.md};
     padding: ${theme.spacing.md};
     transition: all ${theme.transitions.base};
-    -webkit-appearance: none;
-    appearance: none;
 
     &:focus {
       outline: none;
@@ -116,6 +114,14 @@ export const GlobalStyles = createGlobalStyle`
       background-color: ${theme.colors.surface};
       cursor: not-allowed;
     }
+  }
+
+  /* Remove default appearance only for text inputs and selects, not checkboxes/radios */
+  input:not([type="checkbox"]):not([type="radio"]),
+  textarea,
+  select {
+    -webkit-appearance: none;
+    appearance: none;
   }
 
   /* Scrollbar styling */

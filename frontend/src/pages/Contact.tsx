@@ -7,7 +7,7 @@ import styled from 'styled-components'
 import { theme } from '@styles/theme'
 import { Container, Section, Grid, Flex } from '@components/Layout'
 import { Button } from '@components/Button'
-import { FaXTwitter, FaInstagram, FaFacebook, FaTiktok, FaYoutube } from 'react-icons/fa6'
+import { FaXTwitter, FaInstagram, FaFacebook, FaTiktok, FaYoutube, FaCheck } from 'react-icons/fa6'
 import { FaWhatsapp, FaMapLocationDot, FaEnvelope } from 'react-icons/fa6'
 import { contactService } from '../services/api'
 import { SEO, seoData } from '@components/SEO'
@@ -312,7 +312,7 @@ export const ContactPage: React.FC = () => {
                 </FormGroup>
 
                 <Button variant="primary" type="submit" disabled={loading}>
-                  {loading ? 'Sending...' : submitted ? '✓ Message Sent!' : 'Send Message'}
+                  {loading ? 'Sending...' : submitted ? <><FaCheck style={{ marginRight: '4px' }} /> Message Sent!</> : 'Send Message'}
                 </Button>
 
                 {submitted && (

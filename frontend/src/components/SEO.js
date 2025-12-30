@@ -81,15 +81,15 @@ export const SEO = ({ title, description, keywords, canonicalUrl, ogTitle, ogDes
 // SEO data for each page
 export const seoData = {
     home: {
-        title: 'TVK Canada - Official Thalapathy Vijay Fan Club | Tamil Community',
-        description: 'Join TVK Canada, the premier Thalapathy Vijay fan club in Canada. Exclusive events, memberships, movie screenings, and vibrant Tamil community across Toronto, Vancouver, Montreal.',
-        keywords: 'TVK Canada, Thalapathy Vijay fan club, Tamil community Canada, Vijay events Toronto, Tamil cinema, TVK membership, Thalapathy fans, Vijay Canada',
+        title: 'TVK Canada - More Than Movies. One Family. One Purpose.',
+        description: 'Join TVK Canada, a community of Thalapathy fans focused on wellness, mental health, sports, growth, and giving back. Free drop-in programs across Canada.',
+        keywords: 'TVK Canada, Thalapathy Vijay fan club, Tamil community Canada, wellness, mental health, sports, drop-in programs, community',
         structuredData: {
             "@context": "https://schema.org",
             "@type": "Organization",
             "name": "TVK Canada",
             "alternateName": ["Tamil Vijay Katchi Canada", "Thalapathy Vijay Fan Club Canada"],
-            "description": "Official Thalapathy Vijay fan club serving Tamil community across Canada",
+            "description": "Community of Thalapathy fans focused on wellness, mental health, sports, growth, and giving back",
             "url": "https://tvkcanada.family",
             "logo": "https://tvkcanada.family/images/Logo/tvk-logo.png",
             "sameAs": [
@@ -105,49 +105,49 @@ export const seoData = {
         }
     },
     about: {
-        title: 'About TVK Canada - Tamil Vijay Katchi Fan Club | Our Mission & Vision',
-        description: 'Discover TVK Canada\'s mission to unite Thalapathy Vijay fans across Canada. Learn about our community activities, cultural programs, and commitment to Tamil heritage.',
-        keywords: 'About TVK Canada, Tamil Vijay Katchi mission, Thalapathy Vijay fan club history, Tamil community Canada, Vijay fans Toronto, Tamil cultural organization',
+        title: 'About TVK Canada - More Than a Fan Club. A Family.',
+        description: 'TVK Canada is a family of like-minded Thalapathy fans who support one another in wellness, growth, and community service. Join our community.',
+        keywords: 'About TVK Canada, Tamil community, Thalapathy Vijay fans, wellness, mental health, family, community service',
         structuredData: {
             "@context": "https://schema.org",
             "@type": "AboutPage",
             "name": "About TVK Canada",
-            "description": "Learn about TVK Canada's mission to unite Thalapathy Vijay fans across Canada",
+            "description": "Learn about TVK Canada's mission to unite Thalapathy Vijay fans through wellness, growth, and community service",
             "mainEntity": {
                 "@type": "Organization",
                 "name": "TVK Canada",
-                "description": "Premier Thalapathy Vijay fan organization in Canada"
+                "description": "Community of Thalapathy fans focused on wellness, mental health, sports, and giving back"
             }
         }
     },
     membership: {
-        title: 'Join TVK Canada Membership - Exclusive Thalapathy Vijay Fan Benefits',
-        description: 'Become a TVK Canada member! Get exclusive access to Vijay movie premieres, fan events, merchandise discounts, and connect with Tamil community nationwide.',
-        keywords: 'TVK Canada membership, join Vijay fan club, Thalapathy membership benefits, Tamil fan club Canada, Vijay events access, exclusive Vijay content',
+        title: 'Join TVK Canada - Community Membership for Thalapathy Vijay Fans',
+        description: 'Join TVK Canada community! Connect with fellow Thalapathy fans, participate in wellness programs, sports drop-ins, movie nights, and community events across Canada.',
+        keywords: 'TVK Canada community, join Vijay fan club, Thalapathy community Canada, Tamil fan club Canada, Vijay events, community programs',
         structuredData: {
             "@context": "https://schema.org",
             "@type": "Service",
-            "name": "TVK Canada Membership",
-            "description": "Exclusive membership program for Thalapathy Vijay fans in Canada",
+            "name": "TVK Canada Community",
+            "description": "Community membership for Thalapathy Vijay fans in Canada focused on wellness, sports, and growth",
             "provider": {
                 "@type": "Organization",
                 "name": "TVK Canada"
             },
             "offers": {
                 "@type": "Offer",
-                "description": "Annual and lifetime membership options available"
+                "description": "Free community membership with optional program fees"
             }
         }
     },
     events: {
-        title: 'TVK Canada Events - Thalapathy Vijay Movie Screenings & Fan Meetups',
-        description: 'Join upcoming TVK Canada events! Movie premieres, fan meetups, cultural celebrations, and exclusive Thalapathy Vijay gatherings across Toronto, Vancouver, Montreal.',
-        keywords: 'TVK Canada events, Vijay movie screenings, Tamil events Canada, Thalapathy fan meetups, Vijay celebrations, Tamil cinema events Toronto',
+        title: 'Programs & Events - Drop-In Sports, Wellness & Movie Nights | TVK Canada',
+        description: 'Join TVK Canada programs: mental health drop-ins, basketball, indoor sports, and movie watch parties. Free and affordable activities for the whole family.',
+        keywords: 'TVK Canada events, drop-in sports, mental health support, basketball, movie screenings, Tamil events Canada, community programs',
         structuredData: {
             "@context": "https://schema.org",
             "@type": "EventSeries",
-            "name": "TVK Canada Events",
-            "description": "Regular events and gatherings for Thalapathy Vijay fans",
+            "name": "TVK Canada Programs & Events",
+            "description": "Drop-in sports, wellness programs, and community events for Thalapathy Vijay fans",
             "organizer": {
                 "@type": "Organization",
                 "name": "TVK Canada"
@@ -166,9 +166,9 @@ export const seoData = {
         }
     },
     gallery: {
-        title: 'TVK Canada Photo Gallery - Vijay Fan Events & Community Memories',
-        description: 'Browse TVK Canada\'s exclusive photo gallery featuring Thalapathy Vijay fan events, movie celebrations, community gatherings, and memorable moments.',
-        keywords: 'TVK Canada photos, Vijay fan events gallery, Thalapathy event pictures, Tamil community photos, Vijay celebration images, TVK memories',
+        title: 'TVK Canada Photo Gallery - Community Events & Memories',
+        description: 'Browse TVK Canada\'s photo gallery featuring community events, sports activities, movie celebrations, and memorable moments.',
+        keywords: 'TVK Canada photos, community events gallery, sports activities, movie celebrations, Tamil community photos',
         structuredData: {
             "@context": "https://schema.org",
             "@type": "ImageGallery",
@@ -177,14 +177,14 @@ export const seoData = {
         }
     },
     contact: {
-        title: 'Contact TVK Canada - Get in Touch with Thalapathy Vijay Fan Club',
-        description: 'Contact TVK Canada for membership information, event details, partnerships, or general inquiries. Connect with Canada\'s leading Thalapathy Vijay fan community.',
-        keywords: 'Contact TVK Canada, Vijay fan club contact, Thalapathy fan club information, Tamil community contact Canada, TVK support, fan club inquiries',
+        title: 'Contact TVK Canada - Get in Touch | Request a Program',
+        description: 'Contact TVK Canada for program information, event details, or to suggest a new activity. Connect with Canada\'s leading Thalapathy Vijay fan community.',
+        keywords: 'Contact TVK Canada, request program, suggest activity, community contact, fan club inquiries',
         structuredData: {
             "@context": "https://schema.org",
             "@type": "ContactPage",
             "name": "Contact TVK Canada",
-            "description": "Get in touch with TVK Canada for membership and event information"
+            "description": "Get in touch with TVK Canada for program and event information"
         }
     }
 };

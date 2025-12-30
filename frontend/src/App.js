@@ -20,6 +20,8 @@ import { MembershipDashboard } from '@pages/MembershipDashboard';
 import { PaymentSuccessPage } from '@pages/PaymentSuccess';
 import { MembershipInvoice } from '@pages/MembershipInvoice';
 import { EventsPage } from '@pages/Events';
+import { ProgramsPage } from '@pages/Programs';
+import { JoinPage } from '@pages/Join';
 import { GlobalNetworkPage } from '@pages/GlobalNetwork';
 import { GalleryPage } from '@pages/Gallery';
 import { ContactPage } from '@pages/Contact';
@@ -43,7 +45,7 @@ const ScrollToTop = () => {
 const AppContent = () => {
     const location = useLocation();
     const isHomePage = location.pathname === '/';
-    return (_jsxs("div", { style: { display: 'flex', flexDirection: 'column', minHeight: '100vh' }, children: [_jsx(Header, {}), _jsx("main", { style: { flex: 1 }, children: _jsxs(Routes, { children: [_jsx(Route, { path: "/", element: _jsx(HomePage, {}) }), _jsx(Route, { path: "/about", element: _jsx(AboutPage, {}) }), _jsx(Route, { path: "/membership", element: _jsx(MembershipPage, {}) }), _jsx(Route, { path: "/my-membership", element: _jsx(MembershipDashboard, {}) }), _jsx(Route, { path: "/payment-success", element: _jsx(PaymentSuccessPage, {}) }), _jsx(Route, { path: "/invoice", element: _jsx(MembershipInvoice, {}) }), _jsx(Route, { path: "/events", element: _jsx(EventsPage, {}) }), _jsx(Route, { path: "/global-network", element: _jsx(GlobalNetworkPage, {}) }), _jsx(Route, { path: "/gallery", element: _jsx(GalleryPage, {}) }), _jsx(Route, { path: "/contact", element: _jsx(ContactPage, {}) }), _jsx(Route, { path: "/faq", element: _jsx(FAQPage, {}) }), _jsx(Route, { path: "*", element: _jsx(NotFound, {}) })] }) }), !isHomePage && _jsx(Footer, {})] }));
+    return (_jsxs("div", { style: { display: 'flex', flexDirection: 'column', minHeight: '100vh' }, children: [_jsx(Header, {}), _jsx("main", { style: { flex: 1 }, children: _jsxs(Routes, { children: [_jsx(Route, { path: "/", element: _jsx(HomePage, {}) }), _jsx(Route, { path: "/about", element: _jsx(AboutPage, {}) }), _jsx(Route, { path: "/join", element: _jsx(JoinPage, {}) }), _jsx(Route, { path: "/programs", element: _jsx(ProgramsPage, {}) }), _jsx(Route, { path: "/membership", element: _jsx(MembershipPage, {}) }), _jsx(Route, { path: "/my-membership", element: _jsx(MembershipDashboard, {}) }), _jsx(Route, { path: "/payment-success", element: _jsx(PaymentSuccessPage, {}) }), _jsx(Route, { path: "/invoice", element: _jsx(MembershipInvoice, {}) }), _jsx(Route, { path: "/events", element: _jsx(EventsPage, {}) }), _jsx(Route, { path: "/global-network", element: _jsx(GlobalNetworkPage, {}) }), _jsx(Route, { path: "/gallery", element: _jsx(GalleryPage, {}) }), _jsx(Route, { path: "/contact", element: _jsx(ContactPage, {}) }), _jsx(Route, { path: "/faq", element: _jsx(FAQPage, {}) }), _jsx(Route, { path: "*", element: _jsx(NotFound, {}) })] }) }), !isHomePage && _jsx(Footer, {})] }));
 };
 /**
  * App Component - Main application shell with routing

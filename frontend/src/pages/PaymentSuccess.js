@@ -9,6 +9,7 @@ import { theme } from '@styles/theme';
 import { Container, Section } from '@components/Layout';
 import { Button } from '@components/Button';
 import { membershipService } from '../services/api';
+import { FaGift } from 'react-icons/fa6';
 const SuccessCard = styled.div `
   background: ${theme.colors.surface};
   border-radius: ${theme.borderRadius['2xl']};
@@ -105,7 +106,7 @@ export const PaymentSuccessPage = () => {
     if (error) {
         return (_jsx(Section, { children: _jsx(Container, { children: _jsxs(ErrorCard, { children: [_jsx("h2", { children: "Payment Processing Error" }), _jsx("p", { children: error }), _jsx("div", { style: { marginTop: theme.spacing.lg }, children: _jsx(Button, { variant: "primary", onClick: () => navigate('/membership'), children: "Back to Membership" }) })] }) }) }));
     }
-    return (_jsx(Section, { children: _jsx(Container, { children: _jsxs(SuccessCard, { children: [_jsx("div", { className: "success-icon", children: "\uD83C\uDF89" }), _jsx("h1", { children: "Welcome to TVK Canada!" }), membershipData?.status === 'active' ? (_jsxs(_Fragment, { children: [_jsx("h2", { children: "Your membership is now active!" }), _jsxs("p", { style: { marginBottom: theme.spacing.lg, fontSize: theme.typography.fontSize.lg }, children: ["Congratulations! Your ", membershipData.type, " membership has been activated."] }), _jsxs("p", { style: { marginBottom: theme.spacing.xl }, children: ["Membership Number: ", _jsxs("strong", { children: ["#", membershipData.membershipNumber] })] })] })) : membershipData?.type === 'student' ? (_jsxs(_Fragment, { children: [_jsx("h2", { children: "Payment received - verification pending" }), _jsx("p", { style: { marginBottom: theme.spacing.lg, fontSize: theme.typography.fontSize.lg }, children: "Thank you for your payment! Your student documents are being reviewed." }), _jsx("div", { style: {
+    return (_jsx(Section, { children: _jsx(Container, { children: _jsxs(SuccessCard, { children: [_jsx("div", { className: "success-icon", children: _jsx(FaGift, { size: 64 }) }), _jsx("h1", { children: "Welcome to TVK Canada!" }), membershipData?.status === 'active' ? (_jsxs(_Fragment, { children: [_jsx("h2", { children: "Your membership is now active!" }), _jsxs("p", { style: { marginBottom: theme.spacing.lg, fontSize: theme.typography.fontSize.lg }, children: ["Congratulations! Your ", membershipData.type, " membership has been activated."] }), _jsxs("p", { style: { marginBottom: theme.spacing.xl }, children: ["Membership Number: ", _jsxs("strong", { children: ["#", membershipData.membershipNumber] })] })] })) : membershipData?.type === 'student' ? (_jsxs(_Fragment, { children: [_jsx("h2", { children: "Payment received - verification pending" }), _jsx("p", { style: { marginBottom: theme.spacing.lg, fontSize: theme.typography.fontSize.lg }, children: "Thank you for your payment! Your student documents are being reviewed." }), _jsx("div", { style: {
                                     background: 'rgba(255, 152, 0, 0.1)',
                                     border: `1px solid ${theme.colors.warning}`,
                                     padding: theme.spacing.lg,

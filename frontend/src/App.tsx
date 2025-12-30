@@ -20,6 +20,8 @@ import { MembershipDashboard } from '@pages/MembershipDashboard'
 import { PaymentSuccessPage } from '@pages/PaymentSuccess'
 import { MembershipInvoice } from '@pages/MembershipInvoice'
 import { EventsPage } from '@pages/Events'
+import { ProgramsPage } from '@pages/Programs'
+import { JoinPage } from '@pages/Join'
 import { GlobalNetworkPage } from '@pages/GlobalNetwork'
 import { GalleryPage } from '@pages/Gallery'
 import { ContactPage } from '@pages/Contact'
@@ -55,6 +57,8 @@ const AppContent: React.FC = () => {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/about" element={<AboutPage />} />
+          <Route path="/join" element={<JoinPage />} />
+          <Route path="/programs" element={<ProgramsPage />} />
           <Route path="/membership" element={<MembershipPage />} />
           <Route path="/my-membership" element={<MembershipDashboard />} />
           <Route path="/payment-success" element={<PaymentSuccessPage />} />

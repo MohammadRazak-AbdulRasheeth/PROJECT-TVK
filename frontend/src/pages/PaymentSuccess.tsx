@@ -9,6 +9,7 @@ import { theme } from '@styles/theme'
 import { Container, Section } from '@components/Layout'
 import { Button } from '@components/Button'
 import { membershipService } from '../services/api'
+import { FaGift } from 'react-icons/fa6'
 
 const SuccessCard = styled.div`
   background: ${theme.colors.surface};
@@ -142,7 +143,7 @@ export const PaymentSuccessPage: React.FC = () => {
     <Section>
       <Container>
         <SuccessCard>
-          <div className="success-icon">🎉</div>
+          <div className="success-icon"><FaGift size={64} /></div>
           <h1>Welcome to TVK Canada!</h1>
           
           {membershipData?.status === 'active' ? (

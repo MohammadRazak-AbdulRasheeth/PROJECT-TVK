@@ -5,13 +5,68 @@ import { theme } from '@styles/theme';
 import { Container, Section } from '@components/Layout';
 import { Button } from '@components/Button';
 import { SEO, seoData } from '@components/SEO';
+import { FaBasketball } from 'react-icons/fa6';
+const AnnouncementStrip = styled.div `
+  background: linear-gradient(135deg, ${theme.colors.secondary} 0%, #ffed4e 100%);
+  color: ${theme.colors.text.primary};
+  padding: ${theme.spacing.md} ${theme.spacing.lg};
+  text-align: center;
+  position: relative;
+  z-index: 10;
+
+  .announcement-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: ${theme.spacing.sm};
+  }
+
+  .main-text {
+    font-weight: ${theme.typography.fontWeight.bold};
+    font-size: ${theme.typography.fontSize.lg};
+    color: ${theme.colors.primary};
+  }
+
+  .sub-text {
+    font-size: ${theme.typography.fontSize.sm};
+    opacity: 0.9;
+  }
+
+  .cta-link {
+    background: ${theme.colors.primary};
+    color: white;
+    padding: ${theme.spacing.xs} ${theme.spacing.md};
+    border-radius: ${theme.borderRadius.full};
+    text-decoration: none;
+    font-weight: ${theme.typography.fontWeight.semibold};
+    font-size: ${theme.typography.fontSize.sm};
+    transition: all ${theme.transitions.base};
+    cursor: pointer;
+    border: none;
+
+    &:hover {
+      transform: scale(1.05);
+      box-shadow: ${theme.shadows.md};
+    }
+  }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    padding: ${theme.spacing.sm} ${theme.spacing.md};
+    
+    .main-text {
+      font-size: ${theme.typography.fontSize.base};
+    }
+  }
+`;
 const HeroSection = styled(Section) `
   background: ${theme.colors.gradient.primary};
   color: ${theme.colors.text.inverse};
   padding: 0;
   position: relative;
   overflow: hidden;
-  min-height: 100vh;
+  min-height: calc(100vh - 120px);
   display: flex;
   align-items: center;
 
@@ -38,11 +93,11 @@ const HeroSection = styled(Section) `
   }
 
   @media (max-width: ${theme.breakpoints.tablet}) {
-    min-height: 100vh;
+    min-height: calc(100vh - 100px);
   }
 
   @media (max-width: ${theme.breakpoints.mobile}) {
-    min-height: 100vh;
+    min-height: calc(100vh - 80px);
   }
 `;
 const HeroContent = styled(Container) `
@@ -53,16 +108,17 @@ const HeroContent = styled(Container) `
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
+  min-height: calc(100vh - 180px);
   padding: ${theme.spacing.xl} ${theme.spacing.lg};
 
   @media (max-width: ${theme.breakpoints.tablet}) {
     padding: ${theme.spacing.lg} ${theme.spacing.md};
+    min-height: calc(100vh - 160px);
   }
 
   @media (max-width: ${theme.breakpoints.mobile}) {
     padding: ${theme.spacing.md} ${theme.spacing.sm};
-    min-height: calc(100vh - 60px);
+    min-height: calc(100vh - 140px);
   }
 `;
 const HeroTitle = styled.h1 `
@@ -376,12 +432,15 @@ const EventsButton = styled(Button) `
   }
 `;
 /**
- * Home Page Component - Premium Design
+ * Home Page Component - Community-First Design
  */
 export const HomePage = () => {
     const navigate = useNavigate();
     const handleJoinClick = () => {
-        navigate('/membership');
+        navigate('/join');
     };
-    return (_jsxs(_Fragment, { children: [_jsx(SEO, { ...seoData.home }), _jsx(HeroSection, { children: _jsxs(HeroContent, { children: [_jsx(HeroTitle, { children: "Building Community. Celebrating Thalapathy. Growing Together in Canada." }), _jsx(HeroSubtitle, { children: "TVK Canada is a membership-driven nonprofit dedicated to recreation, empowerment, and giving back." }), _jsxs(HeroButtons, { children: [_jsx(MembershipButton, { variant: "secondary", size: "lg", onClick: handleJoinClick, children: "Join Membership" }), _jsx(ProgramButton, { variant: "primary", size: "lg", onClick: () => navigate('/about'), children: "Explore Programs" }), _jsx(EventsButton, { variant: "outline", size: "lg", onClick: () => navigate('/events'), children: _jsx("span", { children: "Upcoming Events" }) })] })] }) })] }));
+    const handleRequestSport = () => {
+        navigate('/contact');
+    };
+    return (_jsxs(_Fragment, { children: [_jsx(SEO, { ...seoData.home }), _jsx(AnnouncementStrip, { children: _jsxs("div", { className: "announcement-content", children: [_jsxs("span", { className: "main-text", children: [_jsx(FaBasketball, { style: { marginRight: '8px', verticalAlign: 'middle' } }), " Indoor Drop-In Sports start January 15"] }), _jsx("span", { className: "sub-text", children: "Have a sport your group wants to play? Get in touch to make it happen" }), _jsx("button", { className: "cta-link", onClick: handleRequestSport, children: "Request a Sport" })] }) }), _jsx(HeroSection, { children: _jsxs(HeroContent, { children: [_jsx(HeroTitle, { children: "TVK Canada \u2013 More Than Movies. One Family. One Purpose." }), _jsx(HeroSubtitle, { children: "Community of Thalapathy fans focused on wellness, mental health, sports, growth, and giving back." }), _jsxs(HeroButtons, { children: [_jsx(MembershipButton, { variant: "secondary", size: "lg", onClick: handleJoinClick, children: "Join Free \u2013 Stay Updated" }), _jsx(ProgramButton, { variant: "primary", size: "lg", onClick: () => navigate('/programs'), children: "View Programs" }), _jsx(EventsButton, { variant: "outline", size: "lg", onClick: () => navigate('/events'), children: _jsx("span", { children: "Upcoming Events" }) })] })] }) })] }));
 };

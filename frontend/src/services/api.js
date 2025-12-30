@@ -91,3 +91,14 @@ export const globalNetworkService = {
         return response.data;
     }
 };
+// Community Member services
+export const communityMemberService = {
+    checkEmail: async (email) => {
+        const response = await api.get(`/community/check-email?email=${encodeURIComponent(email)}`);
+        return response.data;
+    },
+    signup: async (data) => {
+        const response = await api.post('/community/signup', data);
+        return response.data;
+    }
+};

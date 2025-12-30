@@ -4,6 +4,7 @@ import { theme } from '@styles/theme';
 import { getGalleryImages } from '@utils/images';
 import { Container, Section, Grid } from '@components/Layout';
 import { SEO, seoData } from '@components/SEO';
+import { AdUnit } from '@components/AdUnit';
 const GalleryImage = styled.img `
   width: 100%;
   height: 300px;
@@ -109,5 +110,5 @@ const GalleryHeader = styled.div `
 `;
 export const GalleryPage = () => {
     const galleryImages = getGalleryImages();
-    return (_jsxs(_Fragment, { children: [_jsx(SEO, { ...seoData.gallery }), _jsx(Section, { padding: `${theme.spacing.xxxl} 0`, background: theme.colors.background, children: _jsxs(Container, { children: [_jsxs(GalleryHeader, { children: [_jsx("h1", { children: "TVK Canada Photo Gallery - Vijay Fan Events & Memories" }), _jsx("p", { children: "Moments from our community celebrations and events across Canada. See the vibrant spirit of TVK!" })] }), _jsx(Grid, { columns: 3, gap: theme.spacing.lg, children: galleryImages.map((imgSrc, idx) => (_jsx(GalleryImage, { src: imgSrc, alt: `Gallery moment ${idx + 1}`, loading: "lazy" }, idx))) })] }) })] }));
+    return (_jsxs(_Fragment, { children: [_jsx(SEO, { ...seoData.gallery }), _jsx(Section, { padding: `${theme.spacing.xxxl} 0`, background: theme.colors.background, children: _jsxs(Container, { children: [_jsxs(GalleryHeader, { children: [_jsx("h1", { children: "TVK Canada Photo Gallery - Vijay Fan Events & Memories" }), _jsx("p", { children: "Moments from our community celebrations and events across Canada. See the vibrant spirit of TVK!" })] }), _jsx(AdUnit, {}), _jsx(Grid, { columns: 3, gap: theme.spacing.lg, children: galleryImages.map((imgSrc, idx) => (_jsx(GalleryImage, { src: imgSrc, alt: `Gallery moment ${idx + 1}`, loading: "lazy" }, idx))) }), _jsx(AdUnit, {})] }) })] }));
 };
