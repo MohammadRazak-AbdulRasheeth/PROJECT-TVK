@@ -8,6 +8,7 @@ import styled from 'styled-components'
 import { theme } from '@styles/theme'
 import { Container, Section, Grid } from '@components/Layout'
 import { SEO, seoData } from '@components/SEO'
+import { AdUnit } from '@components/AdUnit'
 import { FaHandshake, FaBrain, FaPersonRunning, FaStar, FaFilm, FaGlobe, FaSpa, FaBasketball, FaClapperboard, FaPeopleGroup } from 'react-icons/fa6'
 
 const Mission = styled.div`
@@ -313,6 +314,9 @@ export const AboutPage: React.FC = () => {
               and giving back to our communities across Canada.
             </p>
           </Mission>
+
+          {/* Ad Unit - Integrated */}
+          <AdUnit />
         </Container>
       </Section>
 

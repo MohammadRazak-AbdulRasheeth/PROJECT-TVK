@@ -7,8 +7,8 @@ import styled from 'styled-components'
 import { theme } from '@styles/theme'
 import { Container, Section, Grid, Flex } from '@components/Layout'
 import { Button } from '@components/Button'
-import { useAuth } from '../context/AuthContext'
 import { SEO, seoData } from '@components/SEO'
+import { AdUnit } from '@components/AdUnit'
 
 const CalendarContainer = styled.div`
   width: 100%;
@@ -262,7 +262,6 @@ const FilterTab = styled.button<{ active: boolean }>`
  * Events & Calendar Page Component
  */
 export const EventsPage: React.FC = () => {
-  const { isAuthenticated } = useAuth()
   const [activeFilter, setActiveFilter] = useState<string>('all')
   const [currentMonth, setCurrentMonth] = useState(new Date().toLocaleString('default', { month: 'long', year: 'numeric' }))
 
@@ -353,10 +352,6 @@ export const EventsPage: React.FC = () => {
   })
 
   const handleRSVP = (eventId: number) => {
-    if (!isAuthenticated) {
-      alert('Please login to RSVP for events')
-      return
-    }
     alert(`RSVP functionality coming soon! Event ID: ${eventId}`)
   }
 
@@ -523,6 +518,9 @@ export const EventsPage: React.FC = () => {
               />
             </GoogleCalendarEmbed>
           </CalendarContainer>
+
+          {/* Ad Unit - Integrated */}
+          <AdUnit />
         </Container>
       </Section>
 
@@ -565,9 +563,8 @@ export const EventsPage: React.FC = () => {
                     variant={event.featured ? "secondary" : "primary"} 
                     size="sm"
                     onClick={() => handleRSVP(event.id)}
-                    disabled={event.memberOnly && !isAuthenticated}
                   >
-                    {event.memberOnly && !isAuthenticated ? 'Login Required' : 'RSVP'}
+                    RSVP
                   </Button>
                 </div>
               </EventCard>

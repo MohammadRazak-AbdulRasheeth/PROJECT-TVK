@@ -2,13 +2,12 @@
  * Fully Responsive Header component with mobile menu
  */
 
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
 import styled from 'styled-components'
 import { theme } from '@styles/theme'
 import { images } from '@utils/images'
 import { Button } from './Button'
-import { useAuth } from '../context/AuthContext'
 
 const HeaderWrapper = styled.header`
   background-color: ${theme.colors.primary};
@@ -275,113 +274,13 @@ const ButtonGroup = styled.div`
   flex-shrink: 0;
 `
 
-const UserProfile = styled.div`
-  position: relative;
-  display: flex;
-  align-items: center;
-  gap: ${theme.spacing.sm};
-  cursor: pointer;
-  padding: ${theme.spacing.sm} ${theme.spacing.md};
-  border-radius: ${theme.borderRadius.lg};
-  transition: all ${theme.transitions.base};
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(10px);
-
-  &:hover {
-    background: rgba(255, 255, 255, 0.15);
-    border-color: ${theme.colors.secondary};
-    transform: translateY(-2px);
-    box-shadow: ${theme.shadows.md};
-  }
-
-  img {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    border: 2px solid ${theme.colors.secondary};
-    transition: all ${theme.transitions.base};
-  }
-
-  span {
-    color: ${theme.colors.text.inverse};
-    font-weight: ${theme.typography.fontWeight.semibold};
-    font-size: ${theme.typography.fontSize.base};
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-  }
-
-  @media (max-width: ${theme.breakpoints.tablet}) {
-    display: none;
-  }
-`
-
-const DropdownMenu = styled.div.withConfig({
-  shouldForwardProp: (prop) => prop !== 'isOpen'
-})<{ isOpen: boolean }>`
-  position: absolute;
-  top: 100%;
-  right: 0;
-  background: ${theme.colors.background};
-  border: 1px solid ${theme.colors.border};
-  border-radius: ${theme.borderRadius.lg};
-  box-shadow: ${theme.shadows.xl};
-  min-width: 220px;
-  opacity: ${props => (props.isOpen ? '1' : '0')};
-  visibility: ${props => (props.isOpen ? 'visible' : 'hidden')};
-  transform: translateY(${props => (props.isOpen ? '0' : '-10px')});
-  transition: all ${theme.transitions.base};
-  z-index: 1000;
-  margin-top: ${theme.spacing.md};
-  overflow: hidden;
-  backdrop-filter: blur(10px);
-  border: 2px solid ${theme.colors.secondary};
-`
-
-const DropdownItem = styled.button`
-  width: 100%;
-  padding: ${theme.spacing.md} ${theme.spacing.lg};
-  background: none;
-  border: none;
-  text-align: left;
-  cursor: pointer;
-  color: ${theme.colors.text.primary};
-  font-size: ${theme.typography.fontSize.base};
-  font-weight: ${theme.typography.fontWeight.medium};
-  transition: all ${theme.transitions.base};
-  border-bottom: 1px solid ${theme.colors.border};
-  display: flex;
-  align-items: center;
-  gap: ${theme.spacing.sm};
-
-  &:hover {
-    background: ${theme.colors.primary};
-    color: ${theme.colors.text.inverse};
-    transform: translateX(4px);
-  }
-
-  &:last-child {
-    border-bottom: none;
-  }
-
-  &:focus-visible {
-    outline: 2px solid ${theme.colors.secondary};
-    outline-offset: -2px;
-  }
-
-  &:active {
-    transform: translateX(2px);
-  }
-`
-
 /**
  * Header Component with fully responsive mobile menu
  */
 export const Header: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const [dropdownOpen, setDropdownOpen] = useState(false)
-  const dropdownRef = useRef<HTMLDivElement>(null)
   const navigate = useNavigate()
   const location = useLocation()
-  const { user, logout, isLoading } = useAuth()
 
   // Helper function to check if a path is active
   const isActivePath = (path: string) => {
@@ -398,27 +297,6 @@ export const Header: React.FC = () => {
   const closeMenu = () => {
     setIsMenuOpen(false)
   }
-
-  const handleLogout = () => {
-    logout() // Use AuthContext logout function which clears all localStorage
-    setDropdownOpen(false)
-    navigate('/')
-    console.log('Logout completed - all authentication tokens and data cleared')
-  }
-
-  // All token & profile handling moved to AuthContext for single source of truth
-
-  // Close dropdown when clicking outside
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-        setDropdownOpen(false)
-      }
-    }
-
-    document.addEventListener('mousedown', handleClickOutside)
-    return () => document.removeEventListener('mousedown', handleClickOutside)
-  }, [])
 
   // Prevent body scroll when mobile menu is open
   useEffect(() => {
@@ -479,59 +357,18 @@ export const Header: React.FC = () => {
           </DesktopNav>
 
           <ButtonGroup>
-            {isLoading ? (
-              <div
-                style={{
-                  padding: theme.spacing.sm,
-                  color: theme.colors.text.inverse,
-                  fontSize: theme.typography.fontSize.sm,
-                  opacity: 0.8
-                }}
-                aria-busy="true"
-              >Loading...</div>
-            ) : user ? (
-              <UserProfile 
-                ref={dropdownRef}
-                onClick={() => setDropdownOpen(!dropdownOpen)}
-                title="Click to open menu"
-              >
-                <img 
-                  src={`https://ui-avatars.com/api/?name=${encodeURIComponent(user.name)}&background=C41E3A&color=FFD700&size=40`} 
-                  alt={user.name} 
-                />
-                <span>{user.name.split(' ')[0]}</span>
-                <DropdownMenu isOpen={dropdownOpen}>
-                  <DropdownItem onClick={() => { setDropdownOpen(false); navigate('/my-membership'); }}>
-                    My Membership
-                  </DropdownItem>
-                  <DropdownItem onClick={() => { setDropdownOpen(false); navigate('/events'); }}>
-                    My Events
-                  </DropdownItem>
-                  <DropdownItem onClick={handleLogout}>
-                    Logout
-                  </DropdownItem>
-                </DropdownMenu>
-              </UserProfile>
-            ) : (
-              <a 
-                href="https://app.joinit.com/o/tvkcanada/members" 
-                title="Memberships for TVK Canada" 
-                style={{
-                  textDecoration: 'none',
-                  padding: '11px 20px',
-                  fontSize: '15px',
-                  color: '#fff',
-                  border: 'none',
-                  backgroundColor: '#f5c400',
-                  fontWeight: 400,
-                  borderRadius: '3px'
-                }}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                LOGIN
-              </a>
-            )}
+            <Button
+              variant="secondary"
+              size="md"
+              onClick={() => navigate('/join')}
+              style={{
+                backgroundColor: '#f5c400',
+                color: '#fff',
+                fontWeight: 400
+              }}
+            >
+              JOIN
+            </Button>
 
             <MobileMenuButton
               onClick={toggleMenu}
@@ -554,95 +391,20 @@ export const Header: React.FC = () => {
         <NavLink to="/gallery" onClick={closeMenu} isActive={isActivePath('/gallery')}>Gallery</NavLink>
         <NavLink to="/contact" onClick={closeMenu} isActive={isActivePath('/contact')}>Contact</NavLink>
         
-        {isLoading ? (
-          <div style={{ 
-            marginTop: theme.spacing.lg,
-            padding: theme.spacing.lg,
-            background: 'rgba(255,255,255,0.1)',
-            borderRadius: theme.borderRadius.lg,
-            color: theme.colors.text.inverse,
-            fontSize: theme.typography.fontSize.base
-          }} aria-busy="true">Loading...</div>
-        ) : user ? (
-          <div style={{ 
-            marginTop: theme.spacing.lg, 
-            padding: theme.spacing.lg, 
-            background: 'rgba(255, 255, 255, 0.95)', 
-            borderRadius: theme.borderRadius.lg,
-            border: `2px solid ${theme.colors.secondary}`,
-            backdropFilter: 'blur(10px)',
-            boxShadow: theme.shadows.lg
-          }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: theme.spacing.md, marginBottom: theme.spacing.lg }}>
-              <img 
-                src={`https://ui-avatars.com/api/?name=${encodeURIComponent(user.name)}&background=C41E3A&color=FFD700&size=40`} 
-                alt={user.name}
-                style={{ 
-                  width: '40px', 
-                  height: '40px', 
-                  borderRadius: '50%', 
-                  border: `3px solid ${theme.colors.secondary}`,
-                  boxShadow: theme.shadows.md
-                }}
-              />
-              <span style={{ 
-                color: theme.colors.text.primary, 
-                fontWeight: theme.typography.fontWeight.bold,
-                fontSize: theme.typography.fontSize.lg
-              }}>{user.name}</span>
-            </div>
-            <Button 
-              variant="primary" 
-              size="md" 
-              fullWidth 
-              onClick={() => { closeMenu(); navigate('/my-membership'); }} 
-              style={{ 
-                marginBottom: theme.spacing.md,
-                fontSize: theme.typography.fontSize.base,
-                fontWeight: theme.typography.fontWeight.semibold
-              }}
-            >
-              My Membership
-            </Button>
-            <Button 
-              variant="outline" 
-              size="md" 
-              fullWidth 
-              onClick={handleLogout}
-              style={{
-                borderColor: theme.colors.primary,
-                color: theme.colors.primary,
-                fontSize: theme.typography.fontSize.base,
-                fontWeight: theme.typography.fontWeight.semibold
-              }}
-            >
-              Logout
-            </Button>
-          </div>
-        ) : (
-          <a 
-            href="https://app.joinit.com/o/tvkcanada/members" 
-            title="Memberships for TVK Canada" 
-            style={{
-              textDecoration: 'none',
-              padding: '11px 20px',
-              fontSize: '15px',
-              color: '#fff',
-              border: 'none',
-              backgroundColor: '#f5c400',
-              fontWeight: 400,
-              borderRadius: '3px',
-              display: 'block',
-              textAlign: 'center',
-              marginTop: theme.spacing.lg,
-              width: '100%'
-            }}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            LOGIN
-          </a>
-        )}
+        <Button
+          variant="secondary"
+          size="lg"
+          fullWidth
+          onClick={() => { closeMenu(); navigate('/join'); }}
+          style={{
+            backgroundColor: '#f5c400',
+            color: '#fff',
+            fontWeight: 400,
+            marginTop: theme.spacing.lg
+          }}
+        >
+          JOIN
+        </Button>
       </MobileNav>
     </>
   )

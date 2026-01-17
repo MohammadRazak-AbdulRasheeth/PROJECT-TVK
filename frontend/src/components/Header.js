@@ -2,13 +2,12 @@ import { jsx as _jsx, jsxs as _jsxs, Fragment as _Fragment } from "react/jsx-run
 /**
  * Fully Responsive Header component with mobile menu
  */
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import { theme } from '@styles/theme';
 import { images } from '@utils/images';
 import { Button } from './Button';
-import { useAuth } from '../context/AuthContext';
 const HeaderWrapper = styled.header `
   background-color: ${theme.colors.primary};
   color: ${theme.colors.text.inverse};
@@ -265,110 +264,13 @@ const ButtonGroup = styled.div `
   gap: ${theme.spacing.md};
   flex-shrink: 0;
 `;
-const UserProfile = styled.div `
-  position: relative;
-  display: flex;
-  align-items: center;
-  gap: ${theme.spacing.sm};
-  cursor: pointer;
-  padding: ${theme.spacing.sm} ${theme.spacing.md};
-  border-radius: ${theme.borderRadius.lg};
-  transition: all ${theme.transitions.base};
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(10px);
-
-  &:hover {
-    background: rgba(255, 255, 255, 0.15);
-    border-color: ${theme.colors.secondary};
-    transform: translateY(-2px);
-    box-shadow: ${theme.shadows.md};
-  }
-
-  img {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    border: 2px solid ${theme.colors.secondary};
-    transition: all ${theme.transitions.base};
-  }
-
-  span {
-    color: ${theme.colors.text.inverse};
-    font-weight: ${theme.typography.fontWeight.semibold};
-    font-size: ${theme.typography.fontSize.base};
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-  }
-
-  @media (max-width: ${theme.breakpoints.tablet}) {
-    display: none;
-  }
-`;
-const DropdownMenu = styled.div.withConfig({
-    shouldForwardProp: (prop) => prop !== 'isOpen'
-}) `
-  position: absolute;
-  top: 100%;
-  right: 0;
-  background: ${theme.colors.background};
-  border: 1px solid ${theme.colors.border};
-  border-radius: ${theme.borderRadius.lg};
-  box-shadow: ${theme.shadows.xl};
-  min-width: 220px;
-  opacity: ${props => (props.isOpen ? '1' : '0')};
-  visibility: ${props => (props.isOpen ? 'visible' : 'hidden')};
-  transform: translateY(${props => (props.isOpen ? '0' : '-10px')});
-  transition: all ${theme.transitions.base};
-  z-index: 1000;
-  margin-top: ${theme.spacing.md};
-  overflow: hidden;
-  backdrop-filter: blur(10px);
-  border: 2px solid ${theme.colors.secondary};
-`;
-const DropdownItem = styled.button `
-  width: 100%;
-  padding: ${theme.spacing.md} ${theme.spacing.lg};
-  background: none;
-  border: none;
-  text-align: left;
-  cursor: pointer;
-  color: ${theme.colors.text.primary};
-  font-size: ${theme.typography.fontSize.base};
-  font-weight: ${theme.typography.fontWeight.medium};
-  transition: all ${theme.transitions.base};
-  border-bottom: 1px solid ${theme.colors.border};
-  display: flex;
-  align-items: center;
-  gap: ${theme.spacing.sm};
-
-  &:hover {
-    background: ${theme.colors.primary};
-    color: ${theme.colors.text.inverse};
-    transform: translateX(4px);
-  }
-
-  &:last-child {
-    border-bottom: none;
-  }
-
-  &:focus-visible {
-    outline: 2px solid ${theme.colors.secondary};
-    outline-offset: -2px;
-  }
-
-  &:active {
-    transform: translateX(2px);
-  }
-`;
 /**
  * Header Component with fully responsive mobile menu
  */
 export const Header = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-    const [dropdownOpen, setDropdownOpen] = useState(false);
-    const dropdownRef = useRef(null);
     const navigate = useNavigate();
     const location = useLocation();
-    const { user, logout, isLoading } = useAuth();
     // Helper function to check if a path is active
     const isActivePath = (path) => {
         if (path === '/') {
@@ -382,23 +284,6 @@ export const Header = () => {
     const closeMenu = () => {
         setIsMenuOpen(false);
     };
-    const handleLogout = () => {
-        logout(); // Use AuthContext logout function which clears all localStorage
-        setDropdownOpen(false);
-        navigate('/');
-        console.log('Logout completed - all authentication tokens and data cleared');
-    };
-    // All token & profile handling moved to AuthContext for single source of truth
-    // Close dropdown when clicking outside
-    useEffect(() => {
-        const handleClickOutside = (event) => {
-            if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-                setDropdownOpen(false);
-            }
-        };
-        document.addEventListener('mousedown', handleClickOutside);
-        return () => document.removeEventListener('mousedown', handleClickOutside);
-    }, []);
     // Prevent body scroll when mobile menu is open
     useEffect(() => {
         if (isMenuOpen) {
@@ -427,66 +312,14 @@ export const Header = () => {
                                             return;
                                         target.dataset.fallbackApplied = 'true';
                                         target.src = images.logoFallback || images.logo;
-                                    }, style: { objectFit: 'contain', background: 'transparent' } }), _jsx("span", { children: "TVK CANADA" })] }), _jsxs(DesktopNav, { children: [_jsx(NavLink, { to: "/", isActive: isActivePath('/'), children: "Home" }), _jsx(NavLink, { to: "/about", isActive: isActivePath('/about'), children: "About Us" }), _jsx(NavLink, { to: "/programs", isActive: isActivePath('/programs'), children: "Programs" }), _jsx(NavLink, { to: "/events", isActive: isActivePath('/events'), children: "Events" }), _jsx(NavLink, { to: "/join", isActive: isActivePath('/join'), children: "Join Free" }), _jsx(NavLink, { to: "/global-network", isActive: isActivePath('/global-network'), children: "Global Network" }), _jsx(NavLink, { to: "/gallery", isActive: isActivePath('/gallery'), children: "Gallery" }), _jsx(NavLink, { to: "/contact", isActive: isActivePath('/contact'), children: "Contact" })] }), _jsxs(ButtonGroup, { children: [isLoading ? (_jsx("div", { style: {
-                                        padding: theme.spacing.sm,
-                                        color: theme.colors.text.inverse,
-                                        fontSize: theme.typography.fontSize.sm,
-                                        opacity: 0.8
-                                    }, "aria-busy": "true", children: "Loading..." })) : user ? (_jsxs(UserProfile, { ref: dropdownRef, onClick: () => setDropdownOpen(!dropdownOpen), title: "Click to open menu", children: [_jsx("img", { src: `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name)}&background=C41E3A&color=FFD700&size=40`, alt: user.name }), _jsx("span", { children: user.name.split(' ')[0] }), _jsxs(DropdownMenu, { isOpen: dropdownOpen, children: [_jsx(DropdownItem, { onClick: () => { setDropdownOpen(false); navigate('/my-membership'); }, children: "My Membership" }), _jsx(DropdownItem, { onClick: () => { setDropdownOpen(false); navigate('/events'); }, children: "My Events" }), _jsx(DropdownItem, { onClick: handleLogout, children: "Logout" })] })] })) : (_jsx("a", { href: "https://app.joinit.com/o/tvkcanada/members", title: "Memberships for TVK Canada", style: {
-                                        textDecoration: 'none',
-                                        padding: '11px 20px',
-                                        fontSize: '15px',
-                                        color: '#fff',
-                                        border: 'none',
+                                    }, style: { objectFit: 'contain', background: 'transparent' } }), _jsx("span", { children: "TVK CANADA" })] }), _jsxs(DesktopNav, { children: [_jsx(NavLink, { to: "/", isActive: isActivePath('/'), children: "Home" }), _jsx(NavLink, { to: "/about", isActive: isActivePath('/about'), children: "About Us" }), _jsx(NavLink, { to: "/programs", isActive: isActivePath('/programs'), children: "Programs" }), _jsx(NavLink, { to: "/events", isActive: isActivePath('/events'), children: "Events" }), _jsx(NavLink, { to: "/join", isActive: isActivePath('/join'), children: "Join Free" }), _jsx(NavLink, { to: "/global-network", isActive: isActivePath('/global-network'), children: "Global Network" }), _jsx(NavLink, { to: "/gallery", isActive: isActivePath('/gallery'), children: "Gallery" }), _jsx(NavLink, { to: "/contact", isActive: isActivePath('/contact'), children: "Contact" })] }), _jsxs(ButtonGroup, { children: [_jsx(Button, { variant: "secondary", size: "md", onClick: () => navigate('/join'), style: {
                                         backgroundColor: '#f5c400',
-                                        fontWeight: 400,
-                                        borderRadius: '3px'
-                                    }, target: "_blank", rel: "noopener noreferrer", children: "LOGIN" })), _jsx(MobileMenuButton, { onClick: toggleMenu, "aria-label": isMenuOpen ? 'Close menu' : 'Open menu', "aria-expanded": isMenuOpen, children: isMenuOpen ? '✕' : '☰' })] })] }) }), _jsxs(MobileNav, { isOpen: isMenuOpen, children: [_jsx(NavLink, { to: "/", onClick: closeMenu, isActive: isActivePath('/'), children: "Home" }), _jsx(NavLink, { to: "/about", onClick: closeMenu, isActive: isActivePath('/about'), children: "About Us" }), _jsx(NavLink, { to: "/programs", onClick: closeMenu, isActive: isActivePath('/programs'), children: "Programs" }), _jsx(NavLink, { to: "/events", onClick: closeMenu, isActive: isActivePath('/events'), children: "Events" }), _jsx(NavLink, { to: "/join", onClick: closeMenu, isActive: isActivePath('/join'), children: "Join Free" }), _jsx(NavLink, { to: "/global-network", onClick: closeMenu, isActive: isActivePath('/global-network'), children: "Global Network" }), _jsx(NavLink, { to: "/gallery", onClick: closeMenu, isActive: isActivePath('/gallery'), children: "Gallery" }), _jsx(NavLink, { to: "/contact", onClick: closeMenu, isActive: isActivePath('/contact'), children: "Contact" }), isLoading ? (_jsx("div", { style: {
-                            marginTop: theme.spacing.lg,
-                            padding: theme.spacing.lg,
-                            background: 'rgba(255,255,255,0.1)',
-                            borderRadius: theme.borderRadius.lg,
-                            color: theme.colors.text.inverse,
-                            fontSize: theme.typography.fontSize.base
-                        }, "aria-busy": "true", children: "Loading..." })) : user ? (_jsxs("div", { style: {
-                            marginTop: theme.spacing.lg,
-                            padding: theme.spacing.lg,
-                            background: 'rgba(255, 255, 255, 0.95)',
-                            borderRadius: theme.borderRadius.lg,
-                            border: `2px solid ${theme.colors.secondary}`,
-                            backdropFilter: 'blur(10px)',
-                            boxShadow: theme.shadows.lg
-                        }, children: [_jsxs("div", { style: { display: 'flex', alignItems: 'center', gap: theme.spacing.md, marginBottom: theme.spacing.lg }, children: [_jsx("img", { src: `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name)}&background=C41E3A&color=FFD700&size=40`, alt: user.name, style: {
-                                            width: '40px',
-                                            height: '40px',
-                                            borderRadius: '50%',
-                                            border: `3px solid ${theme.colors.secondary}`,
-                                            boxShadow: theme.shadows.md
-                                        } }), _jsx("span", { style: {
-                                            color: theme.colors.text.primary,
-                                            fontWeight: theme.typography.fontWeight.bold,
-                                            fontSize: theme.typography.fontSize.lg
-                                        }, children: user.name })] }), _jsx(Button, { variant: "primary", size: "md", fullWidth: true, onClick: () => { closeMenu(); navigate('/my-membership'); }, style: {
-                                    marginBottom: theme.spacing.md,
-                                    fontSize: theme.typography.fontSize.base,
-                                    fontWeight: theme.typography.fontWeight.semibold
-                                }, children: "My Membership" }), _jsx(Button, { variant: "outline", size: "md", fullWidth: true, onClick: handleLogout, style: {
-                                    borderColor: theme.colors.primary,
-                                    color: theme.colors.primary,
-                                    fontSize: theme.typography.fontSize.base,
-                                    fontWeight: theme.typography.fontWeight.semibold
-                                }, children: "Logout" })] })) : (_jsx("a", { href: "https://app.joinit.com/o/tvkcanada/members", title: "Memberships for TVK Canada", style: {
-                            textDecoration: 'none',
-                            padding: '11px 20px',
-                            fontSize: '15px',
-                            color: '#fff',
-                            border: 'none',
+                                        color: '#fff',
+                                        fontWeight: 400
+                                    }, children: "JOIN" }), _jsx(MobileMenuButton, { onClick: toggleMenu, "aria-label": isMenuOpen ? 'Close menu' : 'Open menu', "aria-expanded": isMenuOpen, children: isMenuOpen ? '✕' : '☰' })] })] }) }), _jsxs(MobileNav, { isOpen: isMenuOpen, children: [_jsx(NavLink, { to: "/", onClick: closeMenu, isActive: isActivePath('/'), children: "Home" }), _jsx(NavLink, { to: "/about", onClick: closeMenu, isActive: isActivePath('/about'), children: "About Us" }), _jsx(NavLink, { to: "/programs", onClick: closeMenu, isActive: isActivePath('/programs'), children: "Programs" }), _jsx(NavLink, { to: "/events", onClick: closeMenu, isActive: isActivePath('/events'), children: "Events" }), _jsx(NavLink, { to: "/join", onClick: closeMenu, isActive: isActivePath('/join'), children: "Join Free" }), _jsx(NavLink, { to: "/global-network", onClick: closeMenu, isActive: isActivePath('/global-network'), children: "Global Network" }), _jsx(NavLink, { to: "/gallery", onClick: closeMenu, isActive: isActivePath('/gallery'), children: "Gallery" }), _jsx(NavLink, { to: "/contact", onClick: closeMenu, isActive: isActivePath('/contact'), children: "Contact" }), _jsx(Button, { variant: "secondary", size: "lg", fullWidth: true, onClick: () => { closeMenu(); navigate('/join'); }, style: {
                             backgroundColor: '#f5c400',
+                            color: '#fff',
                             fontWeight: 400,
-                            borderRadius: '3px',
-                            display: 'block',
-                            textAlign: 'center',
-                            marginTop: theme.spacing.lg,
-                            width: '100%'
-                        }, target: "_blank", rel: "noopener noreferrer", children: "LOGIN" }))] })] }));
+                            marginTop: theme.spacing.lg
+                        }, children: "JOIN" })] })] }));
 };
